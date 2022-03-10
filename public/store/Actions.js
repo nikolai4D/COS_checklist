@@ -22,8 +22,6 @@ class Actions {
         body: JSON.stringify({ email, pwd }),
       });
 
-      console.log(responseAuth, "responseAuth");
-
       if (!responseAuth.ok) {
         if (responseAuth.status === 401) {
           alert("Unauthorized");

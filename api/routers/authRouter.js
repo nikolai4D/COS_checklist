@@ -11,28 +11,47 @@ router.use(bodyParser.json());
 
 router.post("/", async (req, res) => {
   console.log("auth route used1");
-  await axios
-    .post(process.env.API_BASE_URL + "/auth", req.body, {
-      withCredentials: true,
-    })
-    .then((response) => {
-      //Parse the cookie header
-      const refreshToken = response.headers["set-cookie"]
-        .toString()
-        .split("; ")[0]
-        .split("=")[1];
 
-      res.cookie("jwt", refreshToken, {
-        httpOnly: true,
-        sameSite: "None",
-        secure: true,
-        maxAge: 86400,
-      });
+  try {
+    const response = await axios.post(
+      process.env.API_BASE_URL + "/auth",
+      req.body,
+      {
+        withCredentials: true,
+      }
+    );
+
+    if ((await response.status) === 200) {
+      res.cookie(response.headers["set-cookie"]);
       res.json(response.data);
-    })
-    .catch((err) => {
-      console.log(err.response);
-    });
+    }
+  } catch (err) {
+    // Handle Error Here
+    console.error(err);
+  }
+
+  //   await axios
+  //     .post(process.env.API_BASE_URL + "/auth", req.body, {
+  //       withCredentials: true,
+  //     })
+  //     .then((response) => {
+  //       //Parse the cookie header
+  //       const refreshToken = response.headers["set-cookie"]
+  //         .toString()
+  //         .split("; ")[0]
+  //         .split("=")[1];
+
+  //       res.cookie("jwt", refreshToken, {
+  //         httpOnly: true,
+  //         sameSite: "None",
+  //         secure: true,
+  //         maxAge: 86400,
+  //       });
+  //       res.json(response.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.response);
+  //     });
 });
 
 module.exports = router;
