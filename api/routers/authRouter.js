@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const bodyParser = require("body-parser");
 const axios = require("axios");
@@ -11,8 +10,7 @@ router.use(bodyParser.json());
 //APIs
 
 router.post("/", async (req, res) => {
-  console.log("auth route used");
-
+  console.log("auth route used1");
   await axios
     .post(process.env.API_BASE_URL + "/auth", req.body, {
       withCredentials: true,
@@ -33,7 +31,7 @@ router.post("/", async (req, res) => {
       res.json(response.data);
     })
     .catch((err) => {
-      console.log(err);
+      console.log(err.response);
     });
 });
 

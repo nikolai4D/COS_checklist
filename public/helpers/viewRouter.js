@@ -1,14 +1,17 @@
+//helpers
+import navigateTo from "./navigateTo.js";
+import State from "../store/State.js";
+import handleToken from "./handleToken.js";
+
+//views
 import Dashboard from "../views/Dashboard.js";
 import Login from "../views/Login.js";
 import Register from "../views/Register.js";
 import AddChecklist from "../views/AddChecklist.js";
 import ViewChecklist from "../views/ViewChecklist.js";
 import Navbar from "../components/Navbar.js";
-import navigateTo from "./navigateTo.js";
 
 const viewRouter = async () => {
-  //handleToken
-
   const routes = [
     { path: "/", view: Dashboard },
     { path: "/login", view: Login },
@@ -35,7 +38,10 @@ const viewRouter = async () => {
 
   const view = new match.route.view();
 
-  if (match.route.path !== "/login") {
+  if (match.route.path !== "/login" && match.route.path !== "/register") {
+    if (!State.accessToken) {
+      return navigateTo("/login");
+    }
     console.log(match.route.path, "not login or register");
     const nav = new Navbar();
     document.querySelector("#nav").innerHTML = await nav.getTemplate();

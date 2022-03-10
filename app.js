@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Api
-// app.use("/api", require("./api/api.js"));
+app.use("/api", require("./api/api.js"));
 
 // Set static protected folder
 app.use("/", express.static(__dirname + "/public"));

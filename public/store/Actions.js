@@ -22,6 +22,8 @@ class Actions {
         body: JSON.stringify({ email, pwd }),
       });
 
+      console.log(responseAuth, "responseAuth");
+
       if (!responseAuth.ok) {
         if (responseAuth.status === 401) {
           alert("Unauthorized");
@@ -34,6 +36,7 @@ class Actions {
       const token = `Bearer ${(await responseAuth.json()).accessToken}`;
 
       State.accessToken = await token;
+      console.log(State, "STATE");
       mutate.SET_STATE(State);
     } catch (err) {
       console.log("error: " + err.message);
@@ -43,48 +46,48 @@ class Actions {
     navigateTo("/");
   }
 
-  async LOGOUT() {
-    console.log("Logout function");
-    State.accessToken = undefined;
-    try {
-      await fetch("/api/logout");
-      navigateTo("/login");
-    } catch (err) {
-      console.log("error");
-    }
-  }
-  async REGISTER() {
-    console.log("Register function");
+  //   async LOGOUT() {
+  //     console.log("Logout function");
+  //     State.accessToken = undefined;
+  //     try {
+  //       await fetch("/api/logout");
+  //       navigateTo("/login");
+  //     } catch (err) {
+  //       console.log("error");
+  //     }
+  //   }
+  //   async REGISTER() {
+  //     console.log("Register function");
 
-    const registerForm = document.getElementById("register-form");
-    const email = registerForm.email.value;
-    const pwd = registerForm.pwd.value;
-    const code = registerForm.code.value;
+  //     const registerForm = document.getElementById("register-form");
+  //     const email = registerForm.email.value;
+  //     const pwd = registerForm.pwd.value;
+  //     const code = registerForm.code.value;
 
-    try {
-      const responseAuth = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ email, pwd, code }),
-      });
+  //     try {
+  //       const responseAuth = await fetch("/api/register", {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         credentials: "include",
+  //         body: JSON.stringify({ email, pwd, code }),
+  //       });
 
-      if (!responseAuth.ok) {
-        if (responseAuth.status === 409) {
-          navigateTo("/login");
-          return alert("Registration not ok");
-        }
-        throw new Error(`${responseAuth.status} ${responseAuth.statusText}`);
-      }
+  //       if (!responseAuth.ok) {
+  //         if (responseAuth.status === 409) {
+  //           navigateTo("/login");
+  //           return alert("Registration not ok");
+  //         }
+  //         throw new Error(`${responseAuth.status} ${responseAuth.statusText}`);
+  //       }
 
-      navigateTo("/login");
-    } catch (err) {
-      console.log("error");
-    }
-  }
-  async SAVECHECKLIST() {
-    console.log("SaveChecklist function");
-  }
+  //       navigateTo("/login");
+  //     } catch (err) {
+  //       console.log("error");
+  //     }
+  //   }
+  //   async SAVECHECKLIST() {
+  //     console.log("SaveChecklist function");
+  //   }
 }
 
 export default new Actions();

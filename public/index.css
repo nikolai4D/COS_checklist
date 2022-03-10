@@ -1,0 +1,14 @@
+html,
+body,
+#app,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.linkLabel {
+  text-shadow: 0 0 2px white, 0 0 2px white, 0 0 2px white, 0 0 2px white,
+    0 0 2px white, 0 0 2px white, 0 0 2px white, 0 0 2px white;
+}
