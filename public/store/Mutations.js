@@ -1,9 +1,9 @@
-import State from "./State.js";
+import { State } from "./State.js";
 
 class Mutations {
   constructor() {}
-  async SET_STATE(newState) {
-    State = newState;
+  async SET_ACCESSTOKEN(newAccessToken) {
+    State.accessToken = newAccessToken;
   }
 }
 

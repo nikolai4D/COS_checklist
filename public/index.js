@@ -2,7 +2,7 @@ import viewRouter from "./helpers/viewRouter.js";
 import functionRouter from "./helpers/functionRouter.js";
 import navigateTo from "./helpers/navigateTo.js";
 import handleToken from "./helpers/handleToken.js";
-import State from "./store/State.js";
+import { State } from "./store/State.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("DOMContentLoaded");

@@ -10,48 +10,30 @@ router.use(bodyParser.json());
 //APIs
 
 router.post("/", async (req, res) => {
-  console.log("auth route used1");
+  console.log("auth route used");
+
+  let response = undefined;
 
   try {
-    const response = await axios.post(
-      process.env.API_BASE_URL + "/auth",
-      req.body,
-      {
-        withCredentials: true,
-      }
-    );
+    response = await axios.post(process.env.API_BASE_URL + "/auth", req.body, {
+      withCredentials: true,
+    });
 
-    if ((await response.status) === 200) {
-      res.cookie(response.headers["set-cookie"]);
-      res.json(response.data);
-    }
+    console.log("try");
   } catch (err) {
     // Handle Error Here
-    console.error(err);
+    response = err.response;
+    console.log("catch");
   }
 
-  //   await axios
-  //     .post(process.env.API_BASE_URL + "/auth", req.body, {
-  //       withCredentials: true,
-  //     })
-  //     .then((response) => {
-  //       //Parse the cookie header
-  //       const refreshToken = response.headers["set-cookie"]
-  //         .toString()
-  //         .split("; ")[0]
-  //         .split("=")[1];
+  //console.log(response, "response");
 
-  //       res.cookie("jwt", refreshToken, {
-  //         httpOnly: true,
-  //         sameSite: "None",
-  //         secure: true,
-  //         maxAge: 86400,
-  //       });
-  //       res.json(response.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err.response);
-  //     });
+  if ((await response.status) !== 200) {
+    return res.status(response.status).json(response.data);
+  } else {
+    res.cookie(response.headers["set-cookie"]);
+    return res.json(response.data);
+  }
 });
 
 module.exports = router;

@@ -1,6 +1,6 @@
 //helpers
 import navigateTo from "./navigateTo.js";
-import State from "../store/State.js";
+import { State } from "../store/State.js";
 import handleToken from "./handleToken.js";
 
 //views

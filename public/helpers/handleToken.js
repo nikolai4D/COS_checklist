@@ -1,5 +1,5 @@
 import navigateTo from "./navigateTo.js";
-import State from "../store/State.js";
+import { State } from "../store/State.js";
 import Actions from "../store/Actions.js";
 
 export default async function handleToken(tkn) {

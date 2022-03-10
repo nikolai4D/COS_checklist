@@ -1,7 +1,7 @@
 //import  from "./Mutations.js";
 import navigateTo from "../helpers/navigateTo.js";
 // import { stack } from "d3";
-import State from "./State.js";
+import { State } from "./State.js";
 import mutate from "./Mutations.js";
 
 class Actions {
@@ -12,8 +12,9 @@ class Actions {
     const email = loginForm.email.value;
     const pwd = loginForm.pwd.value;
 
+    let response;
     try {
-      const responseAuth = await fetch("/api/auth", {
+      response = await fetch("/api/auth", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -21,24 +22,27 @@ class Actions {
         credentials: "include",
         body: JSON.stringify({ email, pwd }),
       });
-
-      if (!responseAuth.ok) {
-        if (responseAuth.status === 401) {
-          alert("Unauthorized");
-        }
-        throw new Error(
-          `status: ${responseAuth.status}, status text: ${responseAuth.statusText}`
-        );
-      }
-
-      const token = `Bearer ${(await responseAuth.json()).accessToken}`;
-
-      State.accessToken = await token;
-      console.log(State, "STATE");
-      mutate.SET_STATE(State);
+      console.log("try");
     } catch (err) {
-      console.log("error: " + err.message);
+      console.log(err);
+      response = err.response;
+      console.log("catch");
     }
+
+    console.log(response.status, "response.status");
+
+    if (!(response.status === 200)) {
+      alert(`${response.statusText}`);
+      navigateTo("/login");
+      throw new Error(
+        `status: ${response.status}, status text: ${response.statusText}`
+      );
+    }
+
+    const token = `Bearer ${(await response.json()).accessToken}`;
+
+    mutate.SET_ACCESSTOKEN(await token);
+    console.log(State, "NEW STATE");
 
     //Redirection Part
     navigateTo("/");
