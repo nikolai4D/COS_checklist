@@ -19,14 +19,12 @@ router.post("/", async (req, res) => {
       withCredentials: true,
     });
 
-    console.log("try");
+    console.log("try auth api");
   } catch (err) {
     // Handle Error Here
     response = err.response;
-    console.log("catch");
+    console.log("catch auth api");
   }
-
-  //console.log(response, "response");
 
   if ((await response.status) !== 200) {
     return res.status(response.status).json(response.data);

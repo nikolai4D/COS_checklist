@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const bodyParser = require("body-parser");
 const axios = require("axios");
@@ -10,20 +9,29 @@ router.use(bodyParser.json());
 
 //APIs
 
-router.post("/", async (req, res) => {
+router.get("/", async (req, res) => {
   console.log("verify route used");
+  let response;
 
-  await axios
-    .post(process.env.API_BASE_URL + "/verify", req.body, {
-      withCredentials: true,
+  const config = {
+    headers: {
       authorization: req.headers.authorization,
-    })
-    .then((response) => {
-      res.status(response.status);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      withCredentials: true,
+    },
+  };
+
+  console.log(req.headers.authorization, "req.headers.authorization");
+
+  try {
+    response = await axios.get(process.env.API_BASE_URL + "/verify", config);
+    console.log("try verify api");
+  } catch (err) {
+    // Handle Error Here
+    response = err.response;
+    console.log("catch verify api");
+  }
+
+  return res.status(response.status).json(response.data);
 });
 
 module.exports = router;

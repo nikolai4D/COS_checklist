@@ -3,7 +3,7 @@ import Actions from "../store/Actions.js";
 export default async function (demandedRoute, event) {
   const routes = [
     { path: "/login" },
-    // { path: "/logout" },
+    { path: "/logout" },
     // { path: "/register" },
     // { path: "/saveChecklist" },
   ];
@@ -28,9 +28,9 @@ export default async function (demandedRoute, event) {
   if (match.route.path === "/login") {
     await Actions.LOGIN();
   }
-  //   if (match.route.path === "/logout") {
-  //     await Actions.LOGOUT();
-  //   }
+  if (match.route.path === "/logout") {
+    await Actions.LOGOUT();
+  }
   //   if (match.route.path === "/register") {
   //     await Actions.REGISTER();
   //   }

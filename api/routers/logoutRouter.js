@@ -12,22 +12,23 @@ router.use(bodyParser.json());
 
 router.get("/", async (req, res) => {
   console.log("logout route used!!!");
-  console.log(req, res);
+
+  let response;
 
   try {
-    const resp = await axios({
+    response = await axios({
       method: "GET",
       url: process.env.API_BASE_URL + "/logout",
     });
-
-    console.log(resp);
+    console.log("try logout api");
   } catch (err) {
     // Handle Error Here
-    console.error(err);
+    response = err.response;
+    console.error("catch logout api");
   }
-  //   return await axios
-  //     .get(process.env.API_BASE_URL + "/logout")
-  //     .then((response) => res.status(response.status));
+
+  res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
+  return res.status(response.status).json(response.data);
 });
 
 module.exports = router;

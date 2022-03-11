@@ -4,10 +4,12 @@ const cors = require("cors");
 const initDotEnv = require("./api/middleware/initDotEnv.js");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
+const credentials = require("./api/middleware/credentials");
 const PORT = process.env.PORT || 3000;
 const app = express();
 
 //Init app
+app.use(credentials);
 
 // Cross Origin Resource Sharing
 app.use(cors());

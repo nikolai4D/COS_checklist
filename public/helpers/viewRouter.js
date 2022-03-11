@@ -1,7 +1,7 @@
 //helpers
 import navigateTo from "./navigateTo.js";
 import { State } from "../store/State.js";
-import handleToken from "./handleToken.js";
+import Actions from "../store/Actions.js";
 
 //views
 import Dashboard from "../views/Dashboard.js";
@@ -12,6 +12,11 @@ import ViewChecklist from "../views/ViewChecklist.js";
 import Navbar from "../components/Navbar.js";
 
 const viewRouter = async () => {
+  if (location.pathname !== "/login" && !(await Actions.VERIFY())) {
+    Actions.LOGOUT();
+    return "invalid accessToken";
+  }
+
   const routes = [
     { path: "/", view: Dashboard },
     { path: "/login", view: Login },
@@ -37,6 +42,7 @@ const viewRouter = async () => {
   }
 
   const view = new match.route.view();
+  document.querySelector("#nav").innerHTML = "";
 
   if (match.route.path !== "/login" && match.route.path !== "/register") {
     if (!State.accessToken) {
