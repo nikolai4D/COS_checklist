@@ -59,8 +59,8 @@ export default async function (demandedRoute, event) {
       document.getElementById('inputFile').value = null
     }
     else {
-      image.src = URL.createObjectURL(image.files[0])
-      window.open(image.src);
+      inputImage.src = URL.createObjectURL(inputImage.files[0])
+      window.open(inputImage.src);
     }
   }
   if (match.route.path === 'delete-image') {
