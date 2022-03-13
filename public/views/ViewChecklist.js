@@ -11,14 +11,12 @@ export default class ViewChecklist {
         <button type="button" class="btn btn-success" data-function="/saveChecklist" style="margin-top: 2em; margin-bottom: 2em;">Spara</button>
         <button type="button" class="btn btn-danger" data-view="/" style="margin-top: 2em; margin-bottom: 2em;">Tillbaka</button>
 
-        
-        
         <div id="newChecklist" style="margin-top: 2em; margin-bottom: 3em;">
 
         <h3>Checklista</h3>
 
         <div class="alert alert-success">
-        Godkänd        
+        Godkänd
             </div>
 
         <div >
@@ -341,16 +339,11 @@ export default class ViewChecklist {
                   </tbody>
                 </table>
               </div>
-                 </div>
+              </div>
             </div>
             </div>
       </div>
-        
-
         </div>
-
-
-        
         </div>
         `;
   }
