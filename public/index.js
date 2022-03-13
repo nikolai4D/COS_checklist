@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.body.addEventListener("click", async (e) => {
     if (e.target.matches("[data-function]")) {
-      e.preventDefault();
+      // e.preventDefault();
       await functionRouter(e.target.getAttribute("data-function"), e);
       console.log(`function: ${e.target.getAttribute("data-function")}`);
     }
@@ -20,6 +20,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log(`view: ${e.target.getAttribute("data-view")}`);
     }
   });
+
+  // document.body.addEventListener("onchange", async (e) => {
+  //   if (e.target.matches("[data-function]")) {
+  //     e.preventDefault();
+  //     console.log(`function: ${e.target.getAttribute("data-function")}`);
+  //   }
+  // });
+
 
   window.addEventListener("load", async (e) => {
     console.log("Window load");

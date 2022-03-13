@@ -103,7 +103,8 @@ export default class AddChecklist {
                         </div>
                       </td>
                       <td>...</td>
-                      <td> <label for="formFileMultiple2" class="btn btn-outline-secondary"><i class="bi bi-upload"></i></label><input class="form-control" type="file" id="formFileMultiple2" multiple  style="display:none;"></td>
+                      <td> <label data-function="upload-images" id="labelForInputFile" for="inputFile" class="btn btn-outline-secondary"><i class="bi bi-upload"></i></label><input class="form-control" data-function="upload-images" type="file" id="inputFile"  style="display:none;"  >
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">2</th>
@@ -253,8 +254,7 @@ export default class AddChecklist {
                         </div>
                       </td>
                       <td>...</td>
-                      <td> <label for="formFileMultiple1"><button class="btn btn-outline-secondary"><i class="bi bi-upload"></i></button></label><input class="form-control" type="file" id="formFileMultiple1" multiple  style="display:none;"></td>
-
+                      <td> <label for="formFileMultiple1"><button class="btn btn-outline-secondary"><i class="bi bi-upload"></i></button></label><input class="form-control" type="file" id="formFileMultiple1"  style="display:none;"><label for="formFileMultiple1"><button class="btn btn-outline-secondary"><i class="bi bi-image"></i></button></label><input class="form-control" type="file" id="formFileMultiple1" multiple  style="display:none;"></td>
                     </tr>
                   </tbody>
                 </table>
