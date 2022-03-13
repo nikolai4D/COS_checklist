@@ -52,8 +52,6 @@ export default class AddChecklist {
         </select>
         </div>
 
-
-
         </div>
 
         <hr />
@@ -79,6 +77,7 @@ export default class AddChecklist {
                       <th scope="col">Önskat resultat</th>
                       <th scope="col">Ja/Nej</th>
                       <th scope="col">Notering</th>
+                      <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -104,6 +103,7 @@ export default class AddChecklist {
                         </div>
                       </td>
                       <td>...</td>
+                      <td> <label for="formFileMultiple2" class="btn btn-outline-secondary"><i class="bi bi-upload"></i></label><input class="form-control" type="file" id="formFileMultiple2" multiple  style="display:none;"></td>
                     </tr>
                     <tr>
                       <th scope="row">2</th>
@@ -127,6 +127,7 @@ export default class AddChecklist {
                         </div>
                       </td>
                       <td>...</td>
+                      <td> <label for="formFileMultiple1"><button class="btn btn-outline-secondary"><i class="bi bi-upload"></i></button></label><input class="form-control" type="file" id="formFileMultiple1" multiple  style="display:none;"></td>
                     </tr>
                     <tr>
                       <th scope="row">3</th>
@@ -150,6 +151,7 @@ export default class AddChecklist {
                         </div>
                       </td>
                       <td>...</td>
+                      <td> <label for="formFileMultiple1"><button class="btn btn-outline-secondary"><i class="bi bi-upload"></i></button></label><input class="form-control" type="file" id="formFileMultiple1" multiple  style="display:none;"></td>
                     </tr>
                   </tbody>
                 </table>
@@ -174,6 +176,8 @@ export default class AddChecklist {
                       <th scope="col">Önskat resultat</th>
                       <th scope="col">Ja/Nej</th>
                       <th scope="col">Notering</th>
+                      <th scope="col"></th>
+
                     </tr>
                   </thead>
                   <tbody>
@@ -199,6 +203,8 @@ export default class AddChecklist {
                         </div>
                       </td>
                       <td>...</td>
+                      <td> <label for="formFileMultiple1"><button class="btn btn-outline-secondary"><i class="bi bi-upload"></i></button></label><input class="form-control" type="file" id="formFileMultiple1" multiple  style="display:none;"></td>
+
                     </tr>
                     <tr>
                       <th scope="row">2</th>
@@ -222,6 +228,8 @@ export default class AddChecklist {
                         </div>
                       </td>
                       <td>...</td>
+                      <td> <label for="formFileMultiple1"><button class="btn btn-outline-secondary"><i class="bi bi-upload"></i></button></label><input class="form-control" type="file" id="formFileMultiple1" multiple  style="display:none;"></td>
+
                     </tr>
                     <tr>
                       <th scope="row">3</th>
@@ -245,6 +253,8 @@ export default class AddChecklist {
                         </div>
                       </td>
                       <td>...</td>
+                      <td> <label for="formFileMultiple1"><button class="btn btn-outline-secondary"><i class="bi bi-upload"></i></button></label><input class="form-control" type="file" id="formFileMultiple1" multiple  style="display:none;"></td>
+
                     </tr>
                   </tbody>
                 </table>
@@ -294,6 +304,8 @@ export default class AddChecklist {
                         </div>
                       </td>
                       <td>...</td>
+                      <td> <label for="formFileMultiple1"><button class="btn btn-outline-secondary"><i class="bi bi-upload"></i></button></label><input class="form-control" type="file" id="formFileMultiple1" multiple  style="display:none;"></td>
+
                     </tr>
                     <tr>
                       <th scope="row">2</th>
@@ -317,6 +329,8 @@ export default class AddChecklist {
                         </div>
                       </td>
                       <td>...</td>
+                      <td> <label for="formFileMultiple1"><button class="btn btn-outline-secondary"><i class="bi bi-upload"></i></button></label><input class="form-control" type="file" id="formFileMultiple1" multiple  style="display:none;"></td>
+
                     </tr>
                     <tr>
                       <th scope="row">3</th>
@@ -340,20 +354,17 @@ export default class AddChecklist {
                         </div>
                       </td>
                       <td>...</td>
+                      <td> <label for="formFileMultiple1"><button class="btn btn-outline-secondary"><i class="bi bi-upload"></i></button></label><input class="form-control" type="file" id="formFileMultiple1" multiple  style="display:none;"></td>
+
                     </tr>
                   </tbody>
                 </table>
               </div>
-                 </div>
+            </div>
             </div>
             </div>
       </div>
-        
-
         </div>
-
-
-        
         </div>
         `;
   }
