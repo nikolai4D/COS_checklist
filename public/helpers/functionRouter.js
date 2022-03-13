@@ -36,25 +36,24 @@ export default async function (demandedRoute, event) {
   }
 
   if (match.route.path === "upload-images") {
-    let image = document.getElementById('inputFile')
+    let inputImage = document.getElementById('inputFile')
 
     const outputImageIcon = () => {
-      console.log('hello')
-      if (image.files[0] === undefined && document.getElementById('buttonForImage') === null) {
-        let imageButton = `<button id="buttonForImage" data-function="show-image" class="btn btn-outline-secondary" style="margin-left: 1em;"><i class="bi bi-image"  data-function="show-image" ></i></button>`
-        let closeButton = `<i style="cursor: pointer;" id="deleteImage" data-function='delete-image' class="bi bi-x"></i>`
-        document.getElementById('labelForInputFile').insertAdjacentHTML("afterend", `${imageButton}${closeButton}`);
+      let buttonForImageDOM = document.getElementById('buttonForImage')
+      if (buttonForImageDOM !== null) {
+        buttonForImageDOM.remove();
+        document.getElementById('deleteImage').remove();
       }
+      let buttonForImage = `<button id="buttonForImage" data-function="show-image" class="btn btn-outline-secondary" style="margin-left: 1em;"><i class="bi bi-image"  data-function="show-image" ></i></button>`
+      let closeButton = `<i style="cursor: pointer;" id="deleteImage" data-function='delete-image' class="bi bi-x"></i>`
+      document.getElementById('labelForInputFile').insertAdjacentHTML("afterend", `${buttonForImage}${closeButton}`);
     }
-    image.removeEventListener("change", outputImageIcon())
-    image.addEventListener("change", outputImageIcon())
-    image.removeEventListener("change", outputImageIcon())
-
+    inputImage.addEventListener("change", () => outputImageIcon(), { once: true })
   }
 
   if (match.route.path === 'show-image') {
-    let image = document.getElementById('inputFile')
-    if (image.files[0] === undefined) {
+    let inputImage = document.getElementById('inputFile')
+    if (inputImage.files[0] === undefined) {
       document.getElementById('buttonForImage').remove();
       document.getElementById('deleteImage').remove();
       document.getElementById('inputFile').value = null
