@@ -1,3 +1,5 @@
+//<button type="button" class="btn btn-secondary" style="margin-left: 1em;" data-view="/register">Register</button>
+
 export default class Login {
   constructor() {
     document.title = "Login";
@@ -11,7 +13,7 @@ export default class Login {
                     <div class="col">
                     </div>
                     <div class="col">
-                        <i class="fbi bi-card-checklist justify-content-center" style="display: flex; text-align:center; font-size:30px; color:#0b5ed7; margin-top:50px; margin-bottom:50px"></i>
+                        <i class="fbi bi-card-checklist justify-content-center" style="display: flex; text-align:center; font-size:30px; color:black; margin-top:50px; margin-bottom:50px"></i>
                         <form id="login-form" >
                             <div class="mb-3  justify-content-center" style="display: flex;">
                                 <input type="text" class="form-control" name="email" aria-describedby="emailHelp" placeholder="email" style="width: 300px;">
@@ -21,7 +23,7 @@ export default class Login {
                             </div>
                             <div class="justify-content-center" style="display: flex;" >
                                 <button type="button" class="btn btn-primary" data-function="/login">Login</button>
-                                <button type="button" class="btn btn-secondary" style="margin-left: 1em;" data-view="/register">Register</button>
+                                
                             </div>
                         </form>
                     </div>

@@ -12,16 +12,10 @@ async function initDotEnv() {
 
   if (!filesArray.includes(envFile)) {
     const dirEnvFile = dir + envFile;
-    const API_KEY = uuidv4();
-    const API_BASE_URL = "https://cos2.nikdev.io/api";
+    const API_BASE_URL = "http://localhost:3002/api";
     const PORT = 3000;
-    const ACCESS_TOKEN_SECRET = uuidv4();
-    const REFRESH_TOKEN_SECRET = uuidv4();
-    const envFileContent = `API_KEY=${API_KEY}
-PORT=${PORT}
-API_BASE_URL=${API_BASE_URL}
-ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
-REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}`;
+    const envFileContent = `PORT=${PORT}
+API_BASE_URL=${API_BASE_URL}`;
 
     try {
       await fs.writeFileSync(dirEnvFile, envFileContent);

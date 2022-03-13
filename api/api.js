@@ -18,4 +18,8 @@ api.use("/logout", require("./routers/logoutRouter.js")); //logout
 //PROTECTED APIs//
 api.use(verifyAccess);
 
+// api.use("/checklist", require("./routers/checklistRouter.js")); //checklist
+// api.use("/questions", require("./routers/questionsRouter.js")); //questions
+// api.use("/location", require("./routers/locationRouter.js")); //location
+
 module.exports = api;
