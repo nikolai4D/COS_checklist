@@ -5,6 +5,10 @@ class Mutations {
   async SET_ACCESSTOKEN(newAccessToken) {
     State.accessToken = newAccessToken;
   }
+
+  async SET_NEWCHECKLISTID(newChecklistId) {
+    State.newChecklistId = newChecklistId;
+  }
 }
 
 export default new Mutations();

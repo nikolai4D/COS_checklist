@@ -1,7 +1,6 @@
 const express = require("express");
 const api = express.Router();
 const bodyParser = require("body-parser");
-const verifyAccess = require("./middleware/verifyAccess.js");
 
 //----------InitDB----------//
 
@@ -15,10 +14,8 @@ api.use("/verify", require("./routers/verifyRouter.js")); //verify
 api.use("/refresh", require("./routers/refreshRouter.js")); //refresh
 api.use("/logout", require("./routers/logoutRouter.js")); //logout
 
-//PROTECTED APIs//
-api.use(verifyAccess);
-
-// api.use("/checklist", require("./routers/checklistRouter.js")); //checklist
+//------APIs protected by API key-------//
+api.use("/checklist", require("./routers/checklistRouter.js")); //checklist
 // api.use("/questions", require("./routers/questionsRouter.js")); //questions
 // api.use("/location", require("./routers/locationRouter.js")); //location
 

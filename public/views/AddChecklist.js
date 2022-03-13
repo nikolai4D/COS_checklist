@@ -1,4 +1,4 @@
-//import Actions from "../store/Actions.js";
+import { State } from "../store/State.js";
 
 export default class AddChecklist {
   constructor() {
@@ -12,7 +12,7 @@ export default class AddChecklist {
         <button type="button" class="btn btn-danger" data-view="/" style="margin-top: 2em; margin-bottom: 2em;">Tillbaka</button>
 
 
-        <h3>Ny checklista</h3>
+        <h3>Ny checklista: ${State.newChecklistId}</h3>
 
         <div id="newChecklist" style="margin-top: 2em; margin-bottom: 3em;">
 
