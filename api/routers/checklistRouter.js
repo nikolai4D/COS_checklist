@@ -3,6 +3,7 @@ const router = express.Router();
 require("dotenv").config();
 const bodyParser = require("body-parser");
 const axios = require("axios");
+const { apiCallPost, getAll } = require("./helpers");
 
 //Bodyparser
 router.use(bodyParser.json());
@@ -12,44 +13,26 @@ router.use(bodyParser.json());
 router.post("/create", async (req, res) => {
   console.log("create checklist route used");
 
+
+  // Create checklist
+
   const reqBodyI31 = {
     title: "I31_Rondering Trygga hus",
     props: [],
     parentId: "td_1db022c1-a269-4290-832d-be29416455a0",
   };
 
-  let responseI31 = undefined;
-
-  try {
-    responseI31 = await axios.post(
-      process.env.API_BASE_URL + "/instance/create",
-      reqBodyI31,
-      {
-        withCredentials: true,
-        credientials: "include",
-        headers: {
-          apikey: process.env.API_KEY,
-        },
-      }
-    );
-
-    console.log("try create I31 checklist");
-  } catch (err) {
-    // Handle Error Here
-    responseI31 = err.response;
-    console.log("catch create I31 checklist");
-  }
+  let responseI31 = await apiCallPost(reqBodyI31, "/instance/create");
 
   if ((await responseI31.status) !== 200) {
     return res.status(responseI31.status).json(responseI31.data);
   }
 
   const responseI31Id = await responseI31.data.id;
-  //   } else {
-  //     return res.json(response.data);
-  //   }
 
-  // skapa instance I41
+
+
+  // Create instance I41
 
   const reqBodyI41 = {
     title: "I41_Rondering Trygga hus detaljer",
@@ -57,27 +40,8 @@ router.post("/create", async (req, res) => {
     parentId: "td_c795835c-6c3b-4292-8d06-55d71416d44b",
   };
 
-  let responseI41 = undefined;
+  let responseI41 = await apiCallPost(reqBodyI41, "/instance/create");
 
-  try {
-    responseI41 = await axios.post(
-      process.env.API_BASE_URL + "/instance/create",
-      reqBodyI41,
-      {
-        withCredentials: true,
-        credientials: "include",
-        headers: {
-          apikey: process.env.API_KEY,
-        },
-      }
-    );
-
-    console.log("try create I41 checklist");
-  } catch (err) {
-    // Handle Error Here
-    responseI41 = err.response;
-    console.log("catch create I41 checklist");
-  }
 
   if ((await responseI41.status) !== 200) {
     return res.status(responseI41.status).json(responseI41.data);
@@ -85,7 +49,10 @@ router.post("/create", async (req, res) => {
 
   const responseI41Id = await responseI41.data.id;
 
-  // skapa rel mellan I41 och I31
+
+
+
+  // Create rel between I41 - I31
 
   const reqBodyRel = {
     title: "Ingår i",
@@ -96,27 +63,8 @@ router.post("/create", async (req, res) => {
       "tder_6c0d45e5-ce61-42fe-9697-d4197b794f04-td_c795835c-6c3b-4292-8d06-55d71416d44b-td_1db022c1-a269-4290-832d-be29416455a0",
   };
 
-  let responseRel = undefined;
+  let responseRel = await apiCallPost(reqBodyRel, "/instanceDataExternalRel/create");
 
-  try {
-    responseRel = await axios.post(
-      process.env.API_BASE_URL + "/instanceDataExternalRel/create",
-      reqBodyRel,
-      {
-        withCredentials: true,
-        credientials: "include",
-        headers: {
-          apikey: process.env.API_KEY,
-        },
-      }
-    );
-
-    console.log("try instanceDataExternalRel checklist");
-  } catch (err) {
-    // Handle Error Here
-    responseRel = err.response;
-    console.log("catch instanceDataExternalRel checklist");
-  }
 
   if ((await responseRel.status) !== 200) {
     return res.status(responseRel.status).json(responseRel.data);
@@ -130,37 +78,27 @@ router.post("/create/datum", async (req, res) => {
 
   //Om datum för aktuell checklist redan finns -> ta bort och skapa ny
 
+
+
+
+  let parentId = "td_1d84a7d7-bbd9-43d3-b9d4-86d3c240383f"
+  let sourcesToChecklist = await apiCallPost({ targetId: req.checklistId }`/instance/sourcesToTarget`);
+  let datesToChecklistDetails = sourcesToChecklist.find(obj => obj.linkParentId === "tder_6c0d45e5-ce61-42fe-9697-d4197b794f04-td_c795835c-6c3b-4292-8d06-55d71416d44b-td_1db022c1-a269-4290-832d-be29416455a0")
+
+  if (responseAllDatum.length > 0) {
+
+  }
+
+
   //ckapa nytt datum för akutell checklista
 
   const reqBody = {
     title: req.body.datum,
     props: [],
-    parentId: "td_1d84a7d7-bbd9-43d3-b9d4-86d3c240383f",
+    parentId,
   };
 
-  console.log(reqBody);
-
-  let response;
-
-  try {
-    response = await axios.post(
-      process.env.API_BASE_URL + "/instance/create",
-      reqBody,
-      {
-        withCredentials: true,
-        credientials: "include",
-        headers: {
-          apikey: process.env.API_KEY,
-        },
-      }
-    );
-
-    console.log("try create datum");
-  } catch (err) {
-    // Handle Error Here
-    response = err.response;
-    console.log("catch create datum");
-  }
+  let response = apiCallPost(reqBody, "/instance/create");
 
   if ((await response.status) !== 200) {
     return res.status(response.status).json(response.data);
