@@ -3,7 +3,7 @@ const router = express.Router();
 require("dotenv").config();
 const bodyParser = require("body-parser");
 const axios = require("axios");
-const { apiCallPost, getAll } = require("./helpers");
+const { apiCallPost, apiCallGet } = require("./helpers");
 
 //Bodyparser
 router.use(bodyParser.json());
@@ -12,7 +12,6 @@ router.use(bodyParser.json());
 
 router.post("/create", async (req, res) => {
   console.log("create checklist route used");
-
 
   // Create checklist
 
@@ -30,8 +29,6 @@ router.post("/create", async (req, res) => {
 
   const responseI31Id = await responseI31.data.id;
 
-
-
   // Create instance I41
 
   const reqBodyI41 = {
@@ -42,15 +39,11 @@ router.post("/create", async (req, res) => {
 
   let responseI41 = await apiCallPost(reqBodyI41, "/instance/create");
 
-
   if ((await responseI41.status) !== 200) {
     return res.status(responseI41.status).json(responseI41.data);
   }
 
   const responseI41Id = await responseI41.data.id;
-
-
-
 
   // Create rel between I41 - I31
 
@@ -63,8 +56,10 @@ router.post("/create", async (req, res) => {
       "tder_6c0d45e5-ce61-42fe-9697-d4197b794f04-td_c795835c-6c3b-4292-8d06-55d71416d44b-td_1db022c1-a269-4290-832d-be29416455a0",
   };
 
-  let responseRel = await apiCallPost(reqBodyRel, "/instanceDataExternalRel/create");
-
+  let responseRel = await apiCallPost(
+    reqBodyRel,
+    "/instanceDataExternalRel/create"
+  );
 
   if ((await responseRel.status) !== 200) {
     return res.status(responseRel.status).json(responseRel.data);
@@ -78,19 +73,48 @@ router.post("/create/datum", async (req, res) => {
 
   //Om datum för aktuell checklist redan finns -> ta bort och skapa ny
 
+  //let parentId = "td_1d84a7d7-bbd9-43d3-b9d4-86d3c240383f"
 
+  let sourcesToChecklist = (
+    await apiCallPost(
+      { targetId: req.body.checklistId },
+      `/instance/sourcesToTarget`
+    )
+  ).data;
 
+  //console.log(sourcesToChecklist);
+  let datesToChecklistDetails = sourcesToChecklist.links.find(
+    (obj) =>
+      obj.linkParentId ===
+      "tder_6c0d45e5-ce61-42fe-9697-d4197b794f04-td_c795835c-6c3b-4292-8d06-55d71416d44b-td_1db022c1-a269-4290-832d-be29416455a0"
+  ).sources;
 
-  let parentId = "td_1d84a7d7-bbd9-43d3-b9d4-86d3c240383f"
-  let sourcesToChecklist = await apiCallPost({ targetId: req.checklistId }`/instance/sourcesToTarget`);
-  let datesToChecklistDetails = sourcesToChecklist.find(obj => obj.linkParentId === "tder_6c0d45e5-ce61-42fe-9697-d4197b794f04-td_c795835c-6c3b-4292-8d06-55d71416d44b-td_1db022c1-a269-4290-832d-be29416455a0")
+  console.log(datesToChecklistDetails, "1");
 
-  if (responseAllDatum.length > 0) {
+  if (datesToChecklistDetails.length > 0) {
+    let detailsObject = datesToChecklistDetails.find(
+      (obj) =>
+        obj.linkParentId ===
+        "tder_2e64c052-f211-46b2-9d21-0be86f5330eb-td_1d84a7d7-bbd9-43d3-b9d4-86d3c240383f-td_c795835c-6c3b-4292-8d06-55d71416d44b"
+    );
+    console.log(detailsObject, "2");
+    // let detailsObjectId = detailsObject.sources[0].id;
 
+    // let sourcesToDetail = (
+    //   await apiCallPost(
+    //     { targetId: detailsObjectId },
+    //     `/instance/sourcesToTarget`
+    //   )
+    // ).data;
+
+    // console.log(sourcesToDetail.links[0]);
+
+    // if (sourcesToDetail) {
+    //   await apiCallGet(`/instance/delete/${dateObjectId}`);
+    // }
   }
 
-
-  //ckapa nytt datum för akutell checklista
+  //Skapa nytt datum för akutell checklista
 
   const reqBody = {
     title: req.body.datum,
@@ -113,26 +137,7 @@ router.get("/getAll", async (req, res) => {
 
   const parentId = "td_1db022c1-a269-4290-832d-be29416455a0";
 
-  let response = undefined;
-
-  try {
-    response = await axios.get(
-      process.env.API_BASE_URL + `/instance?parentId=${parentId}`,
-      {
-        // withCredentials: true,
-        // credientials: "include",
-        headers: {
-          apikey: process.env.API_KEY,
-        },
-      }
-    );
-
-    console.log("try Get all checklists ");
-  } catch (err) {
-    // Handle Error Here
-    response = err.response;
-    console.log("catch Get all checklists");
-  }
+  let response = await apiCallGet(`/instance?parentId=${parentId}`);
 
   console.log(response);
 
