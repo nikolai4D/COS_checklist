@@ -6,8 +6,12 @@ class Mutations {
     State.accessToken = newAccessToken;
   }
 
-  async SET_NEWCHECKLISTID(newChecklistId) {
+  async SET_NEW_CHECKLIST_ID(newChecklistId) {
     State.newChecklistId = newChecklistId;
+  }
+
+  async SET_ALL_CHECKLISTS_IDS(allChecklists) {
+    State.allChecklists = allChecklists;
   }
 }
 

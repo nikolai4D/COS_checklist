@@ -16,9 +16,9 @@ export default class AddChecklist {
 
         <div id="newChecklist" style="margin-top: 2em; margin-bottom: 3em;">
 
-        <div >
+        <div>
         <label for="Datum">Datum</label>
-        <input type="date" id="Datum" aria-label="Datum" class="form-control" name="Datum" lang="sv">
+        <input type="date" id="Datum" aria-label="Datum" class="form-control" name="Datum" lang="sv" data-function="saveDatum">
 
         </div>
 

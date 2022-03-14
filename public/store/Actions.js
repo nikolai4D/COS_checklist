@@ -150,11 +150,39 @@ class Actions {
     }
 
     const newChecklistId = (await response.json()).id;
-    mutate.SET_NEWCHECKLISTID(newChecklistId);
+    mutate.SET_NEW_CHECKLIST_ID(newChecklistId);
 
     console.log(State.newChecklistId, "State.newChecklistId");
 
     navigateTo("/addChecklist");
+  }
+
+  async GET_ALL_CHECKLISTS() {
+    //localhost:3002/api/instance?parentId=td_1db022c1-a269-4290-832d-be29416455a0
+
+    http: console.log("Get All Checklists function");
+
+    let response;
+
+    try {
+      response = await fetch("/api/checklist/getAll", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      console.log("try");
+    } catch (err) {
+      console.log(err);
+      response = err.response;
+      console.log("catch");
+    }
+
+    const allChecklists = await response.json();
+    mutate.SET_ALL_CHECKLISTS_IDS(allChecklists);
+
+    console.log(State.allChecklists, "State.allChecklists");
   }
 
   //   async REGISTER() {

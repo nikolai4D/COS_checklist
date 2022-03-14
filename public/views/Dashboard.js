@@ -1,13 +1,21 @@
-//import Actions from "../store/Actions.js";
+import Actions from "../store/Actions.js";
+import { State } from "../store/State.js";
 
 export default class Dashboard {
   constructor() {
     document.title = "Dashboard";
   }
 
-  getTemplate() {
+  async getAllChecklists() {
+    await Actions.GET_ALL_CHECKLISTS();
+    return State.allChecklists;
+  }
+
+  async getTemplate() {
     return `
         <div class="container">
+
+        ${JSON.stringify(await this.getAllChecklists())}
         
             <div class="checklistTable" style="margin-top: 4em;">
             <table class="table">
