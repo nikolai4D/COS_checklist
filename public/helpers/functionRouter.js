@@ -59,12 +59,14 @@ export default async function (demandedRoute, event) {
   if (match.route.path === "show-image") {
     let inputImage = document.getElementById("inputFile");
     if (inputImage.files[0] === undefined) {
-      document.getElementById("buttonForImage").remove();
-      document.getElementById("deleteImage").remove();
-      document.getElementById("inputFile").value = null;
-    } else {
-      image.src = URL.createObjectURL(image.files[0]);
-      window.open(image.src);
+      document.getElementById('buttonForImage').remove();
+      document.getElementById('deleteImage').remove();
+      document.getElementById('inputFile').value = null
+    }
+    else {
+      inputImage.src = URL.createObjectURL(inputImage.files[0])
+      window.open(inputImage.src);
+
     }
   }
   if (match.route.path === "delete-image") {
