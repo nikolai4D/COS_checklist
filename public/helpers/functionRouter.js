@@ -8,6 +8,10 @@ export default async function (demandedRoute, event) {
     { path: "show-image" },
     { path: "delete-image" },
     { path: "addChecklist" },
+    { path: "saveDatum" },
+    { path: "saveOmrade" },
+    { path: "saveFastighet" },
+    { path: "saveAdress" }
     // { path: "/register" },
     // { path: "/saveChecklist" },
   ];
@@ -78,6 +82,11 @@ export default async function (demandedRoute, event) {
   if (match.route.path === "addChecklist") {
     await Actions.ADDCHECKLIST();
   }
+
+  if (match.route.path === "saveDatum") {
+    console.log("saveDatum")
+  }
+
 
   //   if (match.route.path === "/register") {
   //     await Actions.REGISTER();
