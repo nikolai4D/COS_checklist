@@ -150,6 +150,7 @@ class Actions {
     }
 
     const activeChecklistId = (await response.json()).id;
+    console.log(activeChecklistId)
     mutate.SET_NEW_CHECKLIST_ID(activeChecklistId);
 
     console.log(State.activeChecklistId, "State.activeChecklistId");
@@ -307,20 +308,22 @@ class Actions {
   }
 
 
-  async GET_ALL_FRAGOR() {
+  async GET_ALL_FRAGOR(fragetyp) {
 
 
     console.log("Get All Checklists fragor");
+    console.log(fragetyp, 'fragetyp')
 
     let response;
 
     try {
       response = await fetch("/api/checklist/read/fragor", {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
+        body: JSON.stringify({ targetId: fragetyp.id })
       });
       console.log("try");
     } catch (err) {
@@ -330,8 +333,6 @@ class Actions {
     }
     const allFragor = await response.json();
     mutate.SET_ALL_FRAGOR(allFragor);
-
-    console.log(State.allFragor, "State.allFragor");
 
   }
 

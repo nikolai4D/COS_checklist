@@ -195,19 +195,21 @@ router.get("/read/fragetyper", async (req, res) => {
 
 });
 
-router.get("/read/fragor", async (req, res) => {
+router.post("/read/fragor", async (req, res) => {
   console.log("Get all fragor route used");
 
-  const parentId = "co_240caf9c-e9ca-404f-a9c2-8e85d4a71064";
-
-  let response = await apiCallGet(`/type?parentId=${parentId}`);
+  // const parentId = "co_240caf9c-e9ca-404f-a9c2-8e85d4a71064";
+  let targetId = req.body.targetId
+  let response = await apiCallPost({ targetId }, `/type/sourcesToTarget`);
 
   console.log(response);
+
+  let fragor = response.data.links[0].sources
 
   if ((await response.status) !== 200) {
     return res.status(response.status).json(response.data);
   } else {
-    return res.json(response.data);
+    return res.json(fragor);
   }
 
 });

@@ -17,9 +17,11 @@ class Mutations {
   async SET_ALL_OMRADEN(allOmraden) {
     State.allOmraden = allOmraden;
   }
+
   async SET_ALL_FRAGETYPER(allFragetyper) {
     State.allFragetyper = allFragetyper;
   }
+
   async SET_ALL_FRAGOR(allFragor) {
     State.allFragor = allFragor;
   }
