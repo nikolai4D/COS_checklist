@@ -43,4 +43,27 @@ async function apiCallGet(url) {
   return response;
 }
 
-module.exports = { apiCallPost, apiCallGet };
+async function apiCallDelete(url) {
+  let response;
+
+  try {
+    response = await axios.delete(process.env.API_BASE_URL + url, {
+      withCredentials: true,
+      credientials: "include",
+      headers: {
+        apikey: process.env.API_KEY,
+      },
+    });
+
+    console.log("try instance checklist");
+  } catch (err) {
+    // Handle Error Here
+    response = err.response;
+    console.log("catch instance checklist");
+  }
+  return response;
+}
+
+
+
+module.exports = { apiCallPost, apiCallGet, apiCallDelete };
