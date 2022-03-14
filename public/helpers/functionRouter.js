@@ -94,7 +94,37 @@ export default async function (demandedRoute, event) {
     datumDOM.addEventListener("change", () => sendDatumToDb(), {
       once: true,
     });
+  }
 
+  if (match.route.path === "saveOmrade") {
+    console.log("pressed")
+
+
+  }
+
+  if (match.route.path === "saveFastighet") {
+    let fastighetDOM = document.getElementById('addChecklistFastighet')
+    console.log("pressed")
+
+    const sendFastighetToDb = () => {
+      // await Actions.SEND_CHECKLIST_DATUM(fastighetDOM.value)
+      console.log("saveFastighet", fastighetDOM.value)
+
+    }
+
+    fastighetDOM.addEventListener("change", () => sendFastighetToDb(), { once: true });
+  }
+
+  if (match.route.path === "saveAdress") {
+    let adressDOM = document.getElementById('addChecklistAdress')
+    console.log("pressedAdress")
+
+    const sendAdressToDb = () => {
+      // await Actions.SEND_CHECKLIST_DATUM(adressDOM.value)
+      console.log("saveAdress", adressDOM.value)
+    }
+
+    adressDOM.addEventListener("change", () => sendAdressToDb(), { once: true });
   }
 
 

@@ -158,58 +158,63 @@ router.post("/create/datum", async (req, res) => {
     return res.json(responseRel.data);
   }
 
-})
+});
+
+router.get("/read/omrade", async (req, res) => {
+  console.log("Get all omrade route used");
+
+  const parentId = "co_9cd75cad-ea85-4237-a663-bc8fcfbceff8";
+
+  let response = await apiCallGet(`/type?parentId=${parentId}`);
+
+  console.log(response);
+
+  if ((await response.status) !== 200) {
+    return res.status(response.status).json(response.data);
+  } else {
+    return res.json(response.data);
+  }
+
+});
 
 
-// //console.log(sourcesToChecklist);
-// let datesToChecklistDetails = sourcesToChecklist.links.find(
-//   (obj) =>
-//     obj.linkParentId ===
-//     "tder_6c0d45e5-ce61-42fe-9697-d4197b794f04-td_c795835c-6c3b-4292-8d06-55d71416d44b-td_1db022c1-a269-4290-832d-be29416455a0"
-// ).sources;
+router.get("/read/fragetyper", async (req, res) => {
+  console.log("Get all fragetyper route used");
 
-// console.log(datesToChecklistDetails, "1");
+  const parentId = "co_f01b1750-75eb-49d8-ba64-7fc11f26e5cd";
 
-// if (datesToChecklistDetails.length > 0) {
-//   let detailsObject = datesToChecklistDetails.find(
-//     (obj) =>
-//       obj.linkParentId ===
-//       "tder_2e64c052-f211-46b2-9d21-0be86f5330eb-td_1d84a7d7-bbd9-43d3-b9d4-86d3c240383f-td_c795835c-6c3b-4292-8d06-55d71416d44b"
-//   );
-//   console.log(detailsObject, "2");
-// let detailsObjectId = detailsObject.sources[0].id;
+  let response = await apiCallGet(`/type?parentId=${parentId}`);
 
-// let sourcesToDetail = (
-//   await apiCallPost(
-//     { targetId: detailsObjectId },
-//     `/instance/sourcesToTarget`
-//   )
-// ).data;
+  console.log(response);
 
-// console.log(sourcesToDetail.links[0]);
+  if ((await response.status) !== 200) {
+    return res.status(response.status).json(response.data);
+  } else {
+    return res.json(response.data);
+  }
 
-// if (sourcesToDetail) {
-//   await apiCallGet(`/instance/delete/${dateObjectId}`);
-// }
-// }
+});
 
-//Skapa nytt datum för akutell checklista
+router.get("/read/fragor", async (req, res) => {
+  console.log("Get all fragor route used");
 
-//   const reqBody = {
-//   title: req.body.datum,
-//   props: [],
-//   parentId,
-// };
+  const parentId = "co_240caf9c-e9ca-404f-a9c2-8e85d4a71064";
 
-// let response = apiCallPost(reqBody, "/instance/create");
+  let response = await apiCallGet(`/type?parentId=${parentId}`);
 
-// if ((await response.status) !== 200) {
-//   return res.status(response.status).json(response.data);
-// } else {
-//   console.log(response.data);
-//   // return res.json(response.data);
-// }
-// });
+  console.log(response);
+
+  if ((await response.status) !== 200) {
+    return res.status(response.status).json(response.data);
+  } else {
+    return res.json(response.data);
+  }
+
+});
+
+
+
+
 
 router.get("/getAll", async (req, res) => {
   console.log("Get all checklists route used");

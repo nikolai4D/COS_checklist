@@ -222,7 +222,6 @@ class Actions {
   async SEND_CHECKLIST_OMRADE() {
 
 
-
   }
 
   async SEND_CHECKLIST_FASTIGHET() {
@@ -240,6 +239,28 @@ class Actions {
   async GET_ALL_CHECKLIST_OMRADE() {
 
 
+    console.log("Get All Checklists omrade");
+
+    let response;
+
+    try {
+      response = await fetch("/api/checklist/read/omrade", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      console.log("try");
+    } catch (err) {
+      console.log(err);
+      response = err.response;
+      console.log("catch");
+    }
+    const allOmraden = await response.json();
+    mutate.SET_ALL_OMRADEN(allOmraden);
+
+    console.log(State.allOmraden, "State.allOmraden");
 
   }
 
@@ -255,6 +276,65 @@ class Actions {
 
 
   }
+
+
+  async GET_ALL_FRAGETYPER() {
+
+
+    console.log("Get All Checklists fragetyper");
+
+    let response;
+
+    try {
+      response = await fetch("/api/checklist/read/fragetyper", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      console.log("try");
+    } catch (err) {
+      console.log(err);
+      response = err.response;
+      console.log("catch");
+    }
+    const allFragetyper = await response.json();
+    mutate.SET_ALL_FRAGETYPER(allFragetyper);
+
+    console.log(State.allFragetyper, "State.allFragetyper");
+
+  }
+
+
+  async GET_ALL_FRAGOR() {
+
+
+    console.log("Get All Checklists fragor");
+
+    let response;
+
+    try {
+      response = await fetch("/api/checklist/read/fragor", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      console.log("try");
+    } catch (err) {
+      console.log(err);
+      response = err.response;
+      console.log("catch");
+    }
+    const allFragor = await response.json();
+    mutate.SET_ALL_FRAGOR(allFragor);
+
+    console.log(State.allFragor, "State.allFragor");
+
+  }
+
 
 
 
