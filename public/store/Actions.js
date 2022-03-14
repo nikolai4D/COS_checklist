@@ -3,7 +3,7 @@ import { State } from "./State.js";
 import mutate from "./Mutations.js";
 
 class Actions {
-  constructor() {}
+  constructor() { }
   async LOGIN() {
     console.log("Login function");
     const loginForm = document.getElementById("login-form");
@@ -149,10 +149,10 @@ class Actions {
       console.log("catch");
     }
 
-    const newChecklistId = (await response.json()).id;
-    mutate.SET_NEW_CHECKLIST_ID(newChecklistId);
+    const activeChecklistId = (await response.json()).id;
+    mutate.SET_NEW_CHECKLIST_ID(activeChecklistId);
 
-    console.log(State.newChecklistId, "State.newChecklistId");
+    console.log(State.activeChecklistId, "State.activeChecklistId");
 
     navigateTo("/addChecklist");
   }
@@ -184,6 +184,79 @@ class Actions {
 
     console.log(State.allChecklists, "State.allChecklists");
   }
+
+  async SEND_CHECKLIST_DATUM(date) {
+
+    let postBody = JSON.stringify({ datum: date, checklistId: State.activeChecklistId })
+    console.log("Add Checklist datum", postBody);
+
+    let response;
+
+    try {
+      response = await fetch("/api/checklist/create/datum", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ datum: date, checklistId: State.activeChecklistId }),
+      });
+      console.log("try");
+    } catch (err) {
+      console.log(err);
+      response = err.response;
+      console.log("catch");
+    }
+
+    const theresponse = (await response.json());
+    console.log(theresponse)
+    // mutate.SET_NEW_CHECKLIST_ID(activeChecklistId);
+
+    // console.log(State.activeChecklistId, "State.activeChecklistId");
+
+    // navigateTo("/addChecklist");
+
+
+  }
+
+  async SEND_CHECKLIST_OMRADE() {
+
+
+
+  }
+
+  async SEND_CHECKLIST_FASTIGHET() {
+
+
+
+  }
+
+  async SEND_CHECKLIST_ADRESS() {
+
+
+
+  }
+
+  async GET_ALL_CHECKLIST_OMRADE() {
+
+
+
+  }
+
+
+  async GET_ALL_CHECKLIST_FASTIGHET() {
+
+
+
+  }
+
+  async GET_ALL_CHECKLIST_ADRESS() {
+
+
+
+  }
+
+
 
   //   async REGISTER() {
   //     console.log("Register function");

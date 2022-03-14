@@ -15,7 +15,6 @@ export default class Dashboard {
     return `
         <div class="container">
 
-        ${JSON.stringify(await this.getAllChecklists())}
         
             <div class="checklistTable" style="margin-top: 4em;">
             <table class="table">
@@ -52,6 +51,8 @@ export default class Dashboard {
             </div >
             <button type="button" class="btn btn-info" data-function="addChecklist" style="margin-top: 2em;">+ Rondering</button>
         </div>
+        ${JSON.stringify(await this.getAllChecklists())}
+
         `;
   }
 }

@@ -12,13 +12,13 @@ export default class AddChecklist {
         <button type="button" class="btn btn-danger" data-view="/" style="margin-top: 2em; margin-bottom: 2em;">Tillbaka</button>
 
 
-        <h3>Ny checklista: ${State.newChecklistId}</h3>
+        <h3>Ny checklista: ${State.activeChecklistId}</h3>
 
         <div id="newChecklist" style="margin-top: 2em; margin-bottom: 3em;">
 
         <div>
         <label for="Datum">Datum</label>
-        <input type="date" id="Datum" aria-label="Datum" class="form-control" name="Datum" lang="sv" data-function="saveDatum">
+        <input type="date" id="addChecklistDatum" aria-label="Datum" class="form-control" name="Datum" lang="sv" data-function="saveDatum">
 
         </div>
 

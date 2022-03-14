@@ -84,7 +84,17 @@ export default async function (demandedRoute, event) {
   }
 
   if (match.route.path === "saveDatum") {
-    console.log("saveDatum")
+
+    let datumDOM = document.getElementById('addChecklistDatum')
+
+    const sendDatumToDb = async () => {
+      await Actions.SEND_CHECKLIST_DATUM(datumDOM.value)
+    }
+
+    datumDOM.addEventListener("change", () => sendDatumToDb(), {
+      once: true,
+    });
+
   }
 
 

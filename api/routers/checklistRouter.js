@@ -47,6 +47,48 @@ router.post("/create", async (req, res) => {
   }
 });
 
+router.post("/create/datum", async (req, res) => {
+  console.log("create checklist datum route used", req.body);
+
+  const reqBody = {
+    title: req.body.datum,
+    props: [],
+    parentId: "td_1d84a7d7-bbd9-43d3-b9d4-86d3c240383f",
+  };
+
+  console.log(reqBody)
+
+  let response;
+
+  try {
+    response = await axios.post(
+      process.env.API_BASE_URL + "/instance/create",
+      reqBody,
+      {
+        withCredentials: true,
+        credientials: "include",
+        headers: {
+          apikey: process.env.API_KEY,
+        },
+      }
+    );
+
+    console.log("try create datum");
+  } catch (err) {
+    // Handle Error Here
+    response = err.response;
+    console.log("catch create datum");
+  }
+
+  if ((await response.status) !== 200) {
+    return res.status(response.status).json(response.data);
+  } else {
+    console.log(response.data);
+    // return res.json(response.data);
+  }
+});
+
+
 router.get("/getAll", async (req, res) => {
   console.log("Get all checklists route used");
 
