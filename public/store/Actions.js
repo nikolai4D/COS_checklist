@@ -128,6 +128,35 @@ class Actions {
     navigateTo("/login");
   }
 
+  async ADDCHECKLIST() {
+    console.log("Add Checklist function");
+
+    let response;
+
+    try {
+      response = await fetch("/api/checklist/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({}),
+      });
+      console.log("try");
+    } catch (err) {
+      console.log(err);
+      response = err.response;
+      console.log("catch");
+    }
+
+    const newChecklistId = (await response.json()).id;
+    mutate.SET_NEWCHECKLISTID(newChecklistId);
+
+    console.log(State.newChecklistId, "State.newChecklistId");
+
+    navigateTo("/addChecklist");
+  }
+
   //   async REGISTER() {
   //     console.log("Register function");
 

@@ -42,7 +42,7 @@ export default class Dashboard {
 </table>
             
             </div >
-            <button type="button" class="btn btn-info" data-view="/addChecklist" style="margin-top: 2em;">+ Rondering</button>
+            <button type="button" class="btn btn-info" data-function="addChecklist" style="margin-top: 2em;">+ Rondering</button>
         </div>
         `;
   }
