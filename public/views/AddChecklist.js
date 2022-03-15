@@ -15,8 +15,7 @@ export default class AddChecklist {
     let frageTyperStr = await this.getFragetyperStr()
     let checklistId = State.activeChecklistId
 
-    console.log(omradenStr, frageTyperStr, checklistId)
-    return `${Checklist(omradenStr, frageTyperStr, checklistId)}`
+    return `${await Checklist(omradenStr, frageTyperStr, checklistId)}`
   }
 
   async getOmradenStr() {
@@ -43,8 +42,12 @@ export default class AddChecklist {
       await Actions.GET_ALL_FRAGOR(await fragetyp);
 
       let allFragor = (State.allFragor);
-      let allFragorArray = await Promise.all(allFragor.map(async (fraga) => {
-        return Fraga(fraga)
+
+      allFragor.sort((a, b) => a.title.localeCompare(b.title));
+
+      let allFragorArray = await Promise.all(allFragor.map(async (fraga, index) => {
+        index += 1
+        return Fraga(fraga, index)
       }))
 
       return Fragetyp(fragetyp, allFragorArray.join(""))

@@ -260,9 +260,6 @@ class Actions {
     }
     const allOmraden = await response.json();
     mutate.SET_ALL_OMRADEN(allOmraden);
-
-    console.log(State.allOmraden, "State.allOmraden");
-
   }
 
 
@@ -303,8 +300,6 @@ class Actions {
     const allFragetyper = await response.json();
     mutate.SET_ALL_FRAGETYPER(allFragetyper);
 
-    console.log(State.allFragetyper, "State.allFragetyper");
-
   }
 
 
@@ -312,7 +307,6 @@ class Actions {
 
 
     console.log("Get All Checklists fragor");
-    console.log(fragetyp, 'fragetyp')
 
     let response;
 

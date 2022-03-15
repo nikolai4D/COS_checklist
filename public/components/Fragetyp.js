@@ -1,5 +1,3 @@
-import Fraga from "./Fraga.js"
-
 export default async function (fragetyp, fraga) {
     return `<div class="accordion-item">
     <h2 class="accordion-header" id="${await fragetyp.id}">
@@ -7,10 +5,26 @@ export default async function (fragetyp, fraga) {
     ${await fragetyp.title}</button>
     </h2>
     <div id="collapse-${await fragetyp.id}" class="accordion-collapse collapse" aria-labelledby="${await fragetyp.id}" data-bs-parent="#checklistItems">
-      ${fraga}
+<div class="accordion-body">
+<div class="checklistTable" style="margin-top: 4em;">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Kontrollpunkter</th>
+        <th scope="col">Önskat resultat</th>
+        <th scope="col">Ja/Nej</th>
+        <th scope="col">Notering</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+    ${fraga}
+    </tbody>
+  </table>
+</div>
+</div>
     </div>
   </div>
 `;
-};
-
-
+}
