@@ -21,14 +21,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // document.body.addEventListener("focusin", async (e) => {
-  //   let arrayWithFields = ["saveOmrade", "saveFastighet", "saveAdress"];
-  //   if (e.target.matches("[data-function]") && (arrayWithFields.includes(e.target.getAttribute("data-function")))) {
-  //     await functionRouter(e.target.getAttribute("data-function"), e);
-  //     console.log(`function: ${e.target.getAttribute("data-function")}`);
-  //   }
-  // });
-
 
   window.addEventListener("load", async (e) => {
     console.log("Window load");

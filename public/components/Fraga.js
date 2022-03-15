@@ -16,7 +16,7 @@ export default async function (fraga, number) {
       </div>
     </td>
     <td>...</td>
-    <td> <label data-function="upload-images" id="labelForInputFile" for="inputFile" class="btn btn-outline-secondary"><i class="bi bi-upload"></i></label><input class="form-control" data-function="upload-images" type="file" id="inputFile" style="display:none;">
+    <td> <label data-function="upload-images" id="labelForInputImage_$${fraga.id}" for="inputImage_$${fraga.id}" class="btn btn-outline-secondary"><i class="bi bi-upload"></i></label><input class="form-control" data-function="upload-images" type="file" id="inputImage_$${fraga.id}" style="display:none;"  accept="image/*" >
     </td>
     </tr>`;
 };

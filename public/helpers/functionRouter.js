@@ -41,18 +41,27 @@ export default async function (demandedRoute, event) {
   }
 
   if (match.route.path === "upload-images") {
-    let inputImage = document.getElementById("inputFile");
+
+    let inputImage = event.target;
+    let fragaId = inputImage.id.split("$")[1];
+    console.log(fragaId)
 
     const outputImageIcon = () => {
-      let buttonForImageDOM = document.getElementById("buttonForImage");
+      let buttonForImageDOM = document.getElementById(`buttonForImage_$${fragaId}`);
       if (buttonForImageDOM !== null) {
         buttonForImageDOM.remove();
-        document.getElementById("deleteImage").remove();
+        document.getElementById(`deleteImage_$${fragaId}`).remove();
       }
-      let buttonForImage = `<button id="buttonForImage" data-function="show-image" class="btn btn-outline-secondary" style="margin-left: 1em;"><i class="bi bi-image"  data-function="show-image" ></i></button>`;
-      let closeButton = `<i style="cursor: pointer;" id="deleteImage" data-function='delete-image' class="bi bi-x"></i>`;
+      let buttonForImage = `
+      <button id="buttonForImage_$${fragaId}" data-function="show-image" class="btn btn-outline-secondary" style="margin-left: 1em;">
+      <i class="bi bi-image" data-function="show-image" id="iconImage_$${fragaId}"></i></button>`;
+
+      let closeButton = `
+      <i style="cursor: pointer;" id="deleteImage_$${fragaId}" data-function='delete-image' class="bi bi-x"></i>`;
+
+      console.log(fragaId)
       document
-        .getElementById("labelForInputFile")
+        .getElementById(`labelForInputImage_$${fragaId}`)
         .insertAdjacentHTML("afterend", `${buttonForImage}${closeButton}`);
     };
     inputImage.addEventListener("change", () => outputImageIcon(), {
@@ -61,22 +70,20 @@ export default async function (demandedRoute, event) {
   }
 
   if (match.route.path === "show-image") {
-    let inputImage = document.getElementById("inputFile");
-    if (inputImage.files[0] === undefined) {
-      document.getElementById('buttonForImage').remove();
-      document.getElementById('deleteImage').remove();
-      document.getElementById('inputFile').value = null
-    }
-    else {
-      inputImage.src = URL.createObjectURL(inputImage.files[0])
-      window.open(inputImage.src);
+    let buttonForImageId = event.target.id
+    console.log(buttonForImageId)
+    let fragaId = buttonForImageId.split("$")[1]
+    let inputImage = document.getElementById(`inputImage_$${fragaId}`)
 
-    }
+    inputImage.src = URL.createObjectURL(inputImage.files[0])
+    window.open(inputImage.src);
   }
   if (match.route.path === "delete-image") {
-    document.getElementById("buttonForImage").remove();
-    document.getElementById("deleteImage").remove();
-    document.getElementById("inputFile").value = null;
+    let deleteButtonId = event.target.id
+    let fragaId = deleteButtonId.split("$")[1]
+    document.getElementById(`buttonForImage_$${fragaId}`).remove();
+    document.getElementById(`deleteImage_$${fragaId}`).remove();
+    document.getElementById(`inputImage_$${fragaId}`).value = null;
   }
 
   if (match.route.path === "addChecklist") {
@@ -98,8 +105,6 @@ export default async function (demandedRoute, event) {
 
   if (match.route.path === "saveOmrade") {
     console.log("pressed")
-
-
   }
 
   if (match.route.path === "saveFastighet") {
