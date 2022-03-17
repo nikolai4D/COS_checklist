@@ -264,15 +264,9 @@ class Actions {
 
 
   async GET_ALL_CHECKLIST_FASTIGHET() {
-
-
-
   }
 
   async GET_ALL_CHECKLIST_ADRESS() {
-
-
-
   }
 
 
