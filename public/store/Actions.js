@@ -213,9 +213,9 @@ class Actions {
     console.log("Get All Checklists function");
 
 
-    // mutate.SET_ALL_CHECKLISTS_IDS(allChecklists);
+    mutate.SET_ALL_CHECKLISTS_WITH_DETAILS(allChecklists);
 
-    // console.log(State.allChecklists, "State.allChecklists");
+    console.log(State.allChecklistsWithDetails, 'with details!!'); //"State.allChecklists");
   }
 
   async SEND_CHECKLIST_DATUM(date) {

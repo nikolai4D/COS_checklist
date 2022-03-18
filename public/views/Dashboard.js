@@ -7,15 +7,18 @@ export default class Dashboard {
   }
 
   async getAllChecklists() {
-    await Actions.GET_ALL_CHECKLISTS();
+    // await Actions.GET_ALL_CHECKLISTS();
     await Actions.GET_ALL_CHECKLISTS_WITH_DETAILS();
 
-    let checklists = State.allChecklists;
+    let checklists = State.allChecklistsWithDetails;
     let formatedChecklists = checklists.map((checklist, index) => {
+      if (!checklist.datum) {
+        checklist.datum = { title: "-" }
+      }
       let number = index + 1
       return `  <tr>
         <th scope="row">${number}</th>
-        <td>-</td>
+        <td>${checklist.datum.title}</td>
         <td>-</td>
         <td>-</td>
 
