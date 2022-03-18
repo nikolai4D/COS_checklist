@@ -46,8 +46,8 @@ export default class AddChecklist {
       allFragor.sort((a, b) => a.title.localeCompare(b.title));
 
       let allFragorArray = await Promise.all(allFragor.map(async (fraga, index) => {
-        index += 1
-        return Fraga(fraga, index)
+        let number = index + 1
+        return Fraga(fraga, number)
       }))
 
       return Fragetyp(fragetyp, allFragorArray.join(""))

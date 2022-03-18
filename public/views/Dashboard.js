@@ -8,6 +8,8 @@ export default class Dashboard {
 
   async getAllChecklists() {
     await Actions.GET_ALL_CHECKLISTS();
+    await Actions.GET_ALL_CHECKLISTS_WITH_DETAILS();
+
     let checklists = State.allChecklists;
     let formatedChecklists = checklists.map((checklist, index) => {
       let number = index + 1

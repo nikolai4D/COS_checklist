@@ -214,10 +214,6 @@ router.post("/read/fragor", async (req, res) => {
 
 });
 
-
-
-
-
 router.get("/getAll", async (req, res) => {
   console.log("Get all checklists route used");
 
@@ -225,12 +221,62 @@ router.get("/getAll", async (req, res) => {
 
   let response = await apiCallGet(`/instance?parentId=${parentId}`);
 
-  console.log(response);
+  // console.log(response);  
 
   if ((await response.status) !== 200) {
     return res.status(response.status).json(response.data);
   } else {
     return res.json(response.data);
+  }
+});
+
+router.get("/dashboard", async (req, res) => {
+  console.log("Get all checklists route used");
+
+  const parentId = "td_1db022c1-a269-4290-832d-be29416455a0";
+
+  let response = await apiCallGet(`/instance?parentId=${parentId}`);
+
+
+  if ((await response.status) !== 200) {
+    return res.status(response.status).json(response.data);
+  } else {
+
+    let checklistWithDetails = response.data.map(async obj => {
+
+      let sourcesToChecklist = (await apiCallPost({ targetId: obj.id }, `/instance/sourcesToTarget`)).data;
+
+
+      let checklistDetailsNode;
+      for (let linkObject of sourcesToChecklist.links) {
+        if (linkObject.linkParentId === 'tder_6c0d45e5-ce61-42fe-9697-d4197b794f04-td_c795835c-6c3b-4292-8d06-55d71416d44b-td_1db022c1-a269-4290-832d-be29416455a0') {
+          checklistDetailsNode = linkObject.sources[0];
+        }
+      }
+
+      let sourcesToDetail = (
+        await apiCallPost(
+          { targetId: checklistDetailsNode.id },
+          `/instance/sourcesToTarget`
+        )
+      ).data;
+
+      let datum, omrade, fastighet, adress;
+      let datumParentId = `tder_2e64c052-f211-46b2-9d21-0be86f5330eb-td_1d84a7d7-bbd9-43d3-b9d4-86d3c240383f-td_c795835c-6c3b-4292-8d06-55d71416d44b`
+      let omradeParentId;
+      let fastighetParentId;
+      sourcesToDetail.links.forEach((detail) => {
+        if (detail.linkParentId === datumParentId) {
+          datum = detail.sources[0]
+        }
+      })
+      obj.datum = datum;
+      return obj
+    })
+    let resolvedChecklistWithDetails = await Promise.all(checklistWithDetails)
+    console.log(resolvedChecklistWithDetails, 'checklistWithDetails')
+
+    return await res.status(response.status).json(resolvedChecklistWithDetails);
   }
 });
 

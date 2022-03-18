@@ -186,6 +186,38 @@ class Actions {
     console.log(State.allChecklists, "State.allChecklists");
   }
 
+  async GET_ALL_CHECKLISTS_WITH_DETAILS() {
+    console.log("Get All Checklists function");
+
+    let response;
+
+    try {
+      response = await fetch("/api/checklist/dashboard", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      console.log("try");
+    } catch (err) {
+      console.log(err);
+      response = err.response;
+      console.log("catch");
+    }
+
+    const allChecklists = await response.json();
+    console.log(allChecklists, 'with details!!');
+
+
+    console.log("Get All Checklists function");
+
+
+    // mutate.SET_ALL_CHECKLISTS_IDS(allChecklists);
+
+    // console.log(State.allChecklists, "State.allChecklists");
+  }
+
   async SEND_CHECKLIST_DATUM(date) {
 
     let postBody = JSON.stringify({ datum: date, checklistId: State.activeChecklistId })
