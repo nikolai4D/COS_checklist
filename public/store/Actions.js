@@ -252,9 +252,30 @@ class Actions {
 
   }
 
-  async SEND_CHECKLIST_OMRADE() {
+  async SEND_CHECKLIST_OMRADE(omrade) {
+    let postBody = JSON.stringify({ omradeId: omrade, checklistId: State.activeChecklistId })
+    console.log("Add Checklist omrade", postBody);
 
+    let response;
 
+    try {
+      response = await fetch("/api/checklist/create/omrade", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: postBody,
+      });
+      console.log("try");
+    } catch (err) {
+      console.log(err);
+      response = err.response;
+      console.log("catch");
+    }
+
+    const theresponse = (await response.json());
+    console.log(theresponse)
   }
 
   async SEND_CHECKLIST_FASTIGHET() {

@@ -104,7 +104,8 @@ export default async function (demandedRoute, event) {
   }
 
   if (match.route.path === "saveOmrade") {
-    console.log("pressed")
+    let omradeDOM = document.getElementById('addChecklistOmrade');
+    await Actions.SEND_CHECKLIST_OMRADE(omradeDOM.value)
   }
 
   if (match.route.path === "saveFastighet") {

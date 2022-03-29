@@ -16,10 +16,9 @@ export default async function (omradenStr, frageTyperStr, checklistId) {
     <div >
       <label for="area">Område</label>
       <select data-function="saveOmrade" id="addChecklistOmrade" class="form-select" aria-label="Välj område">
-        <option data-function="saveOmrade" selected>
+        <option selected>
         </option>
         ${omradenStr}
-  
       </select>
     </div>
   

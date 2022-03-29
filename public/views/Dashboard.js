@@ -21,6 +21,7 @@ export default class Dashboard {
         <td>${checklist.datum.title}</td>
         <td>-</td>
         <td>-</td>
+        <td>-</td>
 
   <td><button type="button" class="btn btn-success" data-view="/viewChecklist" >-</button></td>
 </tr>`})
