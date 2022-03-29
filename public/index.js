@@ -21,13 +21,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // document.body.addEventListener("onchange", async (e) => {
-  //   if (e.target.matches("[data-function]")) {
-  //     e.preventDefault();
-  //     console.log(`function: ${e.target.getAttribute("data-function")}`);
-  //   }
-  // });
-
 
   window.addEventListener("load", async (e) => {
     console.log("Window load");
