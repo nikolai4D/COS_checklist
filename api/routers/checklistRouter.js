@@ -104,7 +104,6 @@ router.post("/create/datum", async (req, res) => {
       await obj.linkParentId === "tder_2e64c052-f211-46b2-9d21-0be86f5330eb-td_1d84a7d7-bbd9-43d3-b9d4-86d3c240383f-td_c795835c-6c3b-4292-8d06-55d71416d44b"
     })
 
-    console.log(datesToChecklist, sourcesToDetail, 'datesToChecklist, sourceToDetail', datesToChecklist.sources[0])
     if (datesToChecklist) {
       await apiCallDelete(`/instance/${datesToChecklist.sources[0].id}`);
     }
@@ -120,16 +119,12 @@ router.post("/create/datum", async (req, res) => {
     props: [],
     parentId,
   };
-  console.log(reqBody);
 
   let responseDatum = await apiCallPost(reqBody, "/instance/create");
-
-  console.log(responseDatum.data)
 
   if ((await responseDatum.status) !== 200) {
     return res.status(responseDatum.status).json(responseDatum.data);
   } else {
-    console.log(responseDatum.data);
     // return res.json(response.data);
   }
 
@@ -169,14 +164,67 @@ router.post("/create/omrade", async (req, res) => {
 
   // Det gör vi genom att först kolla sourceToTarget till checklistId,
 
-  let sourcesToChecklist = (await apiCallPost(req.body.omradeId, `/instance/sourcesToTarget`)).data;
-  console.log(sourcesToChecklist);
+
+  let sourcesToChecklist = (await apiCallPost({"targetId": req.body.checklistId}, `/instance/sourcesToTarget`)).data;
 
   let detailsToChecklist = await sourcesToChecklist.links.find(
     (obj) =>
-      obj.linkParentId ===
-      "tder_6c0d45e5-ce61-42fe-9697-d4197b794f04-td_c795835c-6c3b-4292-8d06-55d71416d44b-td_1db022c1-a269-4290-832d-be29416455a0"
+      obj.linkParentId === process.env.CHECKLISTDETALJER_TO_CHECKLIST_REL_PARENT_ID
   );
+
+
+  const checklistDetailsObjId = await detailsToChecklist.sources[0].id;
+
+  let toChecklistDetailsData = (await apiCallPost({"targetId": checklistDetailsObjId}, `/instance/sourcesToTarget`)).data;
+  let checklistDetailsParentId = toChecklistDetailsData.target.parentId;
+
+  let notDatumToChecklistDetailjer = await toChecklistDetailsData.links.find(
+    (obj) =>
+      obj.linkParentId !== process.env.DATUM_TO_CHECKLISTDETALJER_REL_PARENT_ID
+  );
+
+  if (notDatumToChecklistDetailjer === undefined) {
+    // create new omrade rel
+
+    let reqBody = {
+      source: req.body.omradeId,
+      target: checklistDetailsParentId,
+      props: [],
+      title: "Ingår i",
+      parentId: process.env.OMRADE_TO_CHECKLISTDETALJER_REL_PARENT_ID
+    }
+
+    let omradeToChecklistDetaljerTypeData = (await apiCallPost(reqBody, `/typeExternalRel/create`)).data;
+
+    let omradeToChecklistDetaljerRelParentIdTypeData = omradeToChecklistDetaljerTypeData.id;
+
+    // create new omrade instance with
+
+    let omradeTypedata = (await apiCallGet(`/type?id=${req.body.omradeId}`)).data;
+    reqBody = {
+      title: omradeTypedata.title,
+      props: [],
+      parentId: omradeTypedata.id,
+    };
+  
+    let omradeInstance = (await apiCallPost(reqBody, `/instance/create`)).data;
+
+    // create rel between omrade and checklist detaljer instances
+
+    reqBody = {
+      source: omradeInstance.id,
+      target: checklistDetailsObjId,
+      props: [],
+      title: "Ingår i",
+      parentId: omradeToChecklistDetaljerRelParentIdTypeData
+    }
+
+    omradeToChecklistDetaljerInstance = (await apiCallPost(reqBody, `/instanceExternalRel/create`)).data;
+
+
+
+  }
+
 
 
   // som vi gör en source to target till där vill vi kolla linken där linkParentId 0´tder_6c0d45e5-ce61-42fe-9697-d4197b794f04-td_c795835c-6c3b-4292-8d06-55d71416d44b-td_1db022c1-a269-4290-832d-be29416455a0
@@ -314,8 +362,6 @@ router.get("/read/omrade", async (req, res) => {
 
   let response = await apiCallGet(`/type?parentId=${parentId}`);
 
-  console.log(response);
-
   if ((await response.status) !== 200) {
     return res.status(response.status).json(response.data);
   } else {
@@ -324,15 +370,12 @@ router.get("/read/omrade", async (req, res) => {
 
 });
 
-
 router.get("/read/fragetyper", async (req, res) => {
   console.log("Get all fragetyper route used");
 
   const parentId = "co_f01b1750-75eb-49d8-ba64-7fc11f26e5cd";
 
   let response = await apiCallGet(`/type?parentId=${parentId}`);
-
-  console.log(response);
 
   if ((await response.status) !== 200) {
     return res.status(response.status).json(response.data);
@@ -348,8 +391,6 @@ router.post("/read/fragor", async (req, res) => {
   // const parentId = "co_240caf9c-e9ca-404f-a9c2-8e85d4a71064";
   let targetId = req.body.targetId
   let response = await apiCallPost({ targetId }, `/type/sourcesToTarget`);
-
-  console.log(response);
 
   let fragor = response.data.links[0].sources
 
@@ -367,8 +408,6 @@ router.get("/getAll", async (req, res) => {
   const parentId = "td_1db022c1-a269-4290-832d-be29416455a0";
 
   let response = await apiCallGet(`/instance?parentId=${parentId}`);
-
-  // console.log(response);  
 
   if ((await response.status) !== 200) {
     return res.status(response.status).json(response.data);
@@ -421,7 +460,6 @@ router.get("/dashboard", async (req, res) => {
       return obj
     })
     let resolvedChecklistWithDetails = await Promise.all(checklistWithDetails)
-    console.log(resolvedChecklistWithDetails, 'checklistWithDetails')
 
     return await res.status(response.status).json(resolvedChecklistWithDetails);
   }
