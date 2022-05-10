@@ -10,7 +10,6 @@ export default async function (fragetyp, fraga) {
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">#</th>
         <th scope="col">Kontrollpunkter</th>
         <th scope="col">Önskat resultat</th>
         <th scope="col">Ja/Nej</th>

@@ -1,7 +1,6 @@
 export default async function (fraga, number) {
 
     return ` <tr>
-    <th scope="row">${number}</th>
     <td>${await fraga.title}</td>
     <td>Ja</td>
     <td>
