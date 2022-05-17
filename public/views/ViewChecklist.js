@@ -52,7 +52,7 @@ export default class ViewChecklist {
 
         <hr />
 
-        <h3>Checklistpuntker</h3>
+        <h3>Checklistpunkter</h3>
 
         <div>
             <div class="accordion" id="checklistItems">
