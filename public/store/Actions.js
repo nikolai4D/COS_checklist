@@ -377,7 +377,29 @@ class Actions {
 
   }
 
+  async DELETE_DATA(params){
+    let response;
 
+    const type = params.type
+
+    try {
+      response = await fetch(`/api/${type}/delete/`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ id: params.id })
+      });
+      console.log("try");
+    } catch (err) {
+      console.log(err);
+      response = err.response;
+      console.log("catch");
+    }
+
+    return await response.json();
+  }
 
 
   //   async REGISTER() {
