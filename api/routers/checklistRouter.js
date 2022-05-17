@@ -72,8 +72,21 @@ router.delete("/", async (req, res) => {
   console.log("Delete checklist route used");
   const id = req.body.id;
 
+  let checkListDetailId = (await apiCallPost({ targetId: id }, `/instance/sourcesToTarget`)).data.links[0].sources[0].id;
 
-  let response = await apiCallDelete(`/typeData/${id}`);
+  //Delete related details
+  console.log("mycheckListDetailId: " + checkListDetailId)
+
+  let sourcesToCheckListDetails = ( await apiCallPost({ targetId: checkListDetailId }, `/instance/sourcesToTarget`)).data;
+  //console.log(JSON.stringify({sourcesToCheckListDetails}, null, 2))
+  // const datumId = req.body.datumId
+  // if(datumId !== null) {
+  //   let responseDatumDeletion = await apiCallDelete(`/instanceData/${datumId}`);
+  //   if ((responseDatumDeletion.status) !== 200) return res.status(responseDatumDeletion.status).json(responseDatumDeletion.data)
+  // }
+
+  //Delete checklist
+  let response = await apiCallDelete(`/instanceData/${id}`);
 
   if ((response.status) !== 200) {
     return res.status(response.status).json(response.data);
@@ -438,45 +451,41 @@ router.get("/dashboard", async (req, res) => {
   let response = await apiCallGet(`/instance?parentId=${parentId}`);
 
 
-  if ((await response.status) !== 200) {
-    return res.status(response.status).json(response.data);
-  } else {
+  if ((await response.status) !== 200) return res.status(response.status).json(response.data);
 
-    let checklistWithDetails = response.data.map(async obj => {
+  let checklistsWithDetails = response.data.map(async obj => {
 
-      let sourcesToChecklist = (await apiCallPost({ targetId: obj.id }, `/instance/sourcesToTarget`)).data;
+    let sourcesToChecklist = (await apiCallPost({ targetId: obj.id }, `/instance/sourcesToTarget`)).data;
 
-
-      let checklistDetailsNode;
-      for (let linkObject of sourcesToChecklist.links) {
-        if (linkObject.linkParentId === 'tder_6c0d45e5-ce61-42fe-9697-d4197b794f04-td_c795835c-6c3b-4292-8d06-55d71416d44b-td_1db022c1-a269-4290-832d-be29416455a0') {
-          checklistDetailsNode = linkObject.sources[0];
-        }
+    let checklistDetailsNode;
+    for (let linkObject of sourcesToChecklist.links) {
+      if (linkObject.linkParentId === 'tder_6c0d45e5-ce61-42fe-9697-d4197b794f04-td_c795835c-6c3b-4292-8d06-55d71416d44b-td_1db022c1-a269-4290-832d-be29416455a0') {
+        checklistDetailsNode = linkObject.sources[0];
       }
+    }
 
-      let sourcesToDetail = (
-        await apiCallPost(
-          { targetId: checklistDetailsNode.id },
-          `/instance/sourcesToTarget`
-        )
-      ).data;
+    let sourcesToDetail = (
+      await apiCallPost(
+        { targetId: checklistDetailsNode.id },
+        `/instance/sourcesToTarget`
+      )
+    ).data;
 
-      let datum, omrade, fastighet, adress;
-      let datumParentId = `tder_2e64c052-f211-46b2-9d21-0be86f5330eb-td_1d84a7d7-bbd9-43d3-b9d4-86d3c240383f-td_c795835c-6c3b-4292-8d06-55d71416d44b`
-      let omradeParentId;
-      let fastighetParentId;
-      sourcesToDetail.links.forEach((detail) => {
-        if (detail.linkParentId === datumParentId) {
-          datum = detail.sources[0]
-        }
-      })
-      obj.datum = datum;
-      return obj
+    let datum, omrade, fastighet, adress;
+    let datumParentId = `tder_2e64c052-f211-46b2-9d21-0be86f5330eb-td_1d84a7d7-bbd9-43d3-b9d4-86d3c240383f-td_c795835c-6c3b-4292-8d06-55d71416d44b`
+
+    sourcesToDetail.links.forEach((detail) => {
+      if (detail.linkParentId === datumParentId) {
+        datum = detail.sources[0]
+      }
     })
-    let resolvedChecklistWithDetails = await Promise.all(checklistWithDetails)
+    obj.datum = datum;
+    return obj
+  })
+  let resolvedChecklistWithDetails = await Promise.all(checklistsWithDetails)
 
-    return await res.status(response.status).json(resolvedChecklistWithDetails);
-  }
+  return await res.status(response.status).json(resolvedChecklistWithDetails);
+
 });
 
 module.exports = router;
