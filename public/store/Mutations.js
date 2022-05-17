@@ -23,6 +23,13 @@ class Mutations {
     State.allOmraden = allOmraden;
   }
 
+
+  async SET_ALL_FASTIGHET(allFastighet) {
+    State.allFastighet = allFastighet;
+  }
+
+
+
   async SET_ALL_FRAGETYPER(allFragetyper) {
     State.allFragetyper = allFragetyper;
   }

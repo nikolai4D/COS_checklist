@@ -83,7 +83,7 @@ router.delete("/", async (req, res) => {
 });
 
 router.post("/create/datum", async (req, res) => {
-  console.log("create checklist datum route used", req.body);
+  console.log("create checklist datum route used");
 
   //Om datum för aktuell checklist redan finns -> ta bort och skapa ny
 
@@ -170,12 +170,7 @@ router.post("/create/datum", async (req, res) => {
 });
 
 router.post("/create/omrade", async (req, res) => {
-  console.log("create checklist omrade route used", req.body);
-
-  // vi har omradeId och checklistId. Vi vill kolla ifall det finns ett område kopplat till checklistan. 
-
-  // Det gör vi genom att först kolla sourceToTarget till checklistId,
-
+  console.log("create checklist omrade route used");
 
   
   // Get sources to checklist 
@@ -199,14 +194,20 @@ router.post("/create/omrade", async (req, res) => {
 
 
 
-  let notDatumToChecklistDetailjer = await linksWithSourcesToChecklistDetails.links.find(
+  let notDatumToChecklistDetailjer = await linksWithSourcesToChecklistDetails.links.filter(
     (obj) =>
       obj.linkParentId !== process.env.DATUM_TO_CHECKLISTDETALJER_REL_PARENT_ID
   );
 
-  // If this is not undefined, delete all of the sources to the target, and then create a new one.
-  if (notDatumToChecklistDetailjer === undefined) {
-    // create new omrade rel
+  // If its not empty, delete all of them, and then create a new omrade.
+
+  if (notDatumToChecklistDetailjer.length !== 0) {
+
+    notDatumToChecklistDetailjer.forEach(async obj => {
+     await apiCallDelete(`/instance/${obj.sources[0].id}`);
+    })
+  }
+  
 
     let reqBody = {
       source: req.body.omradeId,
@@ -242,7 +243,6 @@ router.post("/create/omrade", async (req, res) => {
     }
 
     omradeToChecklistDetaljerInstance = (await apiCallPost(reqBody, `/instanceExternalRel/create`)).data;
-    console.log(await omradeToChecklistDetaljerInstance, "status!!", reqBody);
 
   if ((await omradeToChecklistDetaljerInstance)) {
     return res.json(omradeToChecklistDetaljerInstance);
@@ -250,9 +250,6 @@ router.post("/create/omrade", async (req, res) => {
     return res.status(400).json(omradeToChecklistDetaljerInstance);
 
   }
-
-  }
-
 
 
 });
@@ -269,6 +266,24 @@ router.get("/read/omrade", async (req, res) => {
   } else {
     return res.json(response.data);
   }
+
+});
+
+router.post("/read/fastighet", async (req, res) => {
+  console.log("Get all fastighet route used");
+  
+  let linksWithSourcesToOmrade = (await apiCallPost({"targetId": req.body.omradeId}, `/typeData/sourcesToTarget`)).data.links;
+  let sourcesToOmrade = []
+
+  if (linksWithSourcesToOmrade.length !== 0) sourcesToOmrade = linksWithSourcesToOmrade[0].sources
+
+  if ((await sourcesToOmrade)) {
+    return res.json(sourcesToOmrade);
+  } else {
+    return res.status(400).json(sourcesToOmrade);
+
+  }
+
 
 });
 

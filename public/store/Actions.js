@@ -207,21 +207,12 @@ class Actions {
     }
 
     const allChecklists = await response.json();
-    console.log(allChecklists, 'with details!!');
-
-
-    console.log("Get All Checklists function");
-
-
     mutate.SET_ALL_CHECKLISTS_WITH_DETAILS(allChecklists);
-
-    console.log(State.allChecklistsWithDetails, 'with details!!'); //"State.allChecklists");
   }
 
   async SEND_CHECKLIST_DATUM(date) {
 
     let postBody = JSON.stringify({ datum: date, checklistId: State.activeChecklistId })
-    console.log("Add Checklist datum", postBody);
 
     let response;
 
@@ -286,8 +277,6 @@ class Actions {
 
   async SEND_CHECKLIST_ADRESS() {
 
-
-
   }
 
   async GET_ALL_CHECKLIST_OMRADE() {
@@ -316,7 +305,35 @@ class Actions {
   }
 
 
-  async GET_ALL_CHECKLIST_FASTIGHET() {
+  async GET_ALL_CHECKLIST_FASTIGHET(omrade) {
+
+    let postBody = JSON.stringify({ omradeId: omrade })
+
+    console.log("Get All Checklists omrade");
+
+    let response;
+
+    try {
+      response = await fetch("/api/checklist/read/fastighet", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: postBody,
+
+      });
+      console.log("try");
+    } catch (err) {
+      console.log(err);
+      response = err.response;
+      console.log("catch");
+    }
+    const allFastighet = await response.json();
+    mutate.SET_ALL_FASTIGHET(allFastighet);
+    console.log(allFastighet, "allFastighet");
+
+
   }
 
   async GET_ALL_CHECKLIST_ADRESS() {
@@ -377,30 +394,7 @@ class Actions {
 
   }
 
-  async DELETE_DATA(params){
-    let response;
 
-    const type = params.type
-
-    console.log("id in actions: " + params.id)
-    try {
-      response = await fetch(`/api/${type}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ id: params.id})
-      });
-      console.log("try");
-    } catch (err) {
-      console.log(err);
-      response = err.response;
-      console.log("catch");
-    }
-
-    return await response.json();
-  }
 
 
   //   async REGISTER() {
