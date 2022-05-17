@@ -8,9 +8,8 @@ export default class ViewChecklist {
   getTemplate() {
     return `
         <div class="container">
-        <button type="button" class="btn btn-success" data-function="/saveChecklist" style="margin-top: 2em; margin-bottom: 2em;">Spara</button>
+        <button type="button" class="btn btn-success" data-function="/saveChecklist" style="margin-top: 2em; margin-bottom: 2em;">Skicka</button>
         <button type="button" class="btn btn-danger" data-view="/" style="margin-top: 2em; margin-bottom: 2em;">Tillbaka</button>
-
         <div id="newChecklist" style="margin-top: 2em; margin-bottom: 3em;">
 
         <h3>Checklista</h3>
@@ -53,7 +52,7 @@ export default class ViewChecklist {
 
         <hr />
 
-        <h3>Checklistpunker</h3>
+        <h3>Checklistpunkter</h3>
 
         <div>
             <div class="accordion" id="checklistItems">
