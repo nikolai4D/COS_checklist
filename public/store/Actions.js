@@ -382,14 +382,15 @@ class Actions {
 
     const type = params.type
 
+    console.log("id in actions: " + params.id)
     try {
-      response = await fetch(`/api/${type}/delete/`, {
+      response = await fetch(`/api/${type}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ id: params.id })
+        body: JSON.stringify({ id: params.id})
       });
       console.log("try");
     } catch (err) {

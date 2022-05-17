@@ -1,7 +1,8 @@
-import Actions from "../store/Actions";
+import Actions from "../store/Actions.js";
 
-export default async function () {
-    const checkListId = e.target.parentElement.getAttribute("data-id")
+export default async function (e) {
+    console.log("delete checklist fonction called")
+    const checkListId = e.target.parentElement.parentElement.getAttribute("data-id")
 
-    await Actions.DELETE_DATA({type: "checkList", id: checkListId})
+    await Actions.DELETE_DATA({type: "checklist", id: checkListId})
 }
