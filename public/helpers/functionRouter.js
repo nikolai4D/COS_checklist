@@ -1,4 +1,5 @@
 import Actions from "../store/Actions.js";
+import deleteChecklist from "./deleteChecklist";
 
 export default async function (demandedRoute, event) {
   const routes = [
@@ -11,7 +12,9 @@ export default async function (demandedRoute, event) {
     { path: "saveDatum" },
     { path: "saveOmrade" },
     { path: "saveFastighet" },
-    { path: "saveAdress" }
+    { path: "saveAdress" },
+    { path: "deleteChecklist", request: deleteChecklist },
+
     // { path: "/register" },
     // { path: "/saveChecklist" },
   ];

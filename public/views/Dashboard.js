@@ -12,18 +12,22 @@ export default class Dashboard {
 
     let checklists = State.allChecklistsWithDetails;
     let formatedChecklists = checklists.map((checklist, index) => {
+
+      console.log("checkList: " + JSON.stringify(checklist, null, 2))
+
       if (!checklist.datum) {
         checklist.datum = { title: "-" }
       }
       let number = index + 1
-      return `  <tr>
+      return `  <tr data-id="${checklist.id}">
         <th scope="row">${number}</th>
         <td>${checklist.datum.title}</td>
         <td>-</td>
         <td>-</td>
         <td>-</td>
 
-  <td><button type="button" class="btn btn-success" data-view="/viewChecklist" >-</button></td>
+  <td><button type="button" class="btn btn-success" data-view="/viewChecklist" >edit</button></td>
+  <td><button type="button" class="btn btn-error" data-function="deleteChecklist" >delete</button></td>
 </tr>`})
 
     return formatedChecklists.join("")
