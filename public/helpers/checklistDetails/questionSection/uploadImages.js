@@ -1,4 +1,6 @@
-let inputImage = event.target;
+export default async function (e) {
+
+let inputImage = e.target;
 let fragaId = inputImage.id.split("$")[1];
 console.log(fragaId)
 
@@ -22,4 +24,6 @@ const outputImageIcon = () => {
 };
 inputImage.addEventListener("change", () => outputImageIcon(), {
   once: true,
-});
+})
+
+}
