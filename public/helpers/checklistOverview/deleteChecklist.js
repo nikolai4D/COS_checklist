@@ -1,4 +1,4 @@
-import Actions from "../store/Actions.js";
+import Actions from "../../store/Actions.js";
 
 export default async function (e) {
     console.log("delete checklist fonction called")
