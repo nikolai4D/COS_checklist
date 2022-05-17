@@ -1,4 +1,5 @@
 import Actions from "../store/Actions.js";
+import deleteChecklist from "./deleteChecklist.js";
 
 export default async function (demandedRoute, event) {
   const routes = [
@@ -11,16 +12,14 @@ export default async function (demandedRoute, event) {
     { path: "saveDatum" },
     { path: "saveOmrade" },
     { path: "saveFastighet" },
-    { path: "saveAdress" }
+    { path: "saveAdress" },
+    { path: "deleteChecklist", request: deleteChecklist },
+
     // { path: "/register" },
     // { path: "/saveChecklist" },
   ];
 
   const potentialMatches = routes.map((route) => {
-    if (demandedRoute === route.path) {
-      console.log(`matching function for ${route.path}`);
-    }
-
     return {
       route: route,
       isMatch: demandedRoute === route.path,
@@ -32,6 +31,9 @@ export default async function (demandedRoute, event) {
   if (!match) {
     return alert("Request unknown");
   }
+
+  if (match.route.request !== undefined) await match.route.request(event);
+
 
   if (match.route.path === "/login") {
     await Actions.LOGIN();

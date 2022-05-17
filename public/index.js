@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       navigateTo(e.target.getAttribute("data-view"));
       await viewRouter();
       console.log(`view: ${e.target.getAttribute("data-view")}`);
-    }
+    }onmessage
   });
 
 
