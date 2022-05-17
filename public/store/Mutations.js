@@ -19,8 +19,6 @@ class Mutations {
     State.allChecklistsWithDetails = allChecklistsWithDetails;
   }
 
-
-
   async SET_ALL_OMRADEN(allOmraden) {
     State.allOmraden = allOmraden;
   }

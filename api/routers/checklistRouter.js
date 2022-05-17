@@ -68,6 +68,20 @@ router.post("/create", async (req, res) => {
   }
 });
 
+router.delete("/", async (req, res) => {
+  console.log("Delete checklist route used");
+  const id = req.body.id;
+
+
+  let response = await apiCallDelete(`/typeData/${id}`);
+
+  if ((response.status) !== 200) {
+    return res.status(response.status).json(response.data);
+  } else {
+    return res.json(response.data);
+  }
+});
+
 router.post("/create/datum", async (req, res) => {
   console.log("create checklist datum route used", req.body);
 
