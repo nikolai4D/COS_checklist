@@ -56,5 +56,3 @@ export default class AddChecklist {
     return allFragetyperArray.join("")
   }
 }
-
-
