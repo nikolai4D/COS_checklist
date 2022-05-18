@@ -32,7 +32,7 @@ router.post("/create", async (req, res) => {
   // Create instance I41
 
   const reqBodyI41 = {
-    title: "I41_Rondering Trygga hus Details",
+    title: "I41_Rondering Trygga hus detaljer",
     props: [],
     parentId: "td_c795835c-6c3b-4292-8d06-55d71416d44b",
   };
@@ -243,7 +243,7 @@ router.post("/create/omrade", async (req, res) => {
     }
 
     omradeToChecklistDetailsInstance = (await apiCallPost(reqBody, `/instanceExternalRel/create`))
-    
+
     if ((await omradeToChecklistDetailsInstance.status) !== 200) {
     return res.status(omradeToChecklistDetailsInstance.status).json(omradeToChecklistDetailsInstance.data);
   } else {
