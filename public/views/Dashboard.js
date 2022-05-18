@@ -36,6 +36,7 @@ export default class Dashboard {
   async getTemplate() {
     return `
         <div class="container">
+        <button type="button" class="btn btn-info" data-function="addChecklist" style="margin-top: 2em;">+ Rondering</button>
 
             <div class="checklistTable" style="margin-top: 4em;">
             <table class="table">
@@ -54,10 +55,8 @@ export default class Dashboard {
             </tbody>
           </table>
             </div >
-            <button type="button" class="btn btn-info" data-function="addChecklist" style="margin-top: 2em;">+ Rondering</button>
         </div>
         <br/>
-
         `;
   }
 }

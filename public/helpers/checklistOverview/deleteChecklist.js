@@ -8,7 +8,6 @@ export default async function (e) {
 
     const checkList = State.allChecklistsWithDetails.find( el => el.id = checkListId)
 
-    console.log({checkListId, "datum": checkList.datum.id})
     await Actions.DELETE_DATA({type: "checklist", id: checkListId, datumId: checkList.datum.id})
 
     navigateTo("/")
