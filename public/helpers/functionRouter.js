@@ -10,7 +10,7 @@ import saveDatum from "./checklistDetails/saveDatum.js";
 import saveOmrade from "./checklistDetails/saveOmrade.js";
 import saveFastighet from "./checklistDetails/saveFastighet.js";
 import saveAdress from "./checklistDetails/saveAdress.js";
-import setRowStatus from "./setRowStatus.js";
+import setRowStatus from "./onAnswerPick.js";
 import validateChecklist from "./validateChecklist.js";
 
 export default async function (demandedRoute, event) {
