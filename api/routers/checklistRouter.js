@@ -72,18 +72,24 @@ router.delete("/", async (req, res) => {
   console.log("Delete checklist route used");
   const id = req.body.id;
 
-  let checkListDetailId = (await apiCallPost({ targetId: id }, `/instance/sourcesToTarget`)).data.links[0].sources[0].id;
+  const checkListDetail = await apiCallPost({ targetId: id }, `/instance/sourcesToTarget`)
 
-  //Delete related details
-  console.log("mycheckListDetailId: " + checkListDetailId)
+  if(checkListDetail?.data.hasOwnProperty("links")) {
+    let checkListDetailId = checkListDetail.data.links[0].sources[0].id;
 
-  let sourcesToCheckListDetails = ( await apiCallPost({ targetId: checkListDetailId }, `/instance/sourcesToTarget`)).data;
-  //console.log(JSON.stringify({sourcesToCheckListDetails}, null, 2))
-  // const datumId = req.body.datumId
-  // if(datumId !== null) {
-  //   let responseDatumDeletion = await apiCallDelete(`/instanceData/${datumId}`);
-  //   if ((responseDatumDeletion.status) !== 200) return res.status(responseDatumDeletion.status).json(responseDatumDeletion.data)
-  // }
+    //Delete related details
+    console.log("mycheckListDetailId: " + checkListDetailId)
+
+    let sourcesToCheckListDetails = (await apiCallPost({targetId: checkListDetailId}, `/instance/sourcesToTarget`)).data.links;
+
+    for (const linkType of sourcesToCheckListDetails) {
+      for (const link of linkType.sources) {
+        await apiCallDelete(`/instanceData/${link.id}`);
+      }
+    }
+
+    await apiCallDelete(`/instanceData/${checkListDetailId}`)
+  }
 
   //Delete checklist
   let response = await apiCallDelete(`/instanceData/${id}`);
