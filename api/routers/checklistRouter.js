@@ -32,7 +32,7 @@ router.post("/create", async (req, res) => {
   // Create instance I41
 
   const reqBodyI41 = {
-    title: "I41_Rondering Trygga hus detaljer",
+    title: "I41_Rondering Trygga hus Details",
     props: [],
     parentId: "td_c795835c-6c3b-4292-8d06-55d71416d44b",
   };
@@ -194,16 +194,16 @@ router.post("/create/omrade", async (req, res) => {
 
 
 
-  let notDatumToChecklistDetailjer = await linksWithSourcesToChecklistDetails.links.filter(
+  let allSourcesExceptDateToChecklistDetails = await linksWithSourcesToChecklistDetails.links.filter(
     (obj) =>
       obj.linkParentId !== process.env.DATUM_TO_CHECKLISTDETALJER_REL_PARENT_ID
   );
 
-  // If its not empty, delete all of them, and then create a new omrade.
+  // If checklist details have sources already, delete all of them, and then create a new omrade.
 
-  if (notDatumToChecklistDetailjer.length !== 0) {
+  if (allSourcesExceptDateToChecklistDetails.length !== 0) {
 
-    notDatumToChecklistDetailjer.forEach(async obj => {
+    allSourcesExceptDateToChecklistDetails.forEach(async obj => {
      await apiCallDelete(`/instance/${obj.sources[0].id}`);
     })
   }
@@ -217,9 +217,9 @@ router.post("/create/omrade", async (req, res) => {
       parentId: process.env.OMRADE_TO_CHECKLISTDETALJER_REL_PARENT_ID
     }
 
-    let omradeToChecklistDetaljerTypeData = (await apiCallPost(reqBody, `/typeExternalRel/create`)).data;
+    let omradeToChecklistDetailsTypeData = (await apiCallPost(reqBody, `/typeExternalRel/create`)).data;
 
-    let omradeToChecklistDetaljerRelParentIdTypeData = omradeToChecklistDetaljerTypeData.id;
+    let omradeToChecklistDetailsRelParentIdTypeData = omradeToChecklistDetailsTypeData.id;
 
     // create new omrade instance with
 
@@ -232,22 +232,22 @@ router.post("/create/omrade", async (req, res) => {
   
     let omradeInstance = (await apiCallPost(reqBody, `/instance/create`)).data;
 
-    // create rel between omrade and checklist detaljer instances
+    // create rel between omrade and checklist Details instances
 
     reqBody = {
       source: omradeInstance.id,
       target: checklistDetailsObjId,
       props: [],
       title: "Ingår i",
-      parentId: omradeToChecklistDetaljerRelParentIdTypeData
+      parentId: omradeToChecklistDetailsRelParentIdTypeData
     }
 
-    omradeToChecklistDetaljerInstance = (await apiCallPost(reqBody, `/instanceExternalRel/create`)).data;
+    omradeToChecklistDetailsInstance = (await apiCallPost(reqBody, `/instanceExternalRel/create`)).data;
 
-  if ((await omradeToChecklistDetaljerInstance)) {
-    return res.json(omradeToChecklistDetaljerInstance);
+  if ((await omradeToChecklistDetailsInstance)) {
+    return res.json(omradeToChecklistDetailsInstance);
   } else {
-    return res.status(400).json(omradeToChecklistDetaljerInstance);
+    return res.status(400).json(omradeToChecklistDetailsInstance);
 
   }
 
