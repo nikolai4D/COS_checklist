@@ -8,46 +8,41 @@ export default class ViewChecklist {
   getTemplate() {
     return `
         <div class="container">
-        <button type="button" class="btn btn-success" data-function="/saveChecklist" style="margin-top: 2em; margin-bottom: 2em;">Skicka</button>
-        <button type="button" class="btn btn-danger" data-view="/" style="margin-top: 2em; margin-bottom: 2em;">Tillbaka</button>
-        <div id="newChecklist" style="margin-top: 2em; margin-bottom: 3em;">
+            <button type="button" class="btn btn-success" data-function="/saveChecklist" style="margin-top: 2em; margin-bottom: 2em;">Skicka</button>
+            <button type="button" class="btn btn-danger" data-view="/" style="margin-top: 2em; margin-bottom: 2em;">Tillbaka</button>
+            
+            <div id="newChecklist" style="margin-top: 2em; margin-bottom: 3em;">
 
-        <h3>Checklista</h3>
+                <h3>Checklista</h3>
 
-        <div class="alert alert-success">
-        Godkänd
-            </div>
+                <div class="alert alert-success">Godkänd </div>
+        
+                <div >
+                    <label for="area">Datum</label>
+                    <input type="text" aria-label="Datum" class="form-control" value="2022-03-01" disabled>
+                </div>
 
-        <div >
-        <label for="area">Datum</label>
-        <input type="text" aria-label="Datum" class="form-control" value="2022-03-01" disabled>
-        </div>
-
-
-        <div >
-        <label for="area">Område</label>
-        <select disabled id="area" class="form-select" aria-label="Välj område">
-        <option selected>Område 1</option>
-        </select>
-        </div>
-
-        <div>
-        <label for="area">Fastighet</label>
-        <select disabled id="area" class="form-select" aria-label="Välj fastighet">
-        <option selected>Fastighet 1</option>
-        </select>
-        </div>
-
-        <div>
-        <label for="area">Adress</label>
-        <select disabled id="area" class="form-select" multiple aria-label="Adresser">
-        <option  value="1">Adress 1</option>
-        <option  value="2">Adress 2</option>
-        </select>
-        </div>
-
-
-
+                <div >
+                    <label for="area">Område</label>
+                    <select disabled id="area" class="form-select" aria-label="Välj område">
+                        <option selected>Område 1</option>
+                    </select>
+                </div>
+    
+                <div>
+                    <label for="area">Fastighet</label>
+                    <select disabled id="area" class="form-select" aria-label="Välj fastighet">
+                        <option selected>Fastighet 1</option>
+                    </select>
+                </div>
+        
+                <div>
+                    <label for="area">Adress</label>
+                    <select disabled id="area" class="form-select" multiple aria-label="Adresser">
+                        <option  value="1">Adress 1</option>
+                        <option  value="2">Adress 2</option>
+                    </select>
+                </div>
         </div>
 
         <hr />
@@ -92,8 +87,9 @@ export default class ViewChecklist {
                             Ja/Nej
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Ja</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">N/A</li>
                           </ul>
                         </div>
                       </td>
@@ -115,8 +111,9 @@ export default class ViewChecklist {
                             Ja/Nej
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Ja</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">N/A</li>
                           </ul>
                         </div>
                       </td>
@@ -138,8 +135,9 @@ export default class ViewChecklist {
                             Ja/Nej
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Ja</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">N/A</li>
                           </ul>
                         </div>
                       </td>
@@ -187,8 +185,9 @@ export default class ViewChecklist {
                             Ja/Nej
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Ja</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">N/A</li>
                           </ul>
                         </div>
                       </td>
@@ -197,7 +196,7 @@ export default class ViewChecklist {
                     <tr>
                       <th scope="row">2</th>
                       <td>Fråga 2</td>
-                      <td>Ja</td>
+                      <td>Nej</td>
                       <td>
                         <div class="dropdown">
                           <button
@@ -210,8 +209,9 @@ export default class ViewChecklist {
                             Ja/Nej
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Ja</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">N/A</li>
                           </ul>
                         </div>
                       </td>
@@ -233,9 +233,9 @@ export default class ViewChecklist {
                             Ja/Nej
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
-                            <li class="dropdown-item">N/A</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Ja</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">N/A</li>
                           </ul>
                         </div>
                       </td>
@@ -283,8 +283,9 @@ export default class ViewChecklist {
                             Ja/Nej
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Ja</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">N/A</li>
                           </ul>
                         </div>
                       </td>
@@ -306,8 +307,9 @@ export default class ViewChecklist {
                             Ja/Nej
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Ja</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">N/A</li>
                           </ul>
                         </div>
                       </td>
@@ -329,8 +331,9 @@ export default class ViewChecklist {
                             Ja/Nej
                           </button>
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Ja</li>
+                            <li data-function="setRowStatus" class="dropdown-item">Nej</li>
+                            <li data-function="setRowStatus" class="dropdown-item">N/A</li>
                           </ul>
                         </div>
                       </td>

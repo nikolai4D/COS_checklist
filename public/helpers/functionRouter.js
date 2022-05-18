@@ -10,6 +10,7 @@ import saveDatum from "./checklistDetails/saveDatum.js";
 import saveOmrade from "./checklistDetails/saveOmrade.js";
 import saveFastighet from "./checklistDetails/saveFastighet.js";
 import saveAdress from "./checklistDetails/saveAdress.js";
+import setRowStatus from "./setRowStatus.js";
 
 export default async function (demandedRoute, event) {
   const routes = [
@@ -24,6 +25,7 @@ export default async function (demandedRoute, event) {
     { path: "saveFastighet", request: saveFastighet },
     { path: "saveAdress", request: saveAdress },
     { path: "deleteChecklist", request: deleteChecklist },
+    { path: "setRowStatus", request: setRowStatus },
 
     // { path: "/register" },
     // { path: "/saveChecklist" },
