@@ -242,13 +242,12 @@ router.post("/create/omrade", async (req, res) => {
       parentId: omradeToChecklistDetailsRelParentIdTypeData
     }
 
-    omradeToChecklistDetailsInstance = (await apiCallPost(reqBody, `/instanceExternalRel/create`)).data;
-
-  if ((await omradeToChecklistDetailsInstance)) {
-    return res.json(omradeToChecklistDetailsInstance);
+    omradeToChecklistDetailsInstance = (await apiCallPost(reqBody, `/instanceExternalRel/create`))
+    
+    if ((await omradeToChecklistDetailsInstance.status) !== 200) {
+    return res.status(omradeToChecklistDetailsInstance.status).json(omradeToChecklistDetailsInstance.data);
   } else {
-    return res.status(400).json(omradeToChecklistDetailsInstance);
-
+    return res.json(omradeToChecklistDetailsInstance.data);
   }
 
 
@@ -272,19 +271,16 @@ router.get("/read/omrade", async (req, res) => {
 router.post("/read/fastighet", async (req, res) => {
   console.log("Get all fastighet route used");
   
-  let linksWithSourcesToOmrade = (await apiCallPost({"targetId": req.body.omradeId}, `/typeData/sourcesToTarget`)).data.links;
-  let sourcesToOmrade = []
+  let response = (await apiCallPost({"targetId": req.body.omradeId}, `/typeData/sourcesToTarget`))
 
-  if (linksWithSourcesToOmrade.length !== 0) sourcesToOmrade = linksWithSourcesToOmrade[0].sources
-
-  if ((await sourcesToOmrade)) {
-    return res.json(sourcesToOmrade);
+  if ((await response.status) !== 200) {
+    return res.status(response.status).json(response.data);
   } else {
-    return res.status(400).json(sourcesToOmrade);
-
+    linksWithSourcesToOmrade = response.data.links
+    let arrayOfFastighet = []
+    if (linksWithSourcesToOmrade.length !== 0) arrayOfFastighet = linksWithSourcesToOmrade[0].sources
+    return res.json({data: arrayOfFastighet});
   }
-
-
 });
 
 router.get("/read/fragetyper", async (req, res) => {

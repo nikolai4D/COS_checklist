@@ -26,7 +26,7 @@ export default class AddChecklist {
 
     let omradenStr = "";
     allOmraden.forEach(omrade => {
-      omradenStr += `<option  data-function="saveOmrade"  value="${omrade.id}">${omrade.title}</option>`;
+      omradenStr += `<option  data-function="saveOmradeGetFastighet"  value="${omrade.id}">${omrade.title}</option>`;
     });
     return omradenStr;
   }

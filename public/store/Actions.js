@@ -27,8 +27,6 @@ class Actions {
       console.log("catch");
     }
 
-    console.log(response.status, "response.status");
-
     if (response.status !== 200) {
       alert(`${response.statusText}`);
       navigateTo("/login");
@@ -40,14 +38,12 @@ class Actions {
     const token = `Bearer ${(await response.json()).accessToken}`;
 
     mutate.SET_ACCESSTOKEN(token);
-    console.log(State, "NEW STATE");
 
     //Redirection Part
     navigateTo("/");
   }
 
   async VERIFY() {
-    console.log(State.accessToken, "1 State.accessToken!!!!");
     let getHeaders = {
       "Content-Type": "application/json",
       Authorization: await State.accessToken,
@@ -68,10 +64,6 @@ class Actions {
       responseVerifyToken = err.response;
       console.log("catch verify");
     }
-
-    // console.log(responseVerifyToken, "responseVerifyToken");
-    // return "stop";
-
     if ((await responseVerifyToken.status) !== 200) {
       console.log("!== 200");
 
@@ -150,18 +142,11 @@ class Actions {
     }
 
     const activeChecklistId = (await response.json()).id;
-    console.log(activeChecklistId)
     mutate.SET_NEW_CHECKLIST_ID(activeChecklistId);
-
-    console.log(State.activeChecklistId, "State.activeChecklistId");
-
     navigateTo("/addChecklist");
   }
 
   async GET_ALL_CHECKLISTS() {
-    //localhost:3002/api/instance?parentId=td_1db022c1-a269-4290-832d-be29416455a0
-
-    http: console.log("Get All Checklists function");
 
     let response;
 
@@ -182,8 +167,6 @@ class Actions {
 
     const allChecklists = await response.json();
     mutate.SET_ALL_CHECKLISTS_IDS(allChecklists);
-
-    console.log(State.allChecklists, "State.allChecklists");
   }
 
   async GET_ALL_CHECKLISTS_WITH_DETAILS() {
@@ -223,7 +206,7 @@ class Actions {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ datum: date, checklistId: State.activeChecklistId }),
+        body: postBody
       });
       console.log("try");
     } catch (err) {
@@ -231,22 +214,11 @@ class Actions {
       response = err.response;
       console.log("catch");
     }
-
-    const theresponse = (await response.json());
-    console.log(theresponse)
-    // mutate.SET_NEW_CHECKLIST_ID(activeChecklistId);
-
-    // console.log(State.activeChecklistId, "State.activeChecklistId");
-
-    // navigateTo("/addChecklist");
-
-
+   await response.json()
   }
 
   async SEND_CHECKLIST_OMRADE(omrade) {
     let postBody = JSON.stringify({ omradeId: omrade, checklistId: State.activeChecklistId })
-    console.log("Add Checklist omrade", postBody);
-
     let response;
 
     try {
@@ -264,14 +236,10 @@ class Actions {
       response = err.response;
       console.log("catch");
     }
-
-    const theresponse = (await response.json());
-    console.log(theresponse)
+  await response.json()
   }
 
   async SEND_CHECKLIST_FASTIGHET() {
-
-
 
   }
 
@@ -301,6 +269,7 @@ class Actions {
       console.log("catch");
     }
     const allOmraden = await response.json();
+    
     mutate.SET_ALL_OMRADEN(allOmraden);
   }
 
@@ -309,7 +278,7 @@ class Actions {
 
     let postBody = JSON.stringify({ omradeId: omrade })
 
-    console.log("Get All Checklists omrade");
+    console.log("Get All Checklists fastighet");
 
     let response;
 
@@ -330,10 +299,7 @@ class Actions {
       console.log("catch");
     }
     const allFastighet = await response.json();
-    mutate.SET_ALL_FASTIGHET(allFastighet);
-    console.log(allFastighet, "allFastighet");
-
-
+    mutate.SET_ALL_FASTIGHET(allFastighet.data);
   }
 
   async GET_ALL_CHECKLIST_ADRESS() {
@@ -393,42 +359,6 @@ class Actions {
     mutate.SET_ALL_FRAGOR(allFragor);
 
   }
-
-
-
-
-  //   async REGISTER() {
-  //     console.log("Register function");
-
-  //     const registerForm = document.getElementById("register-form");
-  //     const email = registerForm.email.value;
-  //     const pwd = registerForm.pwd.value;
-  //     const code = registerForm.code.value;
-
-  //     try {
-  //       const responseAuth = await fetch("/api/register", {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         credentials: "include",
-  //         body: JSON.stringify({ email, pwd, code }),
-  //       });
-
-  //       if (!responseAuth.ok) {
-  //         if (responseAuth.status === 409) {
-  //           navigateTo("/login");
-  //           return alert("Registration not ok");
-  //         }
-  //         throw new Error(`${responseAuth.status} ${responseAuth.statusText}`);
-  //       }
-
-  //       navigateTo("/login");
-  //     } catch (err) {
-  //       console.log("error");
-  //     }
-  //   }
-  //   async SAVECHECKLIST() {
-  //     console.log("SaveChecklist function");
-  //   }
 }
 
 export default new Actions();

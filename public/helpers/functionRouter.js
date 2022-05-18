@@ -7,7 +7,7 @@ import showImage from "./checklistDetails/questionSection/showImage.js";
 import deleteImage from "./checklistDetails/questionSection/deleteImage.js";
 
 import saveDatum from "./checklistDetails/saveDatum.js";
-import saveOmrade from "./checklistDetails/saveOmrade.js";
+import saveOmradeGetFastighet from "./checklistDetails/saveOmradeGetFastighet.js";
 import saveFastighet from "./checklistDetails/saveFastighet.js";
 import saveAdress from "./checklistDetails/saveAdress.js";
 
@@ -20,7 +20,7 @@ export default async function (demandedRoute, event) {
     { path: "delete-image", request: deleteImage },
     { path: "addChecklist", request: addChecklist },
     { path: "saveDatum", request: saveDatum },
-    { path: "saveOmrade", request: saveOmrade },
+    { path: "saveOmradeGetFastighet", request: saveOmradeGetFastighet },
     { path: "saveFastighet", request: saveFastighet },
     { path: "saveAdress", request: saveAdress },
     { path: "deleteChecklist", request: deleteChecklist },
