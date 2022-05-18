@@ -15,7 +15,7 @@ export default class ViewChecklist {
 
                 <h3>Checklista</h3>
 
-                <div class="alert alert-success">Godkänd </div>
+                <div id="checklist-status" class="alert alert-warning">In progress</div>
         
                 <div >
                     <label for="area">Datum</label>
