@@ -8,7 +8,7 @@ export default class ViewChecklist {
   getTemplate() {
     return `
         <div class="container">
-            <button type="button" class="btn btn-success" data-function="/saveChecklist" style="margin-top: 2em; margin-bottom: 2em;">Skicka</button>
+            <button type="button" class="btn btn-success" data-function="validateChecklist" style="margin-top: 2em; margin-bottom: 2em;">Skicka</button>
             <button type="button" class="btn btn-danger" data-view="/" style="margin-top: 2em; margin-bottom: 2em;">Tillbaka</button>
             
             <div id="newChecklist" style="margin-top: 2em; margin-bottom: 3em;">
@@ -71,7 +71,7 @@ export default class ViewChecklist {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr class="answer">
                       <th scope="row">1</th>
                       <td>Fråga 1</td>
                       <td>Ja</td>
@@ -95,7 +95,7 @@ export default class ViewChecklist {
                       </td>
                       <td>...</td>
                     </tr>
-                    <tr>
+                    <tr class="answer">
                       <th scope="row">2</th>
                       <td>Fråga 2</td>
                       <td>Ja</td>
@@ -119,7 +119,7 @@ export default class ViewChecklist {
                       </td>
                       <td>...</td>
                     </tr>
-                    <tr>
+                    <tr class="answer">
                       <th scope="row">3</th>
                       <td>Fråga 3</td>
                       <td>Ja</td>
@@ -169,7 +169,7 @@ export default class ViewChecklist {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr class="answer">
                       <th scope="row">1</th>
                       <td>Fråga 1</td>
                       <td>Ja</td>
@@ -193,7 +193,7 @@ export default class ViewChecklist {
                       </td>
                       <td>...</td>
                     </tr>
-                    <tr>
+                    <tr class="answer">
                       <th scope="row">2</th>
                       <td>Fråga 2</td>
                       <td>Nej</td>
@@ -217,7 +217,7 @@ export default class ViewChecklist {
                       </td>
                       <td>...</td>
                     </tr>
-                    <tr>
+                    <tr class="answer">
                       <th scope="row">3</th>
                       <td>Fråga 3</td>
                       <td>Ja</td>
@@ -267,7 +267,7 @@ export default class ViewChecklist {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr class="answer">
                       <th scope="row">1</th>
                       <td>Fråga 1</td>
                       <td>Ja</td>
@@ -291,7 +291,7 @@ export default class ViewChecklist {
                       </td>
                       <td>...</td>
                     </tr>
-                    <tr>
+                    <tr class="answer">
                       <th scope="row">2</th>
                       <td>Fråga 2</td>
                       <td>Ja</td>
@@ -315,7 +315,7 @@ export default class ViewChecklist {
                       </td>
                       <td>...</td>
                     </tr>
-                    <tr>
+                    <tr class="answer">
                       <th scope="row">3</th>
                       <td>Fråga 3</td>
                       <td>Ja</td>
