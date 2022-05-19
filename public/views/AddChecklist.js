@@ -15,6 +15,7 @@ export default class AddChecklist {
     let frageTyperStr = await this.getFragetyperStr()
     let checklistId = State.activeChecklistId
 
+    console.log("State: " + JSON.stringify(State, null, 2))
     return `${await Checklist(omradenStr, frageTyperStr, checklistId)}`
   }
 
@@ -56,5 +57,3 @@ export default class AddChecklist {
     return allFragetyperArray.join("")
   }
 }
-
-

@@ -64,6 +64,4 @@ async function apiCallDelete(url) {
   return response;
 }
 
-
-
 module.exports = { apiCallPost, apiCallGet, apiCallDelete };
