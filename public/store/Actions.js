@@ -359,9 +359,8 @@ class Actions {
     mutate.SET_ALL_FRAGOR(allFragor);
 
   }
-<<<<<<< HEAD
-=======
 
+  
   async DELETE_DATA(params){
     let response;
 
@@ -387,40 +386,6 @@ class Actions {
     return await response.json();
   }
 
-
-  //   async REGISTER() {
-  //     console.log("Register function");
-
-  //     const registerForm = document.getElementById("register-form");
-  //     const email = registerForm.email.value;
-  //     const pwd = registerForm.pwd.value;
-  //     const code = registerForm.code.value;
-
-  //     try {
-  //       const responseAuth = await fetch("/api/register", {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         credentials: "include",
-  //         body: JSON.stringify({ email, pwd, code }),
-  //       });
-
-  //       if (!responseAuth.ok) {
-  //         if (responseAuth.status === 409) {
-  //           navigateTo("/login");
-  //           return alert("Registration not ok");
-  //         }
-  //         throw new Error(`${responseAuth.status} ${responseAuth.statusText}`);
-  //       }
-
-  //       navigateTo("/login");
-  //     } catch (err) {
-  //       console.log("error");
-  //     }
-  //   }
-  //   async SAVECHECKLIST() {
-  //     console.log("SaveChecklist function");
-  //   }
->>>>>>> 0cbf99536c38559fec49f80f1f6e8ba09da7a6e4
 }
 
 export default new Actions();
