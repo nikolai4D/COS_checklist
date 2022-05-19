@@ -235,6 +235,7 @@ export default class ViewChecklist {
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <li class="dropdown-item">Ja</li>
                             <li class="dropdown-item">Nej</li>
+                            <li class="dropdown-item">N/A</li>
                           </ul>
                         </div>
                       </td>
