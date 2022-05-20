@@ -8,7 +8,7 @@ export default class Navbar {
     <div id="navbar">
     <nav class="navbar navbar-expand navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#" data-link="/"><i class="bi bi-card-checklist" style="margin-right:7px;"></i>Rondering Trygga hus</a>
+      <a class="navbar-brand" href="#" data-view="/dashboard"><i class="bi bi-card-checklist" style="margin-right:7px;"></i>Rondering Trygga hus</a>
       <div class="collapse navbar-collapse" id="navbarScroll">
       <ul class="navbar-nav me-auto navbar-nav-scroll" style="--bs-scroll-height: 100px;">
         </ul>

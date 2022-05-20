@@ -97,7 +97,11 @@ export default class ViewChecklist {
                           </ul>
                         </div>
                       </td>
-                      <td>...</td>
+                      <td>
+                        <button type="button" id="notering" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
+                          Yes!
+                        </button>               
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">2</th>
@@ -119,8 +123,12 @@ export default class ViewChecklist {
                             <li class="dropdown-item">Nej</li>
                           </ul>
                         </div>
+                      </td> 
+                      <td>
+                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
+                      Yes!
+                      </button>  
                       </td>
-                      <td>...</td>
                     </tr>
                     <tr>
                       <th scope="row">3</th>
@@ -143,7 +151,11 @@ export default class ViewChecklist {
                           </ul>
                         </div>
                       </td>
-                      <td>...</td>
+                      <td> 
+                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
+                      Yes!
+                    </button>  
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -192,7 +204,31 @@ export default class ViewChecklist {
                           </ul>
                         </div>
                       </td>
-                      <td>...</td>
+                      <td>
+                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
+                      Yes! 
+                    </button> 
+                    <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>                        
+                    </td>
                     </tr>
                     <tr>
                       <th scope="row">2</th>
@@ -215,7 +251,11 @@ export default class ViewChecklist {
                           </ul>
                         </div>
                       </td>
-                      <td>...</td>
+                      <td>
+                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
+                      Yes!
+                    </button>  
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">3</th>
@@ -239,7 +279,11 @@ export default class ViewChecklist {
                           </ul>
                         </div>
                       </td>
-                      <td>...</td>
+                      <td>
+                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
+                      Yes!
+                    </button>  
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -288,7 +332,11 @@ export default class ViewChecklist {
                           </ul>
                         </div>
                       </td>
-                      <td>...</td>
+                      <td>
+                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
+                      Yes!
+                    </button>  
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">2</th>
@@ -311,7 +359,11 @@ export default class ViewChecklist {
                           </ul>
                         </div>
                       </td>
-                      <td>...</td>
+                      <td>
+                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
+                      Yes!
+                    </button>  
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">3</th>
@@ -334,7 +386,12 @@ export default class ViewChecklist {
                           </ul>
                         </div>
                       </td>
-                      <td>...</td>
+                      <td>
+                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
+                      Yes!
+                      </button>  
+                      
+                      </td>
                     </tr>
                   </tbody>
                 </table>
