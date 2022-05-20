@@ -26,8 +26,8 @@ export default class Dashboard {
         <td>-</td>
         <td>-</td>
 
-  <td><button type="button" class="btn btn-success" data-view="/viewChecklist" >edit</button></td>
-  <td><button type="button" class="btn btn-danger" data-function="deleteChecklist" >delete</button></td>
+  <td><button type="button" class="btn btn-success" data-view="/viewChecklist" >➚</button></td>
+  <td><button type="button" class="btn btn-danger" data-function="deleteChecklist" >×</button></td>
 </tr>`})
 
     return formatedChecklists.join("")
