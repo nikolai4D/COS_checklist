@@ -2,7 +2,7 @@
 
 export default class Login {
   constructor() {
-    document.title = "Login";
+    document.title = "Checklist - Login";
   }
 
   async getTemplate() {
