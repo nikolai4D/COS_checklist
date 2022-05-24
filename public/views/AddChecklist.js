@@ -6,7 +6,7 @@ import Fragetyp from "../components/Fragetyp.js"
 
 export default class AddChecklist {
   constructor() {
-    document.title = "Add Checklist";
+    document.title = "Checklist - Add Checklist";
   }
 
   async getTemplate() {

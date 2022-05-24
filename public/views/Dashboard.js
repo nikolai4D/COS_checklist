@@ -3,7 +3,7 @@ import { State } from "../store/State.js";
 
 export default class Dashboard {
   constructor() {
-    document.title = "Dashboard";
+    document.title = "Checklist - Dashboard";
   }
 
   async getAllChecklists() {
