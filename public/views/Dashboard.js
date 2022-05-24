@@ -9,33 +9,32 @@ export default class Dashboard {
   }
 
   async getAllChecklists() {
-    console.log("check", await Merchant.getAllDetailedDataOfType(Librarian.checklist.type))
+     await Merchant.getAllDetailedDataOfType(Librarian.checklist.type)
 
-//     let checklists = State.allChecklistsWithDetails;
-//     let formatedChecklists = checklists.map((checklist, index) => {
+    let checklists = State.allChecklistsWithDetails;
+    let formatedChecklists = checklists.map((checklist, index) => {
+      if(!checklist.address){
+        checklist.address = {"title" : "-"}
+        checklist.property = {"title" : "-"}
+        checklist.area = {"title" : "-"}
+      }
 
-//       console.log("checkList: " + JSON.stringify(checklist, null, 2))
+      let number = index + 1
+      return `  <tr data-id="${checklist.id}">
+        <th scope="row">${number}</th>
+        <td>${checklist.createdDate}</td>
+        <td>${checklist.area.title}</td>
+        <td>${checklist.property.title}</td>
+        <td>${checklist.status}</td>
 
-//       if (!checklist.datum) {
-//         checklist.datum = { title: "-" }
-//       }
-//       let number = index + 1
-//       return `  <tr data-id="${checklist.id}">
-//         <th scope="row">${number}</th>
-//         <td>${checklist.datum.title}</td>
-//         <td>-</td>
-//         <td>-</td>
-//         <td>-</td>
+  <td><button type="button" class="btn btn-success" data-view="/viewChecklist" >➚</button></td>
+  <td><button type="button" class="btn btn-danger" data-function="deleteChecklist" >×</button></td>
+</tr>`})
 
-//   <td><button type="button" class="btn btn-success" data-view="/viewChecklist" >➚</button></td>
-//   <td><button type="button" class="btn btn-danger" data-function="deleteChecklist" >×</button></td>
-// </tr>`})
-
-//     return formatedChecklists.join("")
+    return formatedChecklists.join("")
   }
 
   async getTemplate() {
-    await this.getAllChecklists()
     return `
         <div class="container">
         <button type="button" class="btn btn-info" data-function="addChecklist" style="margin-top: 2em;">+ Rondering</button>
@@ -52,7 +51,7 @@ export default class Dashboard {
               </tr>
             </thead>
             <tbody>
-
+            ${await this.getAllChecklists()}
             </tbody>
           </table>
             </div >

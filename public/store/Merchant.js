@@ -1,3 +1,5 @@
+import mutate from "./Mutations.js";
+
 export default  {
 
     async getAllDataOfType(type){
@@ -40,9 +42,7 @@ export default  {
             console.log("catch");
         }
 
-        return await response.json();
-
-
+       mutate.SET_ALL_CHECKLISTS_WITH_DETAILS(await response.json());
     },
 
     async getDataById(params){

@@ -30,7 +30,6 @@ router.get("/getAllDetailedData", async (req, res) => {
   console.log("Get all checklists route used");
 
   // get all checklists
-  const checklistParentId = process.env.CHECKLIST_PARENT_ID;
 
   const responseAllChecklists = apiCallGet(`/instance?parentId=${process.env.CHECKLIST_PARENT_ID}`)
   const responseAllAddresses = apiCallGet(`/instance?parentId=${process.env.ADDRESS_PARENT_ID}`)
@@ -77,7 +76,6 @@ router.get("/getAllDetailedData", async (req, res) => {
 
     const checklistToAddress = checklistAddressRel.find(relation => relation.source === el.id)
     if(checklistToAddress === undefined) continue
-    console.log("checklistToAddress: " + checklistToAddress)
     const address = addresses.find(address => address.id === checklistToAddress.target)
     checklist.address = address
 
@@ -91,17 +89,17 @@ router.get("/getAllDetailedData", async (req, res) => {
     const propertyToArea = propertyAreaRel.find(relation => relation.source === property.id)
     if(propertyToArea === undefined) continue
     checklist.area = areas.find(area => area.id === propertyToArea.target)
-
-    console.log("formatted list: " + JSON.stringify(allChecklistsFormatted, null, 2))
+    console.log(allChecklistsFormatted, "hello")
 
   }
 
+  return res.json(allChecklistsFormatted)
 
-//   if ((await response.status) !== 200) {
-//     return res.status(response.status).json(response.data);
-//   } else {
-//     return res.json(response.data);
-//   }
+  // if (( (await responseAllChecklists.status) !== 200) || ((await responseAllAddresses.status ) !== 200) || ((await responseAllAreas.status)  !== 200) ||(( await responseAllProperties.status) !== 200) || ((await responseChecklistAddressRel.status) !== 200) || ((await responseAddressPropertyRel.status) !== 200) || ((await responsePropertyAreaRel.status) !== 200)) {
+  //   return res.status(404).json({"message": "Something went wrong"});
+  // } else {
+  //   return res.json({data: allChecklistsFormatted});
+  // }
 
 });
 
