@@ -35,6 +35,7 @@ export default class Dashboard {
   }
 
   async getTemplate() {
+    console.log({State})
     return `
         <div class="container">
         <button type="button" class="btn btn-info" data-function="addChecklist" style="margin-top: 2em;">+ Rondering</button>

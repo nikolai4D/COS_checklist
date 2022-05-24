@@ -89,11 +89,10 @@ router.get("/getAllDetailedData", async (req, res) => {
     const propertyToArea = propertyAreaRel.find(relation => relation.source === property.id)
     if(propertyToArea === undefined) continue
     checklist.area = areas.find(area => area.id === propertyToArea.target)
-    console.log(allChecklistsFormatted, "hello")
 
   }
 
-  return res.json(allChecklistsFormatted)
+  return res.json({allChecklistsFormatted, addresses, areas, properties, checklistAddressRel, addressPropertyRel, propertyAreaRel})
 
   // if (( (await responseAllChecklists.status) !== 200) || ((await responseAllAddresses.status ) !== 200) || ((await responseAllAreas.status)  !== 200) ||(( await responseAllProperties.status) !== 200) || ((await responseChecklistAddressRel.status) !== 200) || ((await responseAddressPropertyRel.status) !== 200) || ((await responsePropertyAreaRel.status) !== 200)) {
   //   return res.status(404).json({"message": "Something went wrong"});

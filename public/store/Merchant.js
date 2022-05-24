@@ -41,8 +41,14 @@ export default  {
             response = err.response;
             console.log("catch");
         }
-
-       mutate.SET_ALL_CHECKLISTS_WITH_DETAILS(await response.json());
+        const responseObject = await response.json();
+       mutate.SET_ALL_CHECKLISTS_WITH_DETAILS(responseObject.allChecklistsFormatted);
+       mutate.SET_ALL_AREA(responseObject.areas);
+       mutate.SET_ALL_PROPERTY(responseObject.properties);
+       mutate.SET_ALL_ADDRESS(responseObject.addresses);
+       mutate.SET_ALL_CHECKLIST_ADDRESS_REL(responseObject.checklistAddressRel);
+       mutate.SET_ALL_ADDRESS_PROPERTY_REL(responseObject.addressPropertyRel);
+       mutate.SET_ALL_PROPERTY_AREA_REL(responseObject.propertyAreaRel);
     },
 
     async getDataById(params){

@@ -19,16 +19,29 @@ class Mutations {
     State.allChecklistsWithDetails = allChecklistsWithDetails;
   }
 
-  async SET_ALL_OMRADEN(allOmraden) {
-    State.allOmraden = allOmraden;
+  async SET_ALL_AREA(allArea) {
+    State.allAreas = allArea;
   }
 
-  async SET_ALL_FRAGETYPER(allFragetyper) {
-    State.allFragetyper = allFragetyper;
+  async SET_ALL_PROPERTY(allProperty) {
+    State.allProperties = allProperty;
+  }
+  async SET_ALL_ADDRESS(allAddress) {
+    State.allAddresses = allAddress;
   }
 
-  async SET_ALL_FRAGOR(allFragor) {
-    State.allFragor = allFragor;
+  async SET_ALL_AREA(allArea) {
+    State.allAreas = allArea;
+  }
+
+  async SET_ALL_CHECKLIST_ADDRESS_REL(allChecklistAddressRel) {
+    State.allChecklistAddressRel = allChecklistAddressRel;
+  }
+  async SET_ALL_ADDRESS_PROPERTY_REL(allAddressPropertyRel) {
+    State.allAddressPropertyRel = allAddressPropertyRel;
+  }
+  async SET_ALL_PROPERTY_AREA_REL(allPropertyAreaRel) {
+    State.allPropertyAreaRel = allPropertyAreaRel;
   }
 }
 
