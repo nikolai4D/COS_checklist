@@ -1,5 +1,6 @@
 //import Actions from "../store/Actions.js";
 
+
 export default class ViewChecklist {
   constructor() {
     document.title = "View Checklist";
@@ -7,17 +8,29 @@ export default class ViewChecklist {
 
   getTemplate() {
     return `
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+      </head>
+      <body>
+        <!-- Optional JavaScript; choose one of the two! -->
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <!-- Option 2: Separate Popper and Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
         <div class="container">
-        <button type="button" class="btn btn-success" data-function="/saveChecklist" style="margin-top: 2em; margin-bottom: 2em;">Skicka</button>
-        <button type="button" class="btn btn-danger" data-view="/" style="margin-top: 2em; margin-bottom: 2em;">Tillbaka</button>
-        <div id="newChecklist" style="margin-top: 2em; margin-bottom: 3em;">
-
-        <h3>Checklista</h3>
-
-        <div class="alert alert-success">
-        Godkänd
-            </div>
-
+          <button type="button" class="btn btn-success" data-function="/saveChecklist" style="margin-top: 2em; margin-bottom: 2em;">Skicka</button>
+          <button type="button" class="btn btn-danger" data-view="/" style="margin-top: 2em; margin-bottom: 2em;">Tillbaka</button>
+          <div id="newChecklist" style="margin-top: 2em; margin-bottom: 3em;">
+            <h3>Checklista</h3>
+            <div class="alert alert-success"> Godkänd </div>
+        
         <div >
         <label for="area">Datum</label>
         <input type="text" aria-label="Datum" class="form-control" value="2022-03-01" disabled>
@@ -45,383 +58,464 @@ export default class ViewChecklist {
         <option  value="2">Adress 2</option>
         </select>
         </div>
-
-
-
-        </div>
-
-        <hr />
-
-        <h3>Checklistpunkter</h3>
-
-        <div>
+          </div>
+          <hr />
+          <h3>Checklistpunkter</h3>
+          <div>
             <div class="accordion" id="checklistItems">
-            <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false"  aria-controls="collapseOne">
-                A. Utemiljö
-                </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#checklistItems">
-                <div class="accordion-body">
-                <div class="checklistTable" style="margin-top: 4em;">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Kontrollpunkter</th>
-                      <th scope="col">Önskat resultat</th>
-                      <th scope="col">Ja/Nej</th>
-                      <th scope="col">Notering</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Fråga 1</td>
-                      <td>Ja</td>
-                      <td>
-                        <div class="dropdown">
-                          <button
-                            class="btn btn-secondary dropdown-toggle"
-                            type="button"
-                            id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            Ja/Nej
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
-                          </ul>
-                        </div>
-                      </td>
-                      <td>
-                        <button type="button" id="notering" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
-                          Yes!
-                        </button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                          <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne"> A. Utemiljö </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#checklistItems">
+                  <div class="accordion-body">
+                    <div class="checklistTable" style="margin-top: 4em;">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Kontrollpunkter</th>
+                            <th scope="col">Önskat resultat</th>
+                            <th scope="col">Ja/Nej</th>
+                            <th scope="col">Notering</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>Fråga 1</td>
+                            <td>Ja</td>
+                            <td>
+                              <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton10" data-bs-toggle="dropdown" aria-expanded="false"> Ja/Nej </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton10">
+                                  <li class="dropdown-item">Ja</li>
+                                  <li class="dropdown-item">Nej</li>
+                                </ul>
                               </div>
-                              <div class="modal-body">
-                                ...
+                            </td>
+                            <td>
+ 
+                              <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel">Ny notering</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <form>
+                                        <div class="mb-3">
+                                          <label for="messagetextfive" class="col-form-label">Notering:</label>
+                                          <textarea class="form-control" id="message-textA5"></textarea>
+                                        </div>
+                                      </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="button" class="btn btn-primary">Spara</button>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
+                                
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td>Fråga 2</td>
+                            <td>Ja</td>
+                            <td>
+                              <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false"> Ja/Nej </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                  <li class="dropdown-item">Ja</li>
+                                  <li class="dropdown-item">Nej</li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+  
+                              <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                              <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabelA2">Ny notering</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <form>
+                                        <div class="mb-3">
+                                          <label for="messagetextthree" class="col-form-label">Notering:</label>
+                                          <textarea class="form-control" id="message-textA3"></textarea>
+                                        </div>
+                                      </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="button" class="btn btn-primary">Spara</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">3</th>
+                            <td>Fråga 3</td>
+                            <td>Ja</td>
+                            <td>
+                              <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false"> Ja/Nej </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                                  <li class="dropdown-item">Ja</li>
+                                  <li class="dropdown-item">Nej</li>
+                                </ul>
+                              </div>
+                            </td>
+
+                            <td>
+
+                            <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabelA3">Ny notering</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form>
+                                      <div class="mb-3">
+                                        <label for="messagetextfour" class="col-form-label">Notering:</label>
+                                        <textarea class="form-control" id="message-textA4"></textarea>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Spara</button>
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </div>               
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Fråga 2</td>
-                      <td>Ja</td>
-                      <td>
-                        <div class="dropdown">
-                          <button
-                            class="btn btn-secondary dropdown-toggle"
-                            type="button"
-                            id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            Ja/Nej
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
-                          </ul>
-                        </div>
-                      </td> 
-                      <td>
-                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
-                      Yes!
-                      </button>  
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Fråga 3</td>
-                      <td>Ja</td>
-                      <td>
-                        <div class="dropdown">
-                          <button
-                            class="btn btn-secondary dropdown-toggle"
-                            type="button"
-                            id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            Ja/Nej
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
-                          </ul>
-                        </div>
-                      </td>
-                      <td> 
-                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
-                      Yes!
-                    </button>  
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
-            </div>
-            </div>
-            <div class="accordion-item">
-            <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                B. Entreparti
-                </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#checklistItems">
-                <div class="accordion-body">
-                <div class="checklistTable" style="margin-top: 4em;">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Kontrollpunkter</th>
-                      <th scope="col">Önskat resultat</th>
-                      <th scope="col">Ja/Nej</th>
-                      <th scope="col">Notering</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Fråga 1</td>
-                      <td>Ja</td>
-                      <td>
-                        <div class="dropdown">
-                          <button
-                            class="btn btn-secondary dropdown-toggle"
-                            type="button"
-                            id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            Ja/Nej
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
-                          </ul>
-                        </div>
-                      </td>
-                      <td>
-                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
-                      Yes! 
-                    </button> 
-                    <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>                        
-                    </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Fråga 2</td>
-                      <td>Ja</td>
-                      <td>
-                        <div class="dropdown">
-                          <button
-                            class="btn btn-secondary dropdown-toggle"
-                            type="button"
-                            id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            Ja/Nej
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
-                          </ul>
-                        </div>
-                      </td>
-                      <td>
-                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
-                      Yes!
-                    </button>  
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Fråga 3</td>
-                      <td>Ja</td>
-                      <td>
-                        <div class="dropdown">
-                          <button
-                            class="btn btn-secondary dropdown-toggle"
-                            type="button"
-                            id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            Ja/Nej
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
-                            <li class="dropdown-item">N/A</li>
-                          </ul>
-                        </div>
-                      </td>
-                      <td>
-                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
-                      Yes!
-                    </button>  
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
                 </div>
-            </div>
-            </div>
-            <div class="accordion-item">
-            <h2 class="accordion-header" id="headingThree">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                C. Trapphus
-                </button>
-            </h2>
-            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#checklistItems">
-                <div class="accordion-body">
-                <div class="checklistTable" style="margin-top: 4em;">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Kontrollpunkter</th>
-                      <th scope="col">Önskat resultat</th>
-                      <th scope="col">Ja/Nej</th>
-                      <th scope="col">Notering</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Fråga 1</td>
-                      <td>Ja</td>
-                      <td>
-                        <div class="dropdown">
-                          <button
-                            class="btn btn-secondary dropdown-toggle"
-                            type="button"
-                            id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            Ja/Nej
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
-                          </ul>
-                        </div>
-                      </td>
-                      <td>
-                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
-                      Yes!
-                    </button>  
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Fråga 2</td>
-                      <td>Ja</td>
-                      <td>
-                        <div class="dropdown">
-                          <button
-                            class="btn btn-secondary dropdown-toggle"
-                            type="button"
-                            id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            Ja/Nej
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
-                          </ul>
-                        </div>
-                      </td>
-                      <td>
-                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
-                      Yes!
-                    </button>  
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Fråga 3</td>
-                      <td>Ja</td>
-                      <td>
-                        <div class="dropdown">
-                          <button
-                            class="btn btn-secondary dropdown-toggle"
-                            type="button"
-                            id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            Ja/Nej
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li class="dropdown-item">Ja</li>
-                            <li class="dropdown-item">Nej</li>
-                          </ul>
-                        </div>
-                      </td>
-                      <td>
-                      <button type="button" class="btn btn-notering" data-toggle="modal" data-target="#exampleModal">
-                      Yes!
-                      </button>  
-                      
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
               </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> B. Entreparti </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#checklistItems">
+                  <div class="accordion-body">
+                    <div class="checklistTable" style="margin-top: 4em;">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Kontrollpunkter</th>
+                            <th scope="col">Önskat resultat</th>
+                            <th scope="col">Ja/Nej</th>
+                            <th scope="col">Notering</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>Fråga 1</td>
+                            <td>Ja</td>
+                            <td>
+                              <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false"> Ja/Nej </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
+                                  <li class="dropdown-item">Ja</li>
+                                  <li class="dropdown-item">Nej</li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+
+                            <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabelA3">Ny notering</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form>
+                                      <div class="mb-3">
+                                        <label for="messagetextfour" class="col-form-label">Notering:</label>
+                                        <textarea class="form-control" id="message-textA4"></textarea>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Spara</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+    
+                            
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td>Fråga 2</td>
+                            <td>Ja</td>
+                            <td>
+                              <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton5" data-bs-toggle="dropdown" aria-expanded="false"> Ja/Nej </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton5">
+                                  <li class="dropdown-item">Ja</li>
+                                  <li class="dropdown-item">Nej</li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+
+                            <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabelA3">Ny notering</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form>
+                                      <div class="mb-3">
+                                        <label for="messagetextfour" class="col-form-label">Notering:</label>
+                                        <textarea class="form-control" id="message-textA4"></textarea>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Spara</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                              
+                              
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">3</th>
+                            <td>Fråga 3</td>
+                            <td>Ja</td>
+                            <td>
+                              <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton6" data-bs-toggle="dropdown" aria-expanded="false"> Ja/Nej </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton6">
+                                  <li class="dropdown-item">Ja</li>
+                                  <li class="dropdown-item">Nej</li>
+                                  <li class="dropdown-item">N/A</li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              
+                            <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabelA3">Ny notering</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form>
+                                      <div class="mb-3">
+                                        <label for="messagetextfour" class="col-form-label">Notering:</label>
+                                        <textarea class="form-control" id="message-textA4"></textarea>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Spara</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+    
+
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"> C. Trapphus </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#checklistItems">
+                  <div class="accordion-body">
+                    <div class="checklistTable" style="margin-top: 4em;">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Kontrollpunkter</th>
+                            <th scope="col">Önskat resultat</th>
+                            <th scope="col">Ja/Nej</th>
+                            <th scope="col">Notering</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>Fråga 1</td>
+                            <td>Ja</td>
+                            <td>
+                              <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="7" data-bs-toggle="dropdown" aria-expanded="false"> Ja/Nej </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton7">
+                                  <li class="dropdown-item">Ja</li>
+                                  <li class="dropdown-item">Nej</li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              
+                            <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabelA3">Ny notering</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form>
+                                      <div class="mb-3">
+                                        <label for="messagetextfour" class="col-form-label">Notering:</label>
+                                        <textarea class="form-control" id="message-textA4"></textarea>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Spara</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+   
+
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td>Fråga 2</td>
+                            <td>Ja</td>
+                            <td>
+                              <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton8" data-bs-toggle="dropdown" aria-expanded="false"> Ja/Nej </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton8">
+                                  <li class="dropdown-item">Ja</li>
+                                  <li class="dropdown-item">Nej</li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              
+  
+                            <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabelA3">Ny notering</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form>
+                                      <div class="mb-3">
+                                        <label for="messagetextfour" class="col-form-label">Notering:</label>
+                                        <textarea class="form-control" id="message-textA4"></textarea>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Spara</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">3</th>
+                            <td>Fråga 3</td>
+                            <td>Ja</td>
+                            <td>
+                              <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton9" data-bs-toggle="dropdown" aria-expanded="false"> Ja/Nej </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton9">
+                                  <li class="dropdown-item">Ja</li>
+                                  <li class="dropdown-item">Nej</li>
+                                </ul>
+                              </div>
+                            </td>
+                            <td>
+                              
+                            <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabelA3">Ny notering</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form>
+                                      <div class="mb-3">
+                                        <label for="messagetextfour" class="col-form-label">Notering:</label>
+                                        <textarea class="form-control" id="message-textA4"></textarea>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Spara</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            </div>
-      </div>
+          </div>
         </div>
-        </div>
+      </body>
+    </html>
         `;
   }
 }

@@ -2,6 +2,7 @@ import viewRouter from "./helpers/viewRouter.js";
 import functionRouter from "./helpers/functionRouter.js";
 import navigateTo from "./helpers/navigateTo.js";
 
+
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("DOMContentLoaded");
 
@@ -30,3 +31,4 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 window.addEventListener("popstate", viewRouter());
+
