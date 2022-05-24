@@ -9,7 +9,7 @@ export default async function (omradenStr, frageTyperStr, checklistId) {
   
     <div>
       <label for="Datum">Datum</label>
-      <input type="date" id="addChecklistDatum" aria-label="Datum" class="form-control" name="Datum" lang="sv" data-function="saveDatum">
+      <input class="form-control" type="text" placeholder="Datum..." readonly>
   
     </div>
   
