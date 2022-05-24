@@ -32,43 +32,78 @@ router.get("/getAllDetailedData", async (req, res) => {
   // get all checklists
   const checklistParentId = process.env.CHECKLIST_PARENT_ID;
 
-  let responseAllChecklist = await apiCallGet(`/instance?parentId=${checklistParentId}`);
+  const responseAllChecklists = apiCallGet(`/instance?parentId=${process.env.CHECKLIST_PARENT_ID}`)
+  const responseAllAddresses = apiCallGet(`/instance?parentId=${process.env.ADDRESS_PARENT_ID}`)
+  const responseAllAreas = apiCallGet(`/instance?parentId=${process.env.AREA_PARENT_ID}`)
+  const responseAllProperties = apiCallGet(`/instance?parentId=${process.env.PROPERTY_PARENT_ID}`)
 
-// get all addresses 
+  const responseChecklistAddressRel = apiCallGet(`/instanceDataExternalRel?parentId=${process.env.CHECKLIST_TO_ADDRESS_REL_PARENT_ID}`)
+  const responseAddressPropertyRel = apiCallGet(`/instanceDataInternalRel?parentId=${process.env.ADDRESS_TO_PROPERTY_REL_PARENT_ID}`)
+  const responsePropertyAreaRel = apiCallGet(`/instanceDataInternalRel?parentId=${process.env.PROPERTY_TO_AREA_REL_PARENT_ID}`)
 
-const addressParentId = process.env.ADDRESS_PARENT_ID;
+  const results = await Promise.all([responseAllChecklists, responseAllAddresses, responseAllAreas, responseAllProperties, responseChecklistAddressRel, responseAddressPropertyRel, responsePropertyAreaRel])
 
-let responseAllAddress = await apiCallGet(`/instance?parentId=${addressParentId}`);
+  const [checklists, addresses, areas, properties, checklistAddressRel, addressPropertyRel, propertyAreaRel] = results.map(el =>{
+    return el.data
+  })
 
-// get all relationships between checklists and addresses 
+  //MAPPINGGGGGG
+  const allChecklistsFormatted = []
+  for(const i in checklists) {
 
-// get all properties
-
-const propertyParentId = process.env.PROPERTY_PARENT_ID;
-
-let responseAllProperty = await apiCallGet(`/instance?parentId=${propertyParentId}`);
-
-// get all relationships between properties and addresses 
-
-// get all area
-
-const areaParentId = process.env.AREA_PARENT_ID;
-
-let responseAllArea = await apiCallGet(`/instance?parentId=${areaParentId}`);
-
-// get all relationships between properties and area 
+    const el = checklists[i]
 
 
-  if ((await response.status) !== 200) {
-    return res.status(response.status).json(response.data);
-  } else {
-    return res.json(response.data);
+    const checklist = {}
+    allChecklistsFormatted.push(checklist)
+
+    checklist.id = el.id
+    checklist.createdDate = el.created
+    checklist.updatedDate = el.updated
+
+
+    switch(el.props[0][process.env.ASSESSMENT_STATUS]){
+      case process.env.STATUS_IN_PROGRESS:
+        checklist.status = "In progress"
+        break
+      case process.env.STATUS_NOT_APPROVED:
+        checklist.status = "Not approved"
+        break
+      case process.env.STATUS_APPROVED:
+        checklist.status = "Approved"
+        break
+    }
+
+
+    const checklistToAddress = checklistAddressRel.find(relation => relation.source === el.id)
+    if(checklistToAddress === undefined) continue
+    console.log("checklistToAddress: " + checklistToAddress)
+    const address = addresses.find(address => address.id === checklistToAddress.target)
+    checklist.address = address
+
+
+    const addressToProperty = addressPropertyRel.find(relation => relation.source === address.id)
+    if(addressToProperty === undefined) continue
+    const property = properties.find(property => property.id === addressToProperty.target)
+    checklist.property = property
+
+
+    const propertyToArea = propertyAreaRel.find(relation => relation.source === property.id)
+    if(propertyToArea === undefined) continue
+    checklist.area = areas.find(area => area.id === propertyToArea.target)
+
+    console.log("formatted list: " + JSON.stringify(allChecklistsFormatted, null, 2))
+
   }
+
+
+//   if ((await response.status) !== 200) {
+//     return res.status(response.status).json(response.data);
+//   } else {
+//     return res.json(response.data);
+//   }
+
 });
-
-
-// 
-
 
 router.post("/create", async (req, res) => {
   console.log("create checklist route used");
