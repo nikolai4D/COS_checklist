@@ -17,7 +17,7 @@ export default class ViewChecklist {
         <link rel="stylesheet" href="styles.css">
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <title>COS</title>
+        <title>COS2</title>
       </head>
       <body>
         <!-- Optional JavaScript; choose one of the two! -->
@@ -92,7 +92,7 @@ export default class ViewChecklist {
                               </div>
                             </td>
                             <td>
-                              <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                              <button type="button" class="btn-notering" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
                               <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
@@ -131,7 +131,7 @@ export default class ViewChecklist {
                               </div>
                             </td>
                             <td>
-                              <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                              <button type="button" class="btn-notering" data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-whatever="@mdo">Ja!</button>
                               <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModal2" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
@@ -170,7 +170,7 @@ export default class ViewChecklist {
                               </div>
                             </td>
                             <td>
-                              <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                              <button type="button" class="btn-notering" data-bs-toggle="modal" data-bs-target="#exampleModal3" data-bs-whatever="@mdo">Ja!</button>
                               <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModal3" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
@@ -233,7 +233,7 @@ export default class ViewChecklist {
                               </div>
                             </td>
                             <td>
-                              <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                              <button type="button" class="btn-notering" data-bs-toggle="modal" data-bs-target="#exampleModal33" data-bs-whatever="@mdo">Ja!</button>
                               <div class="modal fade" id="exampleModal33" tabindex="-1" aria-labelledby="exampleModal33" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
@@ -272,7 +272,7 @@ export default class ViewChecklist {
                               </div>
                             </td>
                             <td>
-                              <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                              <button type="button" class="btn-notering" data-bs-toggle="modal" data-bs-target="#exampleModal31" data-bs-whatever="@mdo">Ja!</button>
                               <div class="modal fade" id="exampleModal31" tabindex="-1" aria-labelledby="exampleModal31" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
@@ -312,7 +312,7 @@ export default class ViewChecklist {
                               </div>
                             </td>
                             <td>
-                              <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                              <button type="button" class="btn-notering" data-bs-toggle="modal" data-bs-target="#exampleModal39" data-bs-whatever="@mdo">Ja!</button>
                               <div class="modal fade" id="exampleModal39" tabindex="-1" aria-labelledby="exampleModal39" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
@@ -375,7 +375,7 @@ export default class ViewChecklist {
                               </div>
                             </td>
                             <td>
-                              <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                              <button type="button" class="btn-notering" data-bs-toggle="modal" data-bs-target="#exampleModal37" data-bs-whatever="@mdo">Ja!</button>
                               <div class="modal fade" id="exampleModal37" tabindex="-1" aria-labelledby="exampleModal37" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
@@ -414,7 +414,7 @@ export default class ViewChecklist {
                               </div>
                             </td>
                             <td>
-                              <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                              <button type="button" class="btn-notering" data-bs-toggle="modal" data-bs-target="#exampleModal35" data-bs-whatever="@mdo">Ja!</button>
                               <div class="modal fade" id="exampleModal35" tabindex="-1" aria-labelledby="exampleModal35" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
@@ -453,7 +453,7 @@ export default class ViewChecklist {
                               </div>
                             </td>
                             <td>
-                              <button type="button" class="btn btn-notering mb1 bg-green" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Ja!</button>
+                              <button type="button" class="btn-notering" data-bs-toggle="modal" data-bs-target="#exampleModal36" data-bs-whatever="@mdo">Ja!</button>
                               <div class="modal fade" id="exampleModal36" tabindex="-1" aria-labelledby="exampleModal36" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
