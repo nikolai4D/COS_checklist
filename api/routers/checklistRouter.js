@@ -10,6 +10,98 @@ router.use(bodyParser.json());
 
 //APIs
 
+// 
+router.get("/getAllData", async (req, res) => {
+  console.log("Get all checklists route used");
+
+  const parentId = process.env.CHECKLIST_PARENT_ID;
+
+  let response = await apiCallGet(`/instance?parentId=${parentId}`);
+
+  if ((await response.status) !== 200) {
+    return res.status(response.status).json(response.data);
+  } else {
+    return res.json(response.data);
+  }
+});
+
+
+router.get("/getAllDetailedData", async (req, res) => {
+  console.log("Get all checklists route used");
+
+  // get all checklists
+
+  const responseAllChecklists = apiCallGet(`/instance?parentId=${process.env.CHECKLIST_PARENT_ID}`)
+  const responseAllAddresses = apiCallGet(`/instance?parentId=${process.env.ADDRESS_PARENT_ID}`)
+  const responseAllAreas = apiCallGet(`/instance?parentId=${process.env.AREA_PARENT_ID}`)
+  const responseAllProperties = apiCallGet(`/instance?parentId=${process.env.PROPERTY_PARENT_ID}`)
+
+  const responseChecklistAddressRel = apiCallGet(`/instanceDataExternalRel?parentId=${process.env.CHECKLIST_TO_ADDRESS_REL_PARENT_ID}`)
+  const responseAddressPropertyRel = apiCallGet(`/instanceDataInternalRel?parentId=${process.env.ADDRESS_TO_PROPERTY_REL_PARENT_ID}`)
+  const responsePropertyAreaRel = apiCallGet(`/instanceDataInternalRel?parentId=${process.env.PROPERTY_TO_AREA_REL_PARENT_ID}`)
+
+  const results = await Promise.all([responseAllChecklists, responseAllAddresses, responseAllAreas, responseAllProperties, responseChecklistAddressRel, responseAddressPropertyRel, responsePropertyAreaRel])
+
+  const [checklists, addresses, areas, properties, checklistAddressRel, addressPropertyRel, propertyAreaRel] = results.map(el =>{
+    return el.data
+  })
+
+  //MAPPINGGGGGG
+  const allChecklistsFormatted = []
+  for(const i in checklists) {
+
+    const el = checklists[i]
+
+
+    const checklist = {}
+    allChecklistsFormatted.push(checklist)
+
+    checklist.id = el.id
+    checklist.createdDate = el.created
+    checklist.updatedDate = el.updated
+
+
+    switch(el.props[0][process.env.ASSESSMENT_STATUS]){
+      case process.env.STATUS_IN_PROGRESS:
+        checklist.status = "In progress"
+        break
+      case process.env.STATUS_NOT_APPROVED:
+        checklist.status = "Not approved"
+        break
+      case process.env.STATUS_APPROVED:
+        checklist.status = "Approved"
+        break
+    }
+
+
+    const checklistToAddress = checklistAddressRel.find(relation => relation.source === el.id)
+    if(checklistToAddress === undefined) continue
+    const address = addresses.find(address => address.id === checklistToAddress.target)
+    checklist.address = address
+
+
+    const addressToProperty = addressPropertyRel.find(relation => relation.source === address.id)
+    if(addressToProperty === undefined) continue
+    const property = properties.find(property => property.id === addressToProperty.target)
+    checklist.property = property
+
+
+    const propertyToArea = propertyAreaRel.find(relation => relation.source === property.id)
+    if(propertyToArea === undefined) continue
+    checklist.area = areas.find(area => area.id === propertyToArea.target)
+
+  }
+
+  return res.json({allChecklistsFormatted, addresses, areas, properties, checklistAddressRel, addressPropertyRel, propertyAreaRel})
+
+  // if (( (await responseAllChecklists.status) !== 200) || ((await responseAllAddresses.status ) !== 200) || ((await responseAllAreas.status)  !== 200) ||(( await responseAllProperties.status) !== 200) || ((await responseChecklistAddressRel.status) !== 200) || ((await responseAddressPropertyRel.status) !== 200) || ((await responsePropertyAreaRel.status) !== 200)) {
+  //   return res.status(404).json({"message": "Something went wrong"});
+  // } else {
+  //   return res.json({data: allChecklistsFormatted});
+  // }
+
+});
+
 router.post("/create", async (req, res) => {
   console.log("create checklist route used");
 
@@ -432,65 +524,6 @@ router.post("/read/fragor", async (req, res) => {
   } else {
     return res.json(fragor);
   }
-
-});
-
-router.get("/getAll", async (req, res) => {
-  console.log("Get all checklists route used");
-
-  const parentId = "td_1db022c1-a269-4290-832d-be29416455a0";
-
-  let response = await apiCallGet(`/instance?parentId=${parentId}`);
-
-  if ((await response.status) !== 200) {
-    return res.status(response.status).json(response.data);
-  } else {
-    return res.json(response.data);
-  }
-});
-
-router.get("/dashboard", async (req, res) => {
-  console.log("Get all checklists route used");
-
-  const parentId = "td_1db022c1-a269-4290-832d-be29416455a0";
-
-  let response = await apiCallGet(`/instance?parentId=${parentId}`);
-
-
-  if ((await response.status) !== 200) return res.status(response.status).json(response.data);
-
-  let checklistsWithDetails = response.data.map(async obj => {
-
-    let sourcesToChecklist = (await apiCallPost({ targetId: obj.id }, `/instance/sourcesToTarget`)).data;
-
-    let checklistDetailsNode;
-    for (let linkObject of sourcesToChecklist.links) {
-      if (linkObject.linkParentId === 'tder_6c0d45e5-ce61-42fe-9697-d4197b794f04-td_c795835c-6c3b-4292-8d06-55d71416d44b-td_1db022c1-a269-4290-832d-be29416455a0') {
-        checklistDetailsNode = linkObject.sources[0];
-      }
-    }
-
-    let sourcesToDetail = (
-      await apiCallPost(
-        { targetId: checklistDetailsNode.id },
-        `/instance/sourcesToTarget`
-      )
-    ).data;
-
-    let datum, omrade, fastighet, adress;
-    let datumParentId = `tder_2e64c052-f211-46b2-9d21-0be86f5330eb-td_1d84a7d7-bbd9-43d3-b9d4-86d3c240383f-td_c795835c-6c3b-4292-8d06-55d71416d44b`
-
-    sourcesToDetail.links.forEach((detail) => {
-      if (detail.linkParentId === datumParentId) {
-        datum = detail.sources[0]
-      }
-    })
-    obj.datum = datum;
-    return obj
-  })
-  let resolvedChecklistWithDetails = await Promise.all(checklistsWithDetails)
-
-  return await res.status(response.status).json(resolvedChecklistWithDetails);
 
 });
 
