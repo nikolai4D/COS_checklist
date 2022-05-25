@@ -3,7 +3,7 @@
 
 export default class ViewChecklist {
   constructor() {
-    document.title = "View Checklist";
+    document.title = "Checklist - View Checklist";
   }
 
   getTemplate() {

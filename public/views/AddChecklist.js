@@ -3,37 +3,36 @@ import Actions from "../store/Actions.js";
 import Checklist from "../components/Checklista.js"
 import Fraga from "../components/Fraga.js"
 import Fragetyp from "../components/Fragetyp.js"
-
+import Merchant from "../store/Merchant.js";
+import {Librarian} from "../store/Librarian.js";
 export default class AddChecklist {
   constructor() {
-    document.title = "Add Checklist";
+    document.title = "Checklist - Add Checklist";
   }
 
   async getTemplate() {
 
-    let omradenStr = await this.getOmradenStr();
+    let areasStr = await this.getAreasStr();
     let frageTyperStr = await this.getFragetyperStr()
     let checklistId = State.activeChecklistId
 
-    console.log("State: " + JSON.stringify(State, null, 2))
-    return `${await Checklist(omradenStr, frageTyperStr, checklistId)}`
+    return `${await Checklist(areasStr, frageTyperStr, checklistId)}`
   }
 
-  async getOmradenStr() {
-    await Actions.GET_ALL_CHECKLIST_OMRADE();
+  async getAreasStr() {
 
-    let allOmraden = (State.allOmraden);
-    allOmraden.sort((a, b) => a.title.localeCompare(b.title));
+    let allAreas = State.allAreas;
+    allAreas.sort((a, b) => a.title.localeCompare(b.title));
 
-    let omradenStr = "";
-    allOmraden.forEach(omrade => {
-      omradenStr += `<option  data-function="saveOmrade"  value="${omrade.id}">${omrade.title}</option>`;
+    let areasStr = "";
+    allAreas.forEach(area => {
+      areasStr += `<option  data-function="saveOmrade"  value="${area.id}">${area.title}</option>`;
     });
-    return omradenStr;
+    return areasStr;
   }
 
   async getFragetyperStr() {
-    await Actions.GET_ALL_FRAGETYPER();
+    await Merchant.getAllDataOfType(Librarian.questionGroup.type)
 
     let allFragetyper = State.allFragetyper;
 
