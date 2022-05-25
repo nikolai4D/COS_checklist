@@ -4,10 +4,10 @@ import { State } from "../store/State.js";
 import Actions from "../store/Actions.js";
 
 //views
-import Dashboard from "../views/Dashboard.js";
+import DashboardView from "../views/DashboardView.js";
 import Login from "../views/Login.js";
 import Register from "../views/Register.js";
-import AddChecklist from "../views/AddChecklist.js";
+import DetailView from "../views/DetailView.js";
 import ViewChecklist from "../views/ViewChecklist.js";
 import Navbar from "../components/Navbar.js";
 
@@ -18,10 +18,10 @@ const viewRouter = async () => {
   }
 
   const routes = [
-    { path: "/", view: Dashboard },
+    { path: "/", view: DashboardView },
     { path: "/login", view: Login },
     { path: "/register", view: Register },
-    { path: "/addChecklist", view: AddChecklist },
+    { path: "/addChecklist", view: DetailView },
     { path: "/viewChecklist", view: ViewChecklist },
   ];
 

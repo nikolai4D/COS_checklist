@@ -5,18 +5,23 @@ import Fraga from "../components/Fraga.js"
 import Fragetyp from "../components/Fragetyp.js"
 import Merchant from "../store/Merchant.js";
 import {Librarian} from "../store/Librarian.js";
-export default class AddChecklist {
+export default class DetailView {
   constructor() {
     document.title = "Checklist - Add Checklist";
   }
 
   async getTemplate() {
 
+    await this.questionsToHTML()
     let areasStr = await this.getAreasStr();
     let frageTyperStr = await this.getFragetyperStr()
     let checklistId = State.activeChecklistId
 
     return `${await Checklist(areasStr, frageTyperStr, checklistId)}`
+  }
+
+  async questionsToHTML(){
+    await Merchant.getAllDetailedDataOfType("")
   }
 
   async getAreasStr() {
