@@ -46,7 +46,6 @@ router.get("/getAllDetailedData", async (req, res) => {
     return el.data
   })
 
-  //MAPPINGGGGGG
   const allChecklistsFormatted = []
   for(const i in checklists) {
 

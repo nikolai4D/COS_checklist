@@ -3,16 +3,16 @@ import {Librarian} from "../store/Librarian.js";
 
 import { State } from "../store/State.js";
 
-export default class Dashboard {
+export default class DashboardView {
   constructor() {
     document.title = "Checklist - Dashboard";
   }
 
-  async getAllChecklists() {
-     await Merchant.getAllDetailedDataOfType(Librarian.checklist.type)
+  async checklistsToHTML() {
 
-    let checklists = State.allChecklistsWithDetails;
-    let formatedChecklists = checklists.map((checklist, index) => {
+    let checklists = (await State.allChecklistsWithDetails.get()).allChecklistsFormatted
+
+    let formattedChecklists = checklists.map((checklist, index) => {
       if(!checklist.address){
         checklist.address = {"title" : "-"}
         checklist.property = {"title" : "-"}
@@ -20,18 +20,19 @@ export default class Dashboard {
       }
 
       let number = index + 1
-      return `  <tr data-id="${checklist.id}">
-        <th scope="row">${number}</th>
-        <td>${checklist.createdDate}</td>
-        <td>${checklist.area.title}</td>
-        <td>${checklist.property.title}</td>
-        <td>${checklist.status}</td>
+      return `  
+        <tr data-id="${checklist.id}">
+          <th scope="row">${number}</th>
+          <td>${checklist.createdDate}</td>
+          <td>${checklist.area.title}</td>
+          <td>${checklist.property.title}</td>
+          <td>${checklist.status}</td>
+  
+          <td><button type="button" class="btn btn-success" data-view="/viewChecklist" >➚</button></td>
+          <td><button type="button" class="btn btn-danger" data-function="deleteChecklist" >×</button></td>
+        </tr>`})
 
-  <td><button type="button" class="btn btn-success" data-view="/viewChecklist" >➚</button></td>
-  <td><button type="button" class="btn btn-danger" data-function="deleteChecklist" >×</button></td>
-</tr>`})
-
-    return formatedChecklists.join("")
+    return formattedChecklists.join("")
   }
 
   async getTemplate() {
@@ -52,7 +53,7 @@ export default class Dashboard {
               </tr>
             </thead>
             <tbody>
-            ${await this.getAllChecklists()}
+            ${await this.checklistsToHTML()}
             </tbody>
           </table>
             </div >
