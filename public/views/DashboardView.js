@@ -11,6 +11,7 @@ export default class DashboardView {
   async checklistsToHTML() {
 
     let checklists = (await State.allChecklistsWithDetails.get()).allChecklistsFormatted
+    let questions = (await State.allQuestionsWithDetails.get()).allQuestionsFormatted
 
     let formattedChecklists = checklists.map((checklist, index) => {
       if(!checklist.address){

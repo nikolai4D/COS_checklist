@@ -11,10 +11,10 @@ router.use(bodyParser.json());
 //APIs
 
 // 
-router.get("/getAllData", async (req, res) => {
+router.get("/getAllDetailedData", async (req, res) => {
         console.log("Get all checklists route used");
       
-        // get all checklists
+        // get all questions
       
         const responseAllQuestionGroups = apiCallGet(`/type?parentId=${process.env.QUESTION_GROUP_PARENT_ID}`)
         const responseAllQuestions = apiCallGet(`/type?parentId=${process.env.QUESTION_PARENT_ID}`)
@@ -30,59 +30,116 @@ router.get("/getAllData", async (req, res) => {
 
         const results = await Promise.all([responseAllQuestionGroups, responseAllQuestions, responseAllAnswers, responseAllAnswerDetails, responseQuestionToChecklistRel, responseQuestionToQuestionGroupRel, responsePreferredAnswerToQuestionRel, responseAnswerToQuestionRel, responseAnswerDetailToAnswerRel])
       
-        const [checklists, addresses, areas, properties, checklistAddressRel, addressPropertyRel, propertyAreaRel] = results.map(el =>{
+        const [questionGroups, questions, answers, answerDetails, questionToChecklistRel, questionToQuestionGroupRel, preferredAnswerToQuestionRel, answerToQuestionRel, answerDetailToAnswerRel] = results.map(el =>{
           return el.data
         })
 
-        console.log("answer results: " + JSON.stringify(results, null, 2))
-        const allChecklistsFormatted = []
-        for(const i in checklists) {
-      
-          const el = checklists[i]
-      
-      
-          const checklist = {}
-          allChecklistsFormatted.push(checklist)
-      
-          checklist.id = el.id
-          checklist.createdDate = el.created
-          checklist.updatedDate = el.updated
-      
-      
-          switch(el.props[0][process.env.ASSESSMENT_STATUS]){
-            case process.env.STATUS_IN_PROGRESS:
-              checklist.status = "In progress"
-              break
-            case process.env.STATUS_NOT_APPROVED:
-              checklist.status = "Not approved"
-              break
-            case process.env.STATUS_APPROVED:
-              checklist.status = "Approved"
-              break
-          }
-      
-      
-          const checklistToAddress = checklistAddressRel.find(relation => relation.source === el.id)
-          if(checklistToAddress === undefined) continue
-          const address = addresses.find(address => address.id === checklistToAddress.target)
-          checklist.address = address
-      
-      
-          const addressToProperty = addressPropertyRel.find(relation => relation.source === address.id)
-          if(addressToProperty === undefined) continue
-          const property = properties.find(property => property.id === addressToProperty.target)
-          checklist.property = property
-      
-      
-          const propertyToArea = propertyAreaRel.find(relation => relation.source === property.id)
-          if(propertyToArea === undefined) continue
-          checklist.area = areas.find(area => area.id === propertyToArea.target)
-      
+
+        // add answerDetails to Answers
+        const allAnswersFormatted = []
+        for(const i in answers) {
+
+          const el = answers[i]
+          const answer = {};
+          allAnswersFormatted.push(answer);
+          answer.id = el.id;
+          answer.title = el.title;
+          answer.createdDate = el.created;
+          answer.updatedDate = el.updated;
+          answer.answerDetails = [];
+
+
+          const answerDetailToAnswer = answerDetailToAnswerRel.filter(relation => relation.target === el.id);
+          if(answerDetailToAnswer.length === 0) continue
+
+          answerDetailToAnswer.forEach(relation => {
+            let validAnswerDetails = answerDetails.filter(answerDetail => relation.source === answerDetail.id)
+            answer.answerDetails.push(...validAnswerDetails)
+          })
         }
+
+        // add answers to questions
+        const allQuestionsFormatted = []
+        for(const i in questions) {
+
+          const el = questions[i]
+          const question = {};
+          allQuestionsFormatted.push(question);
+          question.id = el.id;
+          question.title = el.title;
+          question.createdDate = el.created;
+          question.updatedDate = el.updated;
+          question.answers = {possibleAnswers: [], preferredAnswer: null};
+
+
+          const answerToQuestion = answerToQuestionRel.filter(relation => relation.target === el.id);
+
+          const preferredAnswerToQuestion = preferredAnswerToQuestionRel.find(relation => relation.target === el.id);
+
+
+          if(answerToQuestion.length != 0) {
+
+          answerToQuestion.forEach(relation => {
+            let possibleAnswers = allAnswersFormatted.filter(answer => relation.parentId === process.env.ANSWER_TO_QUESTION_REL_PARENT_ID && relation.source === answer.id)
+            question.answers.possibleAnswers.push(...possibleAnswers)
+          })
+        }
+        if(preferredAnswerToQuestion !== undefined) {
+
+          const preferredAnswer = allAnswersFormatted.find(answer => answer.id === preferredAnswerToQuestion.source)
+          question.answers.preferredAnswer = preferredAnswer
+          
+        }}
+
+        const allQuestionGroupsFormatted = []
+
+
+        for(const i in questionGroups) {
+
+          const el = questionGroups[i]
+
+          const questionGroup = {};
+          allQuestionGroupsFormatted.push(questionGroup)
+          questionGroup.id = el.id
+          questionGroup.title = el.title;
+          questionGroup.createdDate = el.created
+          questionGroup.updatedDate = el.updated
+          questionGroup.questions = []
+
+          const questionToQuestionGroup = questionToQuestionGroupRel.filter(relation => relation.target === el.id);
+          if(questionToQuestionGroup.length === 0) continue
+
+          questionToQuestionGroup.forEach(relation => {
+            let question = allQuestionsFormatted.filter(question => relation.source === question.id)
+            questionGroup.questions.push(...question)
+          })
+        }
+
+        //   const questionToQuestionGroup = questionToQuestionGroupRel.find(relation => relation.target === el.id)
+        //   console.log(questionToQuestionGroupRel, "questionToQuestionGroupRel")
+
+        //   if(questionToQuestionGroup === undefined) continue
+        //   const question = allQuestionsFormatted.find(questions => questions.id === questionToQuestionGroup.source)
+        //   questionGroup.questions.push(question)
       
-        return res.json({allChecklistsFormatted, addresses, areas, properties, checklistAddressRel, addressPropertyRel, propertyAreaRel})
+        //     console.log(questionGroup, "questionGroup")
+        // }
       
-        // if (( (await responseAllChecklists.status) !== 200) || ((await responseAllAddresses.status ) !== 200) || ((await responseAllAreas.status)  !== 200) ||(( await responseAllProperties.status) !== 200) || ((await responseChecklistAddressRel.status) !== 200) || ((await responseAddressPropertyRel.status) !== 200) || ((await responsePropertyAreaRel.status) !== 200)) {
+        //   const addressToProperty = questionToQuestionGroup.find(relation => relation.source === address.id)
+        //   if(addressToProperty === undefined) continue
+        //   const property = answerDetails.find(property => property.id === addressToProperty.target)
+        //   checklist.property = property
+      
+      
+        //   const propertyToArea = preferredAnswerToQuestionRel, answerToQuestionRel, answerDetailToAnswerRel.find(relation => relation.source === property.id)
+        //   if(propertyToArea === undefined) continue
+        //   checklist.area = answers.find(area => area.id === propertyToArea.target)
+      
+        // }
+      
+        return res.json({questionsDetailed: allQuestionGroupsFormatted})
+      
+        // if (( (await responseAllChecklists.status) !== 200) || ((await responseAllquestions.status ) !== 200) || ((await responseAllanswers.status)  !== 200) ||(( await responseAllanswerDetails.status) !== 200) || ((await responsequestionToChecklistRel.status) !== 200) || ((await responsequestionToQuestionGroup.status) !== 200) || ((await responsepreferredAnswerToQuestionRel, answerToQuestionRel, answerDetailToAnswerRel.status) !== 200)) {
         //   return res.status(404).json({"message": "Something went wrong"});
         // } else {
         //   return res.json({data: allChecklistsFormatted});

@@ -1,6 +1,5 @@
 import Actions from "../store/Actions.js";
 import deleteChecklist from "./checklistOverview/deleteChecklist.js";
-import addChecklist from "./checklistOverview/addChecklist.js";
 
 import uploadImages from "./checklistDetails/questionSection/uploadImages.js";
 import showImage from "./checklistDetails/questionSection/showImage.js";
@@ -18,7 +17,6 @@ export default async function (demandedRoute, event) {
     { path: "upload-images", request: uploadImages },
     { path: "show-image", request: showImage },
     { path: "delete-image", request: deleteImage },
-    { path: "addChecklist", request: addChecklist },
     { path: "saveDatum", request: saveDatum },
     { path: "saveOmrade", request: saveOmrade },
     { path: "saveFastighet", request: saveFastighet },
