@@ -1,15 +1,15 @@
 
-export default function (omradenStr, frageTyperStr, checklistId) {
+export default function (omradenStr, frageTyperStr, checklist) {
 
     return `<div class="container">
     <button type="button" class="btn btn-success" data-function="/saveChecklist" style="margin-top: 2em; margin-bottom: 2em;">Skicka in</button>
     <button type="button" class="btn btn-danger" data-view="/" style="margin-top: 2em; margin-bottom: 2em;">Tillbaka</button>
-    <h3>Ny checklista: ${checklistId}</h3>
+    <h3>Ny checklista: ${checklist.id}</h3>
     <div id="newChecklist" style="margin-top: 2em; margin-bottom: 3em;">
   
     <div>
       <label for="Datum">Datum</label>
-      <input class="form-control" type="text" placeholder="Datum..." readonly>
+      <input class="form-control" type="text" placeholder="${new Date(checklist.created).toLocaleString()}" readonly>
   
     </div>
   

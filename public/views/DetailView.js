@@ -13,17 +13,11 @@ export default class DetailView {
   async getTemplate() {
 
     let checklist = await State.activeChecklist.get();
-    console.log(checklist, "Checklist")
-
-
     let areasStr = await this.getAreasStr();
     let frageTyperStr = await this.getFragetyperStr()
 
 
-
-    let checklistId = checklist.id
-
-    return `${await Checklist(areasStr, frageTyperStr, checklistId)}`
+    return `${await Checklist(areasStr, frageTyperStr, checklist)}`
   }
 
   async getAreasStr() {
