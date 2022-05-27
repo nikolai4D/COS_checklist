@@ -20,7 +20,8 @@ class Resource {
 
 export const State = {
     accessToken: undefined,
-    allChecklistsWithDetails: new Resource(Merchant.getAllDetailedDataOfType, Librarian.checklist.type)
+    allChecklistsWithDetails: new Resource(Merchant.getAllDetailedDataOfType, Librarian.checklist.type),
+    activeChecklist: new Resource(Merchant.createData, Librarian.checklist),
 };
 
 // allChecklistWithDetails content template:

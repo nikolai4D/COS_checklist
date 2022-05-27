@@ -12,12 +12,19 @@ export default class DetailView {
 
   async getTemplate() {
 
-    await this.questionsToHTML()
-    let areasStr = await this.getAreasStr();
-    let frageTyperStr = await this.getFragetyperStr()
-    let checklistId = State.activeChecklistId
+    let checklist = (await State.activeChecklist.get());
+    console.log(checklist, "Checklist")
 
-    return `${await Checklist(areasStr, frageTyperStr, checklistId)}`
+
+    // await this.questionsToHTML()
+    // let areasStr = await this.getAreasStr();
+    // let frageTyperStr = await this.getFragetyperStr()
+
+
+
+    // let checklistId = State.activeChecklistId
+
+    // return `${await Checklist(areasStr, frageTyperStr, checklistId)}`
   }
 
   async questionsToHTML(){
