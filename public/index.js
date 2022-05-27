@@ -21,7 +21,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  document.body.addEventListener("change", async (e) => {
 
+        if (e.target.matches("[data-change]")) {
+      // e.preventDefault();
+      await functionRouter(e.target.getAttribute("data-change"), e);
+      console.log(`function: ${e.target.getAttribute("data-change")}`);
+    }
+  });
   window.addEventListener("load", async (e) => {
     console.log("Window load");
     e.preventDefault();

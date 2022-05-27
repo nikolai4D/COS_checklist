@@ -15,7 +15,7 @@ export default function (omradenStr, frageTyperStr, checklistId) {
   
     <div >
       <label for="area">Område</label>
-      <select data-function="saveOmrade" id="addChecklistOmrade" class="form-select" aria-label="Välj område">
+      <select data-change="getProperty" id="addChecklistOmrade" class="form-select" aria-label="Välj område">
         <option selected>
         </option>
         ${omradenStr}
@@ -24,7 +24,7 @@ export default function (omradenStr, frageTyperStr, checklistId) {
   
     <div>
       <label for="area">Fastighet</label>
-      <select data-function="saveFastighet" id="addChecklistFastighet" id="area" class="form-select" aria-label="Välj fastighet">
+      <select data-change="getAddress" id="addChecklistFastighet" id="area" class="form-select" aria-label="Välj fastighet">
         <option selected></option>
       </select>
     </div>

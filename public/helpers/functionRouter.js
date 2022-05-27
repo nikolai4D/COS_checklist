@@ -6,8 +6,8 @@ import showImage from "./checklistDetails/questionSection/showImage.js";
 import deleteImage from "./checklistDetails/questionSection/deleteImage.js";
 
 import saveDatum from "./checklistDetails/saveDatum.js";
-import saveOmrade from "./checklistDetails/saveOmrade.js";
-import saveFastighet from "./checklistDetails/saveFastighet.js";
+import getProperty from "./checklistDetails/getProperty.js";
+import getAddress from "./checklistDetails/getAddress.js";
 import saveAdress from "./checklistDetails/saveAdress.js";
 
 export default async function (demandedRoute, event) {
@@ -18,8 +18,8 @@ export default async function (demandedRoute, event) {
     { path: "show-image", request: showImage },
     { path: "delete-image", request: deleteImage },
     { path: "saveDatum", request: saveDatum },
-    { path: "saveOmrade", request: saveOmrade },
-    { path: "saveFastighet", request: saveFastighet },
+    { path: "getProperty", request: getProperty },
+    { path: "getAddress", request: getAddress },
     { path: "saveAdress", request: saveAdress },
     { path: "deleteChecklist", request: deleteChecklist },
 
