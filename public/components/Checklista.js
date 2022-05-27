@@ -1,5 +1,5 @@
 
-export default async function (omradenStr, frageTyperStr, checklistId) {
+export default function (omradenStr, frageTyperStr, checklistId) {
 
     return `<div class="container">
     <button type="button" class="btn btn-success" data-function="/saveChecklist" style="margin-top: 2em; margin-bottom: 2em;">Skicka in</button>
@@ -42,7 +42,7 @@ export default async function (omradenStr, frageTyperStr, checklistId) {
     <h3>Checklistpunker</h3>
     <div>
       <div class="accordion" id="checklistItems">
-       ${await frageTyperStr}
+       ${frageTyperStr}
   
       </div>
     </div>

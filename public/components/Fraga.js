@@ -1,7 +1,7 @@
-export default async function (fraga, number) {
+export default  function (fraga, number) {
 
     return ` <tr>
-    <td>${await fraga.title}</td>
+    <td>${fraga.title}</td>
     <td>Ja</td>
     <td>
       <div class="dropdown">
