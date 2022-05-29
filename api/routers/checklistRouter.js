@@ -101,61 +101,24 @@ router.get("/getAllDetailedData", async (req, res) => {
 
 });
 
-router.post("/create", async (req, res) => {
+router.post("/", async (req, res) => {
   console.log("create checklist route used");
 
   // Create checklist
 
-  const reqBodyI31 = {
-    title: "I31_Rondering Trygga hus",
-    props: [],
-    parentId: "td_1db022c1-a269-4290-832d-be29416455a0",
+  const reqBody = {
+    title: "Safety Checklist Instance",
+    props: [{[process.env.ASSESSMENT_STATUS]: process.env.STATUS_IN_PROGRESS}],
+    parentId: process.env.CHECKLIST_PARENT_ID
   };
 
-  let responseI31 = await apiCallPost(reqBodyI31, "/instance/create");
+  let response = await apiCallPost(reqBody, "/instance/create");
 
-  if ((await responseI31.status) !== 200) {
-    return res.status(responseI31.status).json(responseI31.data);
+  if ((await response.status) !== 200) {
+    return res.status(response.status).json(response.data);
   }
-
-  const responseI31Id = await responseI31.data.id;
-
-  // Create instance I41
-
-  const reqBodyI41 = {
-    title: "I41_Rondering Trygga hus detaljer",
-    props: [],
-    parentId: "td_c795835c-6c3b-4292-8d06-55d71416d44b",
-  };
-
-  let responseI41 = await apiCallPost(reqBodyI41, "/instance/create");
-
-  if ((await responseI41.status) !== 200) {
-    return res.status(responseI41.status).json(responseI41.data);
-  }
-
-  const responseI41Id = await responseI41.data.id;
-
-  // Create rel between I41 - I31
-
-  const reqBodyRel = {
-    title: "Ingår i",
-    props: [],
-    source: responseI41Id,
-    target: responseI31Id,
-    parentId:
-      "tder_6c0d45e5-ce61-42fe-9697-d4197b794f04-td_c795835c-6c3b-4292-8d06-55d71416d44b-td_1db022c1-a269-4290-832d-be29416455a0",
-  };
-
-  let responseRel = await apiCallPost(
-    reqBodyRel,
-    "/instanceDataExternalRel/create"
-  );
-
-  if ((await responseRel.status) !== 200) {
-    return res.status(responseRel.status).json(responseRel.data);
-  } else {
-    return res.json(responseI31.data);
+  else {
+        return res.json(response.data);
   }
 });
 

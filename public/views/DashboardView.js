@@ -1,6 +1,3 @@
-import Merchant from "../store/Merchant.js";
-import {Librarian} from "../store/Librarian.js";
-
 import { State } from "../store/State.js";
 
 export default class DashboardView {
@@ -11,6 +8,7 @@ export default class DashboardView {
   async checklistsToHTML() {
 
     let checklists = (await State.allChecklistsWithDetails.get()).allChecklistsFormatted
+    await State.allQuestionsWithDetails.get()
 
     let formattedChecklists = checklists.map((checklist, index) => {
       if(!checklist.address){
@@ -36,10 +34,9 @@ export default class DashboardView {
   }
 
   async getTemplate() {
-    console.log({State})
     return `
         <div class="container">
-        <button type="button" class="btn btn-info" data-function="addChecklist" style="margin-top: 2em;">+ Rondering</button>
+        <button type="button" class="btn btn-info" data-view="/detailView" style="margin-top: 2em;">+ Rondering</button>
 
             <div class="checklistTable" style="margin-top: 4em;">
             <table class="table">

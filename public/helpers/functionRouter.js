@@ -1,15 +1,12 @@
 import Actions from "../store/Actions.js";
 import deleteChecklist from "./checklistOverview/deleteChecklist.js";
-import addChecklist from "./checklistOverview/addChecklist.js";
 
 import uploadImages from "./checklistDetails/questionSection/uploadImages.js";
 import showImage from "./checklistDetails/questionSection/showImage.js";
 import deleteImage from "./checklistDetails/questionSection/deleteImage.js";
-
-import saveDatum from "./checklistDetails/saveDatum.js";
-import saveOmrade from "./checklistDetails/saveOmrade.js";
-import saveFastighet from "./checklistDetails/saveFastighet.js";
-import saveAdress from "./checklistDetails/saveAdress.js";
+import getProperty from "./checklistDetails/getProperty.js";
+import getAddress from "./checklistDetails/getAddress.js";
+import saveAddress from "./checklistDetails/saveAddress.js";
 
 export default async function (demandedRoute, event) {
   const routes = [
@@ -18,11 +15,9 @@ export default async function (demandedRoute, event) {
     { path: "upload-images", request: uploadImages },
     { path: "show-image", request: showImage },
     { path: "delete-image", request: deleteImage },
-    { path: "addChecklist", request: addChecklist },
-    { path: "saveDatum", request: saveDatum },
-    { path: "saveOmrade", request: saveOmrade },
-    { path: "saveFastighet", request: saveFastighet },
-    { path: "saveAdress", request: saveAdress },
+    { path: "getProperty", request: getProperty },
+    { path: "getAddress", request: getAddress },
+    { path: "saveAddress", request: saveAddress },
     { path: "deleteChecklist", request: deleteChecklist },
 
     // { path: "/register" },

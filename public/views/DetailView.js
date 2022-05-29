@@ -1,10 +1,8 @@
 import { State } from "../store/State.js";
-import Actions from "../store/Actions.js";
 import Checklist from "../components/Checklista.js"
-import Fraga from "../components/Fraga.js"
-import Fragetyp from "../components/Fragetyp.js"
-import Merchant from "../store/Merchant.js";
-import {Librarian} from "../store/Librarian.js";
+import Question from "../components/Question.js"
+import QuestionGroup from "../components/QuestionGroup.js"
+
 export default class DetailView {
   constructor() {
     document.title = "Checklist - Add Checklist";
@@ -12,52 +10,42 @@ export default class DetailView {
 
   async getTemplate() {
 
-    await this.questionsToHTML()
+    let checklist = await State.activeChecklist.get(); // call Merchant instead
     let areasStr = await this.getAreasStr();
-    let frageTyperStr = await this.getFragetyperStr()
-    let checklistId = State.activeChecklistId
+    let questionsDetailedStr = await this.getQuestionsDetailedStr()
 
-    return `${await Checklist(areasStr, frageTyperStr, checklistId)}`
-  }
-
-  async questionsToHTML(){
-    await Merchant.getAllDetailedDataOfType("")
+    return `${await Checklist(areasStr, questionsDetailedStr, checklist)}`
   }
 
   async getAreasStr() {
 
-    let allAreas = State.allAreas;
+    let allAreas = (await State.allChecklistsWithDetails.get()).areas
     allAreas.sort((a, b) => a.title.localeCompare(b.title));
 
     let areasStr = "";
     allAreas.forEach(area => {
-      areasStr += `<option  data-function="saveOmrade"  value="${area.id}">${area.title}</option>`;
+      areasStr += `<option value="${area.id}">${area.title}</option>`;
     });
     return areasStr;
   }
 
-  async getFragetyperStr() {
-    await Merchant.getAllDataOfType(Librarian.questionGroup.type)
+  async getQuestionsDetailedStr() {
+    let questionsDetailed = (await State.allQuestionsWithDetails.get()).questionsDetailed;
 
-    let allFragetyper = State.allFragetyper;
+    questionsDetailed.sort((a, b) => a.title.localeCompare(b.title));
 
-    allFragetyper.sort((a, b) => a.title.localeCompare(b.title));
+    let allQuestionsDetailedArray = questionsDetailed.map( (questionGroup) => {
 
-    let allFragetyperArray = await Promise.all(allFragetyper.map(async (fragetyp) => {
-      await Actions.GET_ALL_FRAGOR(await fragetyp);
+      questionGroup.questions.sort((a, b) => a.title.localeCompare(b.title));
 
-      let allFragor = (State.allFragor);
-
-      allFragor.sort((a, b) => a.title.localeCompare(b.title));
-
-      let allFragorArray = await Promise.all(allFragor.map(async (fraga, index) => {
+      let allQuestionsArray = questionGroup.questions.map( (question, index) => {
         let number = index + 1
-        return Fraga(fraga, number)
-      }))
+        return Question(question, number)
+      })
 
-      return Fragetyp(fragetyp, allFragorArray.join(""))
+      return QuestionGroup(questionGroup, allQuestionsArray.join(""))
 
-    }))
-    return allFragetyperArray.join("")
+    })
+    return allQuestionsDetailedArray.join("")
   }
 }

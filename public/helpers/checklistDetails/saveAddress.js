@@ -1,4 +1,5 @@
 export default async function (e) {
+  
     let adressDOM = document.getElementById('addChecklistAdress')
     console.log("pressedAdress")
 

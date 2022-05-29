@@ -1,21 +1,21 @@
 
-export default async function (omradenStr, frageTyperStr, checklistId) {
+export default function (omradenStr, frageTyperStr, checklist) {
 
     return `<div class="container">
     <button type="button" class="btn btn-success" data-function="/saveChecklist" style="margin-top: 2em; margin-bottom: 2em;">Skicka in</button>
     <button type="button" class="btn btn-danger" data-view="/" style="margin-top: 2em; margin-bottom: 2em;">Tillbaka</button>
-    <h3>Ny checklista: ${checklistId}</h3>
+    <h3>Ny checklista: ${checklist.id}</h3>
     <div id="newChecklist" style="margin-top: 2em; margin-bottom: 3em;">
   
     <div>
       <label for="Datum">Datum</label>
-      <input class="form-control" type="text" placeholder="Datum..." readonly>
+      <input class="form-control" type="text" placeholder="${new Date(checklist.created).toLocaleString()}" readonly>
   
     </div>
   
     <div >
       <label for="area">Område</label>
-      <select data-function="saveOmrade" id="addChecklistOmrade" class="form-select" aria-label="Välj område">
+      <select data-change="getProperty" id="addChecklistOmrade" class="form-select" aria-label="Välj område">
         <option selected>
         </option>
         ${omradenStr}
@@ -24,7 +24,7 @@ export default async function (omradenStr, frageTyperStr, checklistId) {
   
     <div>
       <label for="area">Fastighet</label>
-      <select data-function="saveFastighet" id="addChecklistFastighet" id="area" class="form-select" aria-label="Välj fastighet">
+      <select data-change="getAddress" id="addChecklistFastighet" id="area" class="form-select" aria-label="Välj fastighet">
         <option selected></option>
       </select>
     </div>
@@ -42,7 +42,7 @@ export default async function (omradenStr, frageTyperStr, checklistId) {
     <h3>Checklistpunker</h3>
     <div>
       <div class="accordion" id="checklistItems">
-       ${await frageTyperStr}
+       ${frageTyperStr}
   
       </div>
     </div>

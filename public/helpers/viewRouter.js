@@ -23,7 +23,7 @@ const viewRouter = async () => {
     { path: "/", view: DashboardView },
     { path: "/login", view: Login },
     { path: "/register", view: Register },
-    { path: "/addChecklist", view: DetailView },
+    { path: "/detailView", view: DetailView },
     { path: "/viewChecklist", view: ViewChecklist },
   ];
 

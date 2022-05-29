@@ -17,12 +17,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log("View click event target");
       e.preventDefault();
       navigateTo(e.target.getAttribute("data-view"));
-      await viewRouter();
       console.log(`view: ${e.target.getAttribute("data-view")}`);
-    }onmessage
+    }
   });
 
+  document.body.addEventListener("change", async (e) => {
 
+        if (e.target.matches("[data-change]")) {
+      // e.preventDefault();
+      await functionRouter(e.target.getAttribute("data-change"), e);
+      console.log(`function: ${e.target.getAttribute("data-change")}`);
+    }
+  });
   window.addEventListener("load", async (e) => {
     console.log("Window load");
     e.preventDefault();

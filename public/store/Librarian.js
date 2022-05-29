@@ -1,1 +1,1 @@
-export const Librarian = { checklist: {type: "checklist"}, questionGroup: {type: "questionGroup"}};
+export const Librarian = { checklist: {type: "checklist"}, question: {type: "question"}};
