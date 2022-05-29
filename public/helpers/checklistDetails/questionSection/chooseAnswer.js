@@ -10,7 +10,7 @@ selectedQuestion.parentNode.parentNode.classList.remove("table-danger")
 let activeChecklist = State.activeChecklist.content
 let questionGroup = activeChecklist.questions.find(questionGroup => questionGroup.id === selectedQuestionGroup)
 let question = questionGroup.questions.find(question => question.id === selectedQuestion.id)
-question.selectedAnswer = selectedAnswer.id;
+question.selectedAnswer = selectedAnswer;
 let status = question.status = question.answers.preferredAnswer.id === selectedAnswer;
 question.status = status;
 

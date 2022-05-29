@@ -2,7 +2,18 @@ import {State} from "../../store/State.js";
 
 export default function (e) {
 
+let nonSelected = []
+
 let activeChecklist = State.activeChecklist.content
-let selectedAnswers = activeChecklist.questions.filter(question => question.questions.filter(ques => ques.hasOwnProperty("selectedAnswer")).length > 0)
-console.log(selectedAnswers)
+for (const answer of activeChecklist.questions){
+    for (const question of answer.questions){
+        if (!question.selectedAnswer){
+            nonSelected.push(question)
+        }
+    }
+}
+if (nonSelected.length > 0) {
+    alert("Fyll i följande frågor för att skicka in: " + nonSelected.map(question => question.title).join(", "))
+    return
+}
 }
