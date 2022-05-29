@@ -1,13 +1,13 @@
 export default  function (question, number) {
   const possibleAnswers = question.answers.possibleAnswers
   const preferredAnswer = question.answers.preferredAnswer;
-  const listOfPossibleAnswers = possibleAnswers.map(answer => `<option value="${answer.id}" id="$${question.id}" class="dropdown-item">${answer.title}</option>`)
-  let options = ['<option selected>Välj svar</option>', ...listOfPossibleAnswers].join("");
-    return ` <tr>
+  const listOfPossibleAnswers = possibleAnswers.map(answer => `<option data-function="chooseAnswer" value="${answer.id}" class="dropdown-item">${answer.title}</option>`)
+  let options = ['<option disabled selected>Välj svar</option>', ...listOfPossibleAnswers].join("");
+    return ` <tr data-id="${question.id}">
     <td>${question.title}</td>
     <td>${preferredAnswer.title}</td>
     <td>
-        <select class="form-select" aria-label="dropdownMenuButton1">
+        <select id="${question.id}" class="form-select" aria-label="dropdownMenuButton1">
             ${options}
         </select>
     </td>

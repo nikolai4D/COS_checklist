@@ -1,7 +1,7 @@
 export default function (questionGroup, questions) {
 
     return `<div class="accordion-item">
-    <h2 class="accordion-header" id="${questionGroup.id}">
+    <h2 class="accordion-header">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${questionGroup.id}" aria-expanded="false" aria-controls="collapse-${questionGroup.id}">
     ${questionGroup.title}</button>
     </h2>
@@ -18,7 +18,7 @@ export default function (questionGroup, questions) {
         <th scope="col"></th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="${questionGroup.id}">
     ${questions}
     </tbody>
   </table>

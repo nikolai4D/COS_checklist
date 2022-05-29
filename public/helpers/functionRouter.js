@@ -7,6 +7,8 @@ import deleteImage from "./checklistDetails/questionSection/deleteImage.js";
 import getProperty from "./checklistDetails/getProperty.js";
 import getAddress from "./checklistDetails/getAddress.js";
 import saveAddress from "./checklistDetails/saveAddress.js";
+import chooseAnswer from "./checklistDetails/questionSection/chooseAnswer.js";
+import validateChecklist from "./checklistDetails/validateChecklist.js";
 
 export default async function (demandedRoute, event) {
   const routes = [
@@ -18,6 +20,8 @@ export default async function (demandedRoute, event) {
     { path: "getProperty", request: getProperty },
     { path: "getAddress", request: getAddress },
     { path: "saveAddress", request: saveAddress },
+    { path: "chooseAnswer", request: chooseAnswer },
+    { path: "validateChecklist", request: validateChecklist },
     { path: "deleteChecklist", request: deleteChecklist },
 
     // { path: "/register" },
