@@ -1,4 +1,5 @@
 export default function (fragetyp, fraga) {
+
     return `<div class="accordion-item">
     <h2 class="accordion-header" id="${fragetyp.id}">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${fragetyp.id}" aria-expanded="false" aria-controls="collapse-${fragetyp.id}">
