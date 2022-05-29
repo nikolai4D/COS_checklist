@@ -1,5 +1,5 @@
 
-export default function (omradenStr, frageTyperStr, checklist) {
+export default function (areasStr, questionsDetailedStr, checklist) {
 
     return `<div class="container">
     <button type="button" class="btn btn-success" data-function="/saveChecklist" style="margin-top: 2em; margin-bottom: 2em;">Skicka in</button>
@@ -15,23 +15,23 @@ export default function (omradenStr, frageTyperStr, checklist) {
   
     <div >
       <label for="area">Område</label>
-      <select data-change="getProperty" id="addChecklistOmrade" class="form-select" aria-label="Välj område">
+      <select data-change="getProperty" id="addChecklistArea" class="form-select" aria-label="Välj område">
         <option selected>
         </option>
-        ${omradenStr}
+        ${areasStr}
       </select>
     </div>
   
     <div>
       <label for="area">Fastighet</label>
-      <select data-change="getAddress" id="addChecklistFastighet" id="area" class="form-select" aria-label="Välj fastighet">
+      <select data-change="getAddress" id="addChecklistProperty" id="area" class="form-select" aria-label="Välj fastighet">
         <option selected></option>
       </select>
     </div>
   
     <div>
       <label for="area">Adress</label>
-      <select data-function="saveAdress" id="addChecklistAdress" id="area" class="form-select" multiple aria-label="Adresser">
+      <select data-function="saveAddress" id="addChecklistAddress" id="area" class="form-select" multiple aria-label="Adresser">
         <option selected></option>
       </select>
     </div>
@@ -42,7 +42,7 @@ export default function (omradenStr, frageTyperStr, checklist) {
     <h3>Checklistpunker</h3>
     <div>
       <div class="accordion" id="checklistItems">
-       ${frageTyperStr}
+       ${questionsDetailedStr}
   
       </div>
     </div>

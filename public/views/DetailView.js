@@ -1,4 +1,7 @@
 import { State } from "../store/State.js";
+import Merchant from "../store/Merchant.js";
+import {Librarian} from "../store/Librarian.js";
+
 import Checklist from "../components/Checklista.js"
 import Question from "../components/Question.js"
 import QuestionGroup from "../components/QuestionGroup.js"
@@ -10,7 +13,20 @@ export default class DetailView {
 
   async getTemplate() {
 
-    let checklist = await State.activeChecklist.get(); // call Merchant instead
+   await State.activeChecklist.set(); 
+
+    let checklist = State.activeChecklist.content;
+    State.allChecklistsWithDetails.content.allChecklistsFormatted.push(State.activeChecklist.content);
+    
+    checklist.questions = await State.allQuestionsWithDetails.content.questionsDetailed;
+    checklist.address = {title: "-"}
+    checklist.area = {title: "-"}
+    checklist.property = {title: "-"}
+    checklist.status = "In progress"
+    checklist.createdDate = checklist.created;
+
+
+
     let areasStr = await this.getAreasStr();
     let questionsDetailedStr = await this.getQuestionsDetailedStr()
 
@@ -19,7 +35,7 @@ export default class DetailView {
 
   async getAreasStr() {
 
-    let allAreas = (await State.allChecklistsWithDetails.get()).areas
+    let allAreas = (await State.allChecklistsWithDetails.get()).areas;
     allAreas.sort((a, b) => a.title.localeCompare(b.title));
 
     let areasStr = "";
@@ -30,7 +46,7 @@ export default class DetailView {
   }
 
   async getQuestionsDetailedStr() {
-    let questionsDetailed = (await State.allQuestionsWithDetails.get()).questionsDetailed;
+    let questionsDetailed = State.activeChecklist.content.questions;
 
     questionsDetailed.sort((a, b) => a.title.localeCompare(b.title));
 

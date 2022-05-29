@@ -8,7 +8,8 @@ export default class DashboardView {
   async checklistsToHTML() {
 
     let checklists = (await State.allChecklistsWithDetails.get()).allChecklistsFormatted
-    await State.allQuestionsWithDetails.get()
+    await State.allQuestionsWithDetails.get();
+    console.log(State)
 
     let formattedChecklists = checklists.map((checklist, index) => {
       if(!checklist.address){
