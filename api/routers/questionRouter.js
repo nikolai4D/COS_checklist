@@ -14,7 +14,7 @@ router.use(bodyParser.json());
 router.get("/getAllDetailedData", async (req, res) => {
         console.log("Get all checklists route used");
       
-        // get all questions
+        // get all question groups, questions, answers and answer details (+ rels)
       
         const responseAllQuestionGroups = apiCallGet(`/type?parentId=${process.env.QUESTION_GROUP_PARENT_ID}`)
         const responseAllQuestions = apiCallGet(`/type?parentId=${process.env.QUESTION_PARENT_ID}`)
@@ -73,9 +73,7 @@ router.get("/getAllDetailedData", async (req, res) => {
 
 
           const answerToQuestion = answerToQuestionRel.filter(relation => relation.target === el.id);
-
           const preferredAnswerToQuestion = preferredAnswerToQuestionRel.find(relation => relation.target === el.id);
-
 
           if(answerToQuestion.length != 0) {
 
@@ -88,12 +86,11 @@ router.get("/getAllDetailedData", async (req, res) => {
 
           const preferredAnswer = allAnswersFormatted.find(answer => answer.id === preferredAnswerToQuestion.source)
           question.answers.preferredAnswer = preferredAnswer
-          
         }}
 
+        // add questions to question groups
+
         const allQuestionGroupsFormatted = []
-
-
         for(const i in questionGroups) {
 
           const el = questionGroups[i]
@@ -115,27 +112,6 @@ router.get("/getAllDetailedData", async (req, res) => {
           })
         }
 
-        //   const questionToQuestionGroup = questionToQuestionGroupRel.find(relation => relation.target === el.id)
-        //   console.log(questionToQuestionGroupRel, "questionToQuestionGroupRel")
-
-        //   if(questionToQuestionGroup === undefined) continue
-        //   const question = allQuestionsFormatted.find(questions => questions.id === questionToQuestionGroup.source)
-        //   questionGroup.questions.push(question)
-      
-        //     console.log(questionGroup, "questionGroup")
-        // }
-      
-        //   const addressToProperty = questionToQuestionGroup.find(relation => relation.source === address.id)
-        //   if(addressToProperty === undefined) continue
-        //   const property = answerDetails.find(property => property.id === addressToProperty.target)
-        //   checklist.property = property
-      
-      
-        //   const propertyToArea = preferredAnswerToQuestionRel, answerToQuestionRel, answerDetailToAnswerRel.find(relation => relation.source === property.id)
-        //   if(propertyToArea === undefined) continue
-        //   checklist.area = answers.find(area => area.id === propertyToArea.target)
-      
-        // }
       
         return res.json({questionsDetailed: allQuestionGroupsFormatted})
       

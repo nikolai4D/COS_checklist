@@ -1,10 +1,8 @@
 import { State } from "../store/State.js";
-import Actions from "../store/Actions.js";
 import Checklist from "../components/Checklista.js"
-import Fraga from "../components/Fraga.js"
-import Fragetyp from "../components/Fragetyp.js"
-import Merchant from "../store/Merchant.js";
-import {Librarian} from "../store/Librarian.js";
+import Question from "../components/Question.js"
+import QuestionGroup from "../components/QuestionGroup.js"
+
 export default class DetailView {
   constructor() {
     document.title = "Checklist - Add Checklist";
@@ -12,18 +10,16 @@ export default class DetailView {
 
   async getTemplate() {
 
-    let checklist = await State.activeChecklist.get();
+    let checklist = await State.activeChecklist.get(); // call Merchant instead
     let areasStr = await this.getAreasStr();
-    let frageTyperStr = await this.getFragetyperStr()
+    let questionsDetailedStr = await this.getQuestionsDetailedStr()
 
-
-    return `${await Checklist(areasStr, frageTyperStr, checklist)}`
+    return `${await Checklist(areasStr, questionsDetailedStr, checklist)}`
   }
 
   async getAreasStr() {
 
     let allAreas = (await State.allChecklistsWithDetails.get()).areas
-    // console.log(allAreas, "allAreas")
     allAreas.sort((a, b) => a.title.localeCompare(b.title));
 
     let areasStr = "";
@@ -33,26 +29,23 @@ export default class DetailView {
     return areasStr;
   }
 
-  async getFragetyperStr() {
-    let questionGroups = (await State.allQuestionsWithDetails.get()).questionsDetailed;
-    console.log(questionGroups)
+  async getQuestionsDetailedStr() {
+    let questionsDetailed = (await State.allQuestionsWithDetails.get()).questionsDetailed;
 
-    // let allFragetyper = State.allFragetyper;
+    questionsDetailed.sort((a, b) => a.title.localeCompare(b.title));
 
-    questionGroups.sort((a, b) => a.title.localeCompare(b.title));
-
-    let allFragetyperArray = questionGroups.map( (questionGroup) => {
+    let allQuestionsDetailedArray = questionsDetailed.map( (questionGroup) => {
 
       questionGroup.questions.sort((a, b) => a.title.localeCompare(b.title));
 
-      let allFragorArray = questionGroup.questions.map( (question, index) => {
+      let allQuestionsArray = questionGroup.questions.map( (question, index) => {
         let number = index + 1
-        return Fraga(question, number)
+        return Question(question, number)
       })
 
-      return Fragetyp(questionGroup, allFragorArray.join(""))
+      return QuestionGroup(questionGroup, allQuestionsArray.join(""))
 
     })
-    return allFragetyperArray.join("")
+    return allQuestionsDetailedArray.join("")
   }
 }

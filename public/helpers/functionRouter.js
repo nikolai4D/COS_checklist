@@ -4,11 +4,9 @@ import deleteChecklist from "./checklistOverview/deleteChecklist.js";
 import uploadImages from "./checklistDetails/questionSection/uploadImages.js";
 import showImage from "./checklistDetails/questionSection/showImage.js";
 import deleteImage from "./checklistDetails/questionSection/deleteImage.js";
-
-import saveDatum from "./checklistDetails/saveDatum.js";
 import getProperty from "./checklistDetails/getProperty.js";
 import getAddress from "./checklistDetails/getAddress.js";
-import saveAdress from "./checklistDetails/saveAdress.js";
+import saveAddress from "./checklistDetails/saveAddress.js";
 
 export default async function (demandedRoute, event) {
   const routes = [
@@ -17,10 +15,9 @@ export default async function (demandedRoute, event) {
     { path: "upload-images", request: uploadImages },
     { path: "show-image", request: showImage },
     { path: "delete-image", request: deleteImage },
-    { path: "saveDatum", request: saveDatum },
     { path: "getProperty", request: getProperty },
     { path: "getAddress", request: getAddress },
-    { path: "saveAdress", request: saveAdress },
+    { path: "saveAddress", request: saveAddress },
     { path: "deleteChecklist", request: deleteChecklist },
 
     // { path: "/register" },

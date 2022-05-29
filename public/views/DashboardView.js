@@ -1,3 +1,5 @@
+import { State } from "../store/State.js";
+
 export default class DashboardView {
   constructor() {
     document.title = "Checklist - Dashboard";
@@ -6,7 +8,7 @@ export default class DashboardView {
   async checklistsToHTML() {
 
     let checklists = (await State.allChecklistsWithDetails.get()).allChecklistsFormatted
-    let questions = (await State.allQuestionsWithDetails.get())
+    await State.allQuestionsWithDetails.get()
 
     let formattedChecklists = checklists.map((checklist, index) => {
       if(!checklist.address){
@@ -32,12 +34,9 @@ export default class DashboardView {
   }
 
   async getTemplate() {
-    const checklistString = await this.checklistsToHTML()
-    console.log({State})
-
     return `
         <div class="container">
-        <button type="button" class="btn btn-info" data-view="/addChecklist" style="margin-top: 2em;">+ Rondering</button>
+        <button type="button" class="btn btn-info" data-view="/detailView" style="margin-top: 2em;">+ Rondering</button>
 
             <div class="checklistTable" style="margin-top: 4em;">
             <table class="table">
@@ -51,7 +50,7 @@ export default class DashboardView {
               </tr>
             </thead>
             <tbody>
-            ${checklistString}
+            ${await this.checklistsToHTML()}
             </tbody>
           </table>
             </div >
