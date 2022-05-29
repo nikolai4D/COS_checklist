@@ -17,6 +17,7 @@ api.use("/logout", require("./routers/logoutRouter.js")); //logout
 //------APIs protected by API key-------//
 api.use("/checklist", require("./routers/checklistRouter.js")); //checklist
 api.use("/question", require("./routers/questionRouter.js")); //questions
-api.use("/address", require("./routers/addressRouter.js")); //location
+api.use("/address", require("./routers/addressRouter.js")); //address
+api.use("/answer", require("./routers/answerRouter.js")); //answer
 
 module.exports = api;

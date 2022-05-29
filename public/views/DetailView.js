@@ -16,7 +16,7 @@ export default class DetailView {
    await State.activeChecklist.set(); 
 
     let checklist = State.activeChecklist.content;
-    State.allChecklistsWithDetails.content.allChecklistsFormatted.push(State.activeChecklist.content);
+    // State.allChecklistsWithDetails.content.allChecklistsFormatted.push(State.activeChecklist.content);
     
     checklist.questions = await State.allQuestionsWithDetails.content.questionsDetailed;
     checklist.address = {title: "-"}

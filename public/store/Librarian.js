@@ -1,1 +1,1 @@
-export const Librarian = { checklist: {type: "checklist"}, question: {type: "question"}, address: { type: "address"}, property: { type: "property"}, area: { type: "area"}};
+export const Librarian = { checklist: {type: "checklist"}, question: {type: "question"}, address: { type: "address"}, answer: { type: "answer"}};
