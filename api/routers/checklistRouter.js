@@ -58,7 +58,17 @@ router.get("/getAllDetailedData", async (req, res) => {
     checklist.id = el.id
     checklist.createdDate = el.created
     checklist.updatedDate = el.updated
-
+    checklist.answers = []
+    checklist.questionsWithAnwers = []	
+  
+    let sourcesToTarget = (await apiCallPost({"targetId": checklist.id}, `/instance/sourcesToTarget`)).data;
+    for (const relation of sourcesToTarget.links){
+      console.log(relation.linkParentId, "linkParentId")
+      if (relation.linkParentId === process.env.YES_TO_CHECKLIST_REL_PARENT_ID ||
+      relation.linkParentId === process.env.NO_TO_CHECKLIST_REL_PARENT_ID ||
+      relation.linkParentId === process.env.NA_TO_CHECKLIST_REL_PARENT_ID){
+      if (relation.sources.length > 0) checklist.answers.push(relation.sources[0])}
+    }
 
     switch(el.props[0][process.env.ASSESSMENT_STATUS]){
       case process.env.STATUS_IN_PROGRESS:
@@ -91,7 +101,36 @@ router.get("/getAllDetailedData", async (req, res) => {
 
   }
 
-  return res.json({allChecklistsFormatted, addresses, areas, properties, checklistAddressRel, addressPropertyRel, propertyAreaRel})
+  // get questions and answers 
+
+
+  const responseQuestionsType = (await apiCallGet(`/type?parentId=${process.env.QUESTION_PARENT_ID}`)).data
+
+  let questionsDetailed = []
+  for (const type of responseQuestionsType){
+    const question = {}
+    questionsDetailed.push(question)
+
+    question.id = type.id;
+    question.instances = (await apiCallGet(`/instance?parentId=${type.id}`)).data;
+    for (let instance of question.instances){
+      instance.answer = []
+      let sourcesToTarget = (await apiCallPost({"targetId": instance.id}, `/instance/sourcesToTarget`)).data;
+      for (const relation of sourcesToTarget.links){
+        instance.answer.push(...relation.sources)
+        for (const list of allChecklistsFormatted){
+          for (const answer of list.answers){
+            let match = instance.answer.find(ans => ans.id === answer.id)
+            if (match){
+              list.questionsWithAnwers.push({question: instance, answer: instance.answer}) }
+          }
+        }
+      }
+    }
+
+  }
+
+  return res.json({allChecklistsFormatted, addresses, areas, properties, checklistAddressRel, addressPropertyRel, propertyAreaRel, questionsDetailed})
 
   // if (( (await responseAllChecklists.status) !== 200) || ((await responseAllAddresses.status ) !== 200) || ((await responseAllAreas.status)  !== 200) ||(( await responseAllProperties.status) !== 200) || ((await responseChecklistAddressRel.status) !== 200) || ((await responseAddressPropertyRel.status) !== 200) || ((await responsePropertyAreaRel.status) !== 200)) {
   //   return res.status(404).json({"message": "Something went wrong"});
