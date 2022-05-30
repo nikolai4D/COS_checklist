@@ -44,8 +44,8 @@ router.get("/getAllDetailedData", async (req, res) => {
           allAnswersFormatted.push(answer);
           answer.id = el.id;
           answer.title = el.title;
-          answer.createdDate = el.created;
-          answer.updatedDate = el.updated;
+          answer.created = el.created;
+          answer.created = el.updated;
           answer.answerDetails = [];
 
 
@@ -67,8 +67,8 @@ router.get("/getAllDetailedData", async (req, res) => {
           allQuestionsFormatted.push(question);
           question.id = el.id;
           question.title = el.title;
-          question.createdDate = el.created;
-          question.updatedDate = el.updated;
+          question.created = el.created;
+          question.created = el.updated;
           question.answers = {possibleAnswers: [], preferredAnswer: null};
 
 
@@ -99,8 +99,8 @@ router.get("/getAllDetailedData", async (req, res) => {
           allQuestionGroupsFormatted.push(questionGroup)
           questionGroup.id = el.id
           questionGroup.title = el.title;
-          questionGroup.createdDate = el.created
-          questionGroup.updatedDate = el.updated
+          questionGroup.created = el.created
+          questionGroup.updated = el.updated
           questionGroup.questions = []
 
           const questionToQuestionGroup = questionToQuestionGroupRel.filter(relation => relation.target === el.id);
@@ -111,7 +111,6 @@ router.get("/getAllDetailedData", async (req, res) => {
             questionGroup.questions.push(...question)
           })
         }
-
       
         return res.json({questionsDetailed: allQuestionGroupsFormatted})
       

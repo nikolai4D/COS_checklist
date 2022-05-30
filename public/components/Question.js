@@ -4,32 +4,26 @@ export default  function (question, number) {
 
   let selectedAnswer = question.selectedAnswer ?? null;
   let backgroundColor= null;
-  let chosenValue = null;
-  let noChosenValue = "selected";
-  let selectedAnswerObj = null;
-//   let noChosenValue = selectedAnswer === null ? "selected" : null;
-//   let chosenValue = noChosenValue === null ? "selected" : null;
+  let selectedAnswerObj = {title: ""};
+  let showFirstOption = true;
 
 
   const listOfPossibleAnswers = possibleAnswers.map(answer => {
-     chosenValue = null;
-     noChosenValue = "selected";
-     selectedAnswerObj = null;
+    let isChosenValue = false;
 
     if (answer.id === selectedAnswer) {
         selectedAnswerObj = answer;
-        chosenValue = "selected"
-        noChosenValue = null
+        isChosenValue = true;
+        showFirstOption = false;
         }
 
-    if (selectedAnswerObj && selectedAnswerObj.title === "N/A") backgroundColor = ""
+    return `<option data-function="chooseAnswer" value="${answer.id}" ${isChosenValue? "selected" : ""} class="dropdown-item">${answer.title}</option>`;
+    })
+    if (selectedAnswerObj.title === "N/A" || selectedAnswerObj.title === "") backgroundColor = "";
     else backgroundColor = question.status ? "table-success" : "table-danger"
+    selectedAnswerObj = {title: "N/A"};
 
-    return `<option data-function="chooseAnswer" value="${answer.id}" ${chosenValue} class="dropdown-item">${answer.title}</option>`
-})
-
-
-  let options = [`<option ${noChosenValue} disabled>Välj svar</option>`, ...listOfPossibleAnswers].join("");
+    let options = [`<option ${showFirstOption? "selected" : ""} disabled>Välj svar</option>`, ...listOfPossibleAnswers].join("");
 
     return ` <tr class="${backgroundColor}" data-id="${question.id}">
     <td>${question.title}</td>

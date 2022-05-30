@@ -22,7 +22,6 @@ router.post("/", async (req, res) => {
     const answerToQuestionRel = (await apiCallPost({sourceId: answerId, targetId: questionId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
     const questionToChecklistRel = (await apiCallPost({sourceId: questionId, targetId: checklistObj.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
 
-    console.log(answerToChecklistRel, questionObj, "HELLOOO")
     let reqBodyCreateAnswer = {title:answerObj.title, parentId: answerId, props: []};
     
     // create instance of answer

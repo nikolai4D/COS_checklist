@@ -6,7 +6,9 @@ import navigateTo from "../navigateTo.js";
 
 export default async function (e) {
 
-    let activeChecklist = State.activeChecklist.content
+    let activeChecklist = State.activeChecklist.content;
+    console.log(State.allQuestionsWithDetails.content, "FIRST");
+
     let existingChecklist = State.allChecklistsWithDetails.content.allChecklistsFormatted.find(checklist => checklist.id === activeChecklist.id);
     if (!existingChecklist){
         for (const answer of activeChecklist.questions){
@@ -16,11 +18,11 @@ export default async function (e) {
                 }
             }
         }
-        console.log("pushed answers to state!", activeChecklist)
+        console.log("pushed answers to state!", activeChecklist);
         State.allChecklistsWithDetails.content.allChecklistsFormatted.push(activeChecklist);
-        navigateTo("/")
+        console.log(State.allQuestionsWithDetails.content, "SECOND");
 
-        // return;
+        navigateTo("/");
     }
 
 // function that compares questions and answers from old structure to new structure
@@ -28,6 +30,7 @@ export default async function (e) {
 
 // State.allChecklistsWithDetails.content.allChecklistsFormatted.forEach(checklist => {}
 // State.activeChecklist.content.questions.forEach(answer => {})
+State.activeChecklist.content = null;
 navigateTo("/")
 
 }

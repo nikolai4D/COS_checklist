@@ -7,9 +7,10 @@ export default class DashboardView {
 
   async checklistsToHTML() {
 
+    delete State.activeChecklist.content;
+
     let checklists = (await State.allChecklistsWithDetails.get()).allChecklistsFormatted
-    await State.allQuestionsWithDetails.get();
-    console.log(State)
+    await State.allQuestionsWithDetails.set();
 
     let formattedChecklists = checklists.map((checklist, index) => {
       if(!checklist.address){
@@ -22,7 +23,7 @@ export default class DashboardView {
       return `  
         <tr data-id="${checklist.id}">
           <th scope="row">${number}</th>
-          <td>${new Date(checklist.createdDate).toLocaleString()}</td>
+          <td>${new Date(checklist.created).toLocaleString()}</td>
           <td>${checklist.area.title}</td>
           <td>${checklist.property.title}</td>
           <td>${checklist.status}</td>
