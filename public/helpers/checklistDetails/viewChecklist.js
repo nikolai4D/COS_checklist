@@ -10,24 +10,23 @@ if (id){
     let existingChecklist = State.allChecklistsWithDetails.content.allChecklistsFormatted.find(checklist => checklist.id === id)
 
     State.activeChecklist.content = existingChecklist;
-    console.log(existingChecklist)
     let checklist = State.activeChecklist.content;
 
     // // let questionGroups = await State.allQuestionsWithDetails.content;
-    // checklist.questions = await State.allQuestionsWithDetails.content.questionsDetailed;
+    checklist.questions = await State.allQuestionsWithDetails.content.questionsDetailed;
 
-    // console.log(allQuestions)
-    // // let questions = questionGroups.questionsDetailed.map(group => group.questions)
-    // // console.log(questionGroups, existingChecklist, questions)
+    // let questions = questionGroups.questionsDetailed.map(group => group.questions)
+    // console.log(questionGroups, existingChecklist, questions)
     // for (const group of checklist.questions){
     //     for (const question of group.questions) {
-    //         console.log(question, "question")
+    //         if (question.selectedAnswer) {navigateTo("/detailView") ;return};
+            
     //         let matchingQuestion = question.questionsWithAnwers.find(obj =>  obj.question.parentId === question.id)
     //         if (matchingQuestion){
     //             question.selectedAnswer = matchingQuestion.answer.parentId;
     //             question.status = matchingQuestion.answer.title === "N/A" ? true : matchingQuestion.answer.title === question.answers.preferredAnswer.title;
-//             }
-//     }
+    //         }
+    // }
 // }
     }
 else  {
