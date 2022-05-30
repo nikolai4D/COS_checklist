@@ -180,34 +180,183 @@ router.delete("/", async (req, res) => {
   console.log("Delete checklist route used");
   const id = req.body.id;
 
-  const checkListDetail = await apiCallPost({ targetId: id }, `/instance/sourcesToTarget`)
+  //console.log("id: " + id)
 
-  if(checkListDetail?.data.hasOwnProperty("links")) {
-    let checkListDetailId = checkListDetail.data.links[0].sources[0].id;
+  //Get related questions and answers relationships
+  let sourcesToChecklist = (await apiCallPost({"targetId": id}, `/instance/sourcesToTarget`)).data;
 
-    //Delete related details
-    console.log("mycheckListDetailId: " + checkListDetailId)
+  // delete related questions relationships
 
-    let sourcesToCheckListDetails = (await apiCallPost({targetId: checkListDetailId}, `/instance/sourcesToTarget`)).data.links;
+  let answers = sourcesToChecklist.links.filter(el =>
+      el.linkParentId === process.env.YES_TO_CHECKLIST_REL_PARENT_ID ||
+      el.linkParentId === process.env.NO_TO_CHECKLIST_REL_PARENT_ID ||
+      el.linkParentId === process.env.NA_TO_CHECKLIST_REL_PARENT_ID)
 
-    for (const linkType of sourcesToCheckListDetails) {
-      for (const link of linkType.sources) {
-        await apiCallDelete(`/instanceData/${link.id}`);
-      }
+  let answersId = []
+
+  for(let i in answers){
+
+    answers[i].sources.forEach(el => {
+      answersId.push(el.id)
+    })
+  }
+
+
+
+  // Get all related pictures and delete them
+
+  //console.log("answers.id: " + answersId[0])
+
+  for (let i = 0; i < answersId.length; i++) { //for(let of) was giving undefined results, don t know why
+    const id = answersId[i]
+    const sourcesToAnswer = (await apiCallPost({"targetId": id}, `/instance/sourcesToTarget`)).data.links
+
+    const sourcesId = []
+    for(i of sourcesToAnswer) {
+
+      i.sources.forEach(el => {
+        sourcesId.push(el.id)
+      })
     }
 
-    await apiCallDelete(`/instanceData/${checkListDetailId}`)
+    //console.log("sourcesId: " + JSON.stringify(sourcesId, null, 2))
+
+    // Delete comments and picture related to this answer
+    for(i of sourcesId){ await apiCallDelete(`/instanceData/${i}`) }
+
+    // Delete answer
+    await apiCallDelete(`/instanceData/${id}`)
   }
+
+  const AllQuestionsToChecklistTypes = (await apiCallGet(`/typeInternalRel?parentId=${process.env.QUESTION_TO_CHECKLIST_REL_PARENT_ID}`)).data
+
+  console.log("questionTypes: " + JSON.stringify(AllQuestionsToChecklistTypes, null, 2))
+  //console.log("sourcestoCheck: " + JSON.stringify(sourcesToChecklist, null, 2))
+
+  const questionsToCheklistsRelId = []
+
+  for(let i in AllQuestionsToChecklistTypes){
+    const type = AllQuestionsToChecklistTypes[i]
+
+    console.log("type: " + JSON.stringify(type, null, 2))
+    const responseQuestionsLinks = (await apiCallGet(`/instanceDataInternalRel?parentId=${type.id}`)).data
+    console.log("questionLinks: " + JSON.stringify(responseQuestionsLinks, null, 2))
+    responseQuestionsLinks.forEach(rel => {
+      if (rel.target === id) questionsToCheklistsRelId.push(rel.id)
+    })
+  }
+
+  console.log("questions: " + JSON.stringify(questionsToCheklistsRelId, null, 2))
+
+  const questionsPromises = []
+
+  questionsToCheklistsRelId.forEach(relId => {
+    questionsPromises.push(apiCallDelete(`/instanceDataInternalRel/${relId}`))
+  })
+
+  await Promise.all(questionsPromises)
+
+
+  const checklistAddressRels = (await apiCallGet(`/instanceDataExternalRel?parentId=${process.env.CHECKLIST_TO_ADDRESS_REL_PARENT_ID}`)).data
+  const checklistAddressRel = checklistAddressRels?.find(rel => rel.source === id)
+  if(checklistAddressRel !== undefined) await apiCallDelete(`/instanceDataExternalRel/${checklistAddressRel.id}`)
 
   //Delete checklist
   let response = await apiCallDelete(`/instanceData/${id}`);
-
   if ((response.status) !== 200) {
     return res.status(response.status).json(response.data);
   } else {
     return res.json(response.data);
   }
 });
+
+router.post("/create/datum", async (req, res) => {
+  console.log("create checklist datum route used", req.body);
+
+  //Om datum för aktuell checklist redan finns -> ta bort och skapa ny
+
+
+  let sourcesToChecklist = (
+    await apiCallPost(
+      { targetId: req.body.checklistId },
+      `/instance/sourcesToTarget`
+    )
+  ).data;
+
+
+  let detailsToChecklist = await sourcesToChecklist.links.find(
+    (obj) =>
+      obj.linkParentId ===
+      "tder_6c0d45e5-ce61-42fe-9697-d4197b794f04-td_c795835c-6c3b-4292-8d06-55d71416d44b-td_1db022c1-a269-4290-832d-be29416455a0"
+  )
+
+  const detailsObjId = await detailsToChecklist.sources[0].id;
+
+  let sourcesToDetail = (
+    await apiCallPost(
+      { targetId: detailsObjId },
+      `/instance/sourcesToTarget`
+    )
+  ).data;
+
+  let sourcesToDetailsLinks = await sourcesToDetail.links;
+
+  if (sourcesToDetailsLinks.length > 0) {
+    let datesToChecklist = await sourcesToDetailsLinks.find(async obj => {
+      await obj.linkParentId === "tder_2e64c052-f211-46b2-9d21-0be86f5330eb-td_1d84a7d7-bbd9-43d3-b9d4-86d3c240383f-td_c795835c-6c3b-4292-8d06-55d71416d44b"
+    })
+
+    if (datesToChecklist) {
+      await apiCallDelete(`/instance/${datesToChecklist.sources[0].id}`);
+    }
+  }
+
+
+  //Skapa nytt datum för akutell checklista
+
+  let parentId = "td_1d84a7d7-bbd9-43d3-b9d4-86d3c240383f"
+
+  const reqBody = {
+    title: req.body.datum,
+    props: [],
+    parentId,
+  };
+
+  let responseDatum = await apiCallPost(reqBody, "/instance/create");
+
+  if ((await responseDatum.status) !== 200) {
+    return res.status(responseDatum.status).json(responseDatum.data);
+  } else {
+    // return res.json(response.data);
+  }
+
+
+  const responseDatumId = await responseDatum.data.id;
+
+  // // Create rel between I41 - I31
+
+  const reqBodyRel = {
+    title: "Ingår i",
+    props: [],
+    source: responseDatumId,
+    target: detailsObjId,
+    parentId:
+      "tder_2e64c052-f211-46b2-9d21-0be86f5330eb-td_1d84a7d7-bbd9-43d3-b9d4-86d3c240383f-td_c795835c-6c3b-4292-8d06-55d71416d44b",
+  };
+
+  let responseRel = await apiCallPost(
+    reqBodyRel,
+    "/instanceDataExternalRel/create"
+  );
+
+  if ((await responseRel.status) !== 200) {
+    return res.status(responseRel.status).json(responseRel.data);
+  } else {
+    return res.json(responseRel.data);
+  }
+
+});
+
 
 router.post("/create/datum", async (req, res) => {
   console.log("create checklist datum route used", req.body);
