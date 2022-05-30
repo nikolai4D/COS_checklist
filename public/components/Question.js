@@ -19,6 +19,8 @@ export default  function (question, number) {
 
     return `<option data-function="chooseAnswer" value="${answer.id}" ${isChosenValue? "selected" : ""} class="dropdown-item">${answer.title}</option>`;
     })
+
+    
     if (selectedAnswerObj.title === "N/A" || selectedAnswerObj.title === "") backgroundColor = "";
     else backgroundColor = question.status ? "table-success" : "table-danger"
     selectedAnswerObj = {title: "N/A"};

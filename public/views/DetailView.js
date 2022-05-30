@@ -15,6 +15,7 @@ export default class DetailView {
 
     let checklist = State.activeChecklist.content;
 
+
     let areasStr = await this.getAreasStr();
     let questionsDetailedStr = await this.getQuestionsDetailedStr()
 
@@ -28,6 +29,16 @@ export default class DetailView {
 
     let areasStr = "";
     allAreas.forEach(area => {
+
+      // let isChosenValue = false;
+
+      // if (answer.id === selectedAnswer) {
+      //     selectedAnswerObj = answer;
+      //     isChosenValue = true;
+      //     showFirstOption = false;
+      //     }
+  
+      
       areasStr += `<option value="${area.id}">${area.title}</option>`;
     });
     return areasStr;
