@@ -63,7 +63,7 @@ router.get("/getAllDetailedData", async (req, res) => {
   
     let sourcesToTarget = (await apiCallPost({"targetId": checklist.id}, `/instance/sourcesToTarget`)).data;
     for (const relation of sourcesToTarget.links){
-      console.log(relation.linkParentId, "linkParentId")
+      // console.log(relation.linkParentId, "linkParentId")
       if (relation.linkParentId === process.env.YES_TO_CHECKLIST_REL_PARENT_ID ||
       relation.linkParentId === process.env.NO_TO_CHECKLIST_REL_PARENT_ID ||
       relation.linkParentId === process.env.NA_TO_CHECKLIST_REL_PARENT_ID){
@@ -108,27 +108,58 @@ router.get("/getAllDetailedData", async (req, res) => {
 
   let questionsDetailed = []
   for (const type of responseQuestionsType){
+    // get all questions on type level
     const question = {}
     questionsDetailed.push(question)
 
     question.id = type.id;
+  
+    // get all questions on instance level
     question.instances = (await apiCallGet(`/instance?parentId=${type.id}`)).data;
+    
+    // for every question, get all answers via sources to target
     for (let instance of question.instances){
       instance.answer = []
       let sourcesToTarget = (await apiCallPost({"targetId": instance.id}, `/instance/sourcesToTarget`)).data;
+      // for each link, get the sources
       for (const relation of sourcesToTarget.links){
         instance.answer.push(...relation.sources)
-        for (const list of allChecklistsFormatted){
-          for (const answer of list.answers){
-            let match = instance.answer.find(ans => ans.id === answer.id)
-            if (match){
-              list.questionsWithAnwers.push({question: instance, answer: instance.answer}) }
-          }
-        }
+
+        // for (const list of allChecklistsFormatted){
+        //   for (const answer of list.answers){
+        //     let match = instance.answer.find(ans => ans.id === answer.id)
+        //     if (match){
+        //       list.questionsWithAnwers.push({question: instance, answer: match}) }
+        //   }
+        // }
       }
     }
-
   }
+  for (const checklist of allChecklistsFormatted){
+    if (checklist.answers.length === 0) continue
+    for (const group of questionsDetailed){
+        for (const question of group.instances) {
+          // console.log(question.answer, "question!!!!!!!!!")
+          // console.log(checklist.answers, "checklist.answers!!!!!!!!!")
+        for (const questionAnswer of question.answer){
+          let inst = checklist.answers.find(ans => questionAnswer.id === ans.id)
+        if (inst) checklist.questionsWithAnwers.push({question: question, answer: inst})
+
+        }
+        // let inst = question.answer.find(ans => checklist.answers.find)
+        // if (inst) checklist.questionsWithAnwers.push({question: question, answer: inst})
+      // }
+
+        // for (const answer of checklist.answers){
+        //   if (question.id === answer.id){
+        //     checklist.questionsWithAnwers.push({question: question, answer: answer})
+        //     questionsDetailed[group].instances.push(question)
+        //   }
+        // }
+      }
+    }}
+  // }
+
 
   return res.json({allChecklistsFormatted, addresses, areas, properties, checklistAddressRel, addressPropertyRel, propertyAreaRel, questionsDetailed})
 

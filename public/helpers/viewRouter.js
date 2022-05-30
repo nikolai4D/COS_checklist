@@ -3,7 +3,6 @@ import navigateTo from "./navigateTo.js";
 import { State } from "../store/State.js";
 import Actions from "../store/Actions.js";
 
-
 //views
 import DashboardView from "../views/DashboardView.js";
 import Login from "../views/Login.js";

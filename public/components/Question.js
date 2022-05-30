@@ -1,9 +1,37 @@
 export default  function (question, number) {
-  const possibleAnswers = question.answers.possibleAnswers
+  const possibleAnswers = question.answers.possibleAnswers;
   const preferredAnswer = question.answers.preferredAnswer;
-  const listOfPossibleAnswers = possibleAnswers.map(answer => `<option data-function="chooseAnswer" value="${answer.id}" class="dropdown-item">${answer.title}</option>`)
-  let options = ['<option disabled selected>Välj svar</option>', ...listOfPossibleAnswers].join("");
-    return ` <tr data-id="${question.id}">
+
+  let selectedAnswer = question.selectedAnswer ?? null;
+  let backgroundColor= null;
+  let chosenValue = null;
+  let noChosenValue = "selected";
+  let selectedAnswerObj = null;
+//   let noChosenValue = selectedAnswer === null ? "selected" : null;
+//   let chosenValue = noChosenValue === null ? "selected" : null;
+
+
+  const listOfPossibleAnswers = possibleAnswers.map(answer => {
+     chosenValue = null;
+     noChosenValue = "selected";
+     selectedAnswerObj = null;
+
+    if (answer.id === selectedAnswer) {
+        selectedAnswerObj = answer;
+        chosenValue = "selected"
+        noChosenValue = null
+        }
+
+    if (selectedAnswerObj && selectedAnswerObj.title === "N/A") backgroundColor = ""
+    else backgroundColor = question.status ? "table-success" : "table-danger"
+
+    return `<option data-function="chooseAnswer" value="${answer.id}" ${chosenValue} class="dropdown-item">${answer.title}</option>`
+})
+
+
+  let options = [`<option ${noChosenValue} disabled>Välj svar</option>`, ...listOfPossibleAnswers].join("");
+
+    return ` <tr class="${backgroundColor}" data-id="${question.id}">
     <td>${question.title}</td>
     <td>${preferredAnswer.title}</td>
     <td>

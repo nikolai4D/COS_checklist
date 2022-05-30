@@ -12,9 +12,9 @@ export default async function (e) {
           selectedAddresses.push(option.value);
         }
     }
-    let activeChecklist = State.allChecklistsWithDetails.content.allChecklistsFormatted.find(checklist => checklist.id === State.activeChecklist.content.id);
+    let activeChecklist = State.activeChecklist.content;
 
-
+    // let activeChecklist = State.allChecklistsWithDetails.content.allChecklistsFormatted.find(checklist => checklist.id === State.activeChecklist.content.id);
     let activeArea = State.allChecklistsWithDetails.content.areas.find(area => area.id === areaId);
     let activeProperty = State.allChecklistsWithDetails.content.properties.find(area => area.id === propertyId);
     let activeAddress = State.allChecklistsWithDetails.content.addresses.filter(address => selectedAddresses.includes(address.id));
@@ -23,6 +23,4 @@ export default async function (e) {
     activeChecklist.area = activeArea;
     activeChecklist.address = activeAddress;
     await Merchant.createData({type: Librarian.address.type, checklistId: activeChecklist.id, addressIds: selectedAddresses})
-
-    // let checklists = (await State.allChecklistsWithDetails.get()).allChecklistsFormatted;
 }

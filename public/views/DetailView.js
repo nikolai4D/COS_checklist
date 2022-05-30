@@ -13,19 +13,7 @@ export default class DetailView {
 
   async getTemplate() {
 
-   await State.activeChecklist.set(); 
-
     let checklist = State.activeChecklist.content;
-    // State.allChecklistsWithDetails.content.allChecklistsFormatted.push(State.activeChecklist.content);
-    
-    checklist.questions = await State.allQuestionsWithDetails.content.questionsDetailed;
-    checklist.address = {title: "-"}
-    checklist.area = {title: "-"}
-    checklist.property = {title: "-"}
-    checklist.status = "In progress"
-    checklist.createdDate = checklist.created;
-
-
 
     let areasStr = await this.getAreasStr();
     let questionsDetailedStr = await this.getQuestionsDetailedStr()
