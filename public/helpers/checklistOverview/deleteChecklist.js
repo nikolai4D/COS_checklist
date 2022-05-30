@@ -1,14 +1,13 @@
-import Actions from "../../store/Actions.js";
-import {State} from "../../store/State.js";
 import navigateTo from "../navigateTo.js";
+import Merchant from "../../store/Merchant.js";
+import { State } from "../../store/State.js";
 
 export default async function (e) {
     console.log("delete checklist fonction called")
     const checkListId = e.target.parentElement.parentElement.getAttribute("data-id")
 
-    const checkList = State.allChecklistsWithDetails.find( el => el.id = checkListId)
-
-    await Actions.DELETE_DATA({type: "checklist", id: checkListId, datumId: checkList.datum.id})
+    await Merchant.deleteData({type: "checklist", id: checkListId})
+    State.allChecklistsWithDetails.content.allChecklistsFormatted = State.allChecklistsWithDetails.content.allChecklistsFormatted.filter(checklist => checklist.id !== checkListId)
 
     navigateTo("/")
 }

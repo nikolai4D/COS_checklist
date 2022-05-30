@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 require("dotenv").config();
 const bodyParser = require("body-parser");
-const axios = require("axios");
 const { apiCallPost, apiCallGet, apiCallDelete } = require("./helpers");
 
 //Bodyparser
@@ -126,28 +125,89 @@ router.delete("/", async (req, res) => {
   console.log("Delete checklist route used");
   const id = req.body.id;
 
-  const checkListDetail = await apiCallPost({ targetId: id }, `/instance/sourcesToTarget`)
+  //console.log("id: " + id)
 
-  if(checkListDetail?.data.hasOwnProperty("links")) {
-    let checkListDetailId = checkListDetail.data.links[0].sources[0].id;
+  //Get related questions and answers relationships
+  let sourcesToChecklist = (await apiCallPost({"targetId": id}, `/instance/sourcesToTarget`)).data;
 
-    //Delete related details
-    console.log("mycheckListDetailId: " + checkListDetailId)
+  // delete related questions relationships
 
-    let sourcesToCheckListDetails = (await apiCallPost({targetId: checkListDetailId}, `/instance/sourcesToTarget`)).data.links;
+  let answers = sourcesToChecklist.links.filter(el =>
+      el.linkParentId === process.env.YES_TO_CHECKLIST_REL_PARENT_ID ||
+      el.linkParentId === process.env.NO_TO_CHECKLIST_REL_PARENT_ID ||
+      el.linkParentId === process.env.NA_TO_CHECKLIST_REL_PARENT_ID)
 
-    for (const linkType of sourcesToCheckListDetails) {
-      for (const link of linkType.sources) {
-        await apiCallDelete(`/instanceData/${link.id}`);
-      }
+  let answersId = []
+
+  for(let i in answers){
+
+    answers[i].sources.forEach(el => {
+      answersId.push(el.id)
+    })
+  }
+
+
+
+  // Get all related pictures and delete them
+
+  //console.log("answers.id: " + answersId[0])
+
+  for (let i = 0; i < answersId.length; i++) { //for(let of) was giving undefined results, don t know why
+    const id = answersId[i]
+    const sourcesToAnswer = (await apiCallPost({"targetId": id}, `/instance/sourcesToTarget`)).data.links
+
+    const sourcesId = []
+    for(i of sourcesToAnswer) {
+
+      i.sources.forEach(el => {
+        sourcesId.push(el.id)
+      })
     }
 
-    await apiCallDelete(`/instanceData/${checkListDetailId}`)
+    //console.log("sourcesId: " + JSON.stringify(sourcesId, null, 2))
+
+    // Delete comments and picture related to this answer
+    for(i of sourcesId){ await apiCallDelete(`/instanceData/${i}`) }
+
+    // Delete answer
+    await apiCallDelete(`/instanceData/${id}`)
   }
+
+  const AllQuestionsToChecklistTypes = (await apiCallGet(`/typeInternalRel?parentId=${process.env.QUESTION_TO_CHECKLIST_REL_PARENT_ID}`)).data
+
+  console.log("questionTypes: " + JSON.stringify(AllQuestionsToChecklistTypes, null, 2))
+  //console.log("sourcestoCheck: " + JSON.stringify(sourcesToChecklist, null, 2))
+
+  const questionsToCheklistsRelId = []
+
+  for(let i in AllQuestionsToChecklistTypes){
+    const type = AllQuestionsToChecklistTypes[i]
+
+    console.log("type: " + JSON.stringify(type, null, 2))
+    const responseQuestionsLinks = (await apiCallGet(`/instanceDataInternalRel?parentId=${type.id}`)).data
+    console.log("questionLinks: " + JSON.stringify(responseQuestionsLinks, null, 2))
+    responseQuestionsLinks.forEach(rel => {
+      if (rel.target === id) questionsToCheklistsRelId.push(rel.id)
+    })
+  }
+
+  console.log("questions: " + JSON.stringify(questionsToCheklistsRelId, null, 2))
+
+  const questionsPromises = []
+
+  questionsToCheklistsRelId.forEach(relId => {
+    questionsPromises.push(apiCallDelete(`/instanceDataInternalRel/${relId}`))
+  })
+
+  await Promise.all(questionsPromises)
+
+
+  const checklistAddressRels = (await apiCallGet(`/instanceDataExternalRel?parentId=${process.env.CHECKLIST_TO_ADDRESS_REL_PARENT_ID}`)).data
+  const checklistAddressRel = checklistAddressRels?.find(rel => rel.source === id)
+  if(checklistAddressRel !== undefined) await apiCallDelete(`/instanceDataExternalRel/${checklistAddressRel.id}`)
 
   //Delete checklist
   let response = await apiCallDelete(`/instanceData/${id}`);
-
   if ((response.status) !== 200) {
     return res.status(response.status).json(response.data);
   } else {
