@@ -1,7 +1,4 @@
 import { State } from "../store/State.js";
-import Merchant from "../store/Merchant.js";
-import {Librarian} from "../store/Librarian.js";
-
 import Checklist from "../components/Checklista.js"
 import Question from "../components/Question.js"
 import QuestionGroup from "../components/QuestionGroup.js"
@@ -29,15 +26,6 @@ export default class DetailView {
 
     let areasStr = "";
     allAreas.forEach(area => {
-
-      // let isChosenValue = false;
-
-      // if (answer.id === selectedAnswer) {
-      //     selectedAnswerObj = answer;
-      //     isChosenValue = true;
-      //     showFirstOption = false;
-      //     }
-  
       
       areasStr += `<option value="${area.id}">${area.title}</option>`;
     });
