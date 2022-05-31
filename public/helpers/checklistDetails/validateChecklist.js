@@ -1,8 +1,11 @@
 import {State} from "../../store/State.js";
-// import Merchant from "../../store/Merchant";
-// import { Librarian } from "../../store/Librarian";
+import Merchant from "../../store/Merchant.js";
+import { Librarian } from "../../store/Librarian.js";
+import navigateTo from "../navigateTo.js";
+import saveAnswers from "./helpers.js";
 
-export default function (e) {
+
+export default async function (e) {
 
 let nonSelected = []
 
@@ -25,13 +28,16 @@ if (nonSelected.length > 0) {
     return
 }
 
-let validation = "Approved"
+let isApproved = true;
 for (const answer of activeChecklist.questions){
     for (const question of answer.questions){
-        if(!question.status) validation = "Not approved";
+        if(!question.status) isApproved = false;
     }
 }
-alert(`Checklist validated to: ${validation}`)
-console.log("Checklist validated to: ", validation)
-// Merchant.updateData(activeChecklist)
+alert(`Checklist validated to: ${isApproved? "approved" : "not approved"}`)
+
+await Merchant.updateData({type: Librarian.checklist.type, activeChecklist, isApproved})
+await saveAnswers(activeChecklist);
+navigateTo('/')
+
 }

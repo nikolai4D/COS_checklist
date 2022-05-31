@@ -9,7 +9,7 @@ export default class DashboardView {
 
     delete State.activeChecklist.content;
 
-    let checklists = (await State.allChecklistsWithDetails.get()).allChecklistsFormatted
+    let checklists = (await State.allChecklistsWithDetails.set()).allChecklistsFormatted
     await State.allQuestionsWithDetails.set();
 
     let formattedChecklists = checklists.map((checklist, index) => {
