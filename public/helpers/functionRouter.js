@@ -24,7 +24,6 @@ export default async function (demandedRoute, event) {
     { path: "chooseAnswer", request: chooseAnswer },
     { path: "validateChecklist", request: validateChecklist },
     { path: "saveAnswers", request: saveAnswers },
-
     { path: "deleteChecklist", request: deleteChecklist },
 
     // { path: "/register" },
