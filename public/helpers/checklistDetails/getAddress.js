@@ -1,27 +1,25 @@
 import {State} from "../../store/State.js";
 
-
-async function generateDropdownOptions(){
-
-    let propertyId = document.getElementById('addChecklistFastighet').value;
-    if (propertyId === "") return
+async function generateDropdownOptions(addressDOM, propertyId){
 
     let addressPropertyRel = (await State.allChecklistsWithDetails.get()).addressPropertyRel;
     let allAddresses = (await State.allChecklistsWithDetails.get()).addresses;
-    document.getElementById('addChecklistAdress').innerHTML += `<option></option>`
 
-    addressPropertyRel.forEach(relation => {
-        if (propertyId === relation.target){
-        let addressId = relation.source
+    for (const relation of addressPropertyRel){
+        if (propertyId !== relation.target) continue;
+        let addressId = relation.source;
         let address = allAddresses.find(adress => adress.id === addressId)
-        document.getElementById('addChecklistAdress').innerHTML += `<option value="${address.id}">${address.title}</option>`
-    }})
+        addressDOM.innerHTML += `<option data-function="saveAddress" value="${address.id}">${address.title}</option>`;
+    }
 }
 export default async function (e) {
-    let addressDOM = document.getElementById('addChecklistAdress');
-    addressDOM.innerHTML = ""
+    let addressDOM = document.getElementById('addChecklistAddress');
+    addressDOM.innerHTML = "";
+    
+    let propertyId = document.getElementById('addChecklistProperty').value;
+    if (propertyId === "") return;
 
-  await generateDropdownOptions();
+  await generateDropdownOptions(addressDOM, propertyId);
 
 }
 

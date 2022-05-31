@@ -10,7 +10,9 @@ export default class DetailView {
 
   async getTemplate() {
 
-    let checklist = await State.activeChecklist.get(); // call Merchant instead
+    let checklist = State.activeChecklist.content;
+
+
     let areasStr = await this.getAreasStr();
     let questionsDetailedStr = await this.getQuestionsDetailedStr()
 
@@ -19,7 +21,7 @@ export default class DetailView {
 
   async getAreasStr() {
 
-    let allAreas = (await State.allChecklistsWithDetails.get()).areas
+    let allAreas = (await State.allChecklistsWithDetails.get()).areas;
     allAreas.sort((a, b) => a.title.localeCompare(b.title));
 
     let areasStr = "";
@@ -30,7 +32,7 @@ export default class DetailView {
   }
 
   async getQuestionsDetailedStr() {
-    let questionsDetailed = (await State.allQuestionsWithDetails.get()).questionsDetailed;
+    let questionsDetailed = State.activeChecklist.content.questions;
 
     questionsDetailed.sort((a, b) => a.title.localeCompare(b.title));
 
