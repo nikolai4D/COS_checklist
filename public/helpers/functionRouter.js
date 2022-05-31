@@ -9,6 +9,7 @@ import getAddress from "./checklistDetails/getAddress.js";
 import saveAddress from "./checklistDetails/saveAddress.js";
 import chooseAnswer from "./checklistDetails/questionSection/chooseAnswer.js";
 import validateChecklist from "./checklistDetails/validateChecklist.js";
+import viewChecklist from "./checklistDetails/viewChecklist.js";
 import saveAnswers from "./checklistDetails/saveAnswers.js";
 
 export default async function (demandedRoute, event) {
@@ -25,6 +26,7 @@ export default async function (demandedRoute, event) {
     { path: "validateChecklist", request: validateChecklist },
     { path: "saveAnswers", request: saveAnswers },
     { path: "deleteChecklist", request: deleteChecklist },
+    { path: "viewChecklist", request: viewChecklist },
 
     // { path: "/register" },
     // { path: "/saveChecklist" },
