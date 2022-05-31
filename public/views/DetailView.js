@@ -29,16 +29,6 @@ export default class DetailView {
 
     let areasStr = "";
     allAreas.forEach(area => {
-
-      // let isChosenValue = false;
-
-      // if (answer.id === selectedAnswer) {
-      //     selectedAnswerObj = answer;
-      //     isChosenValue = true;
-      //     showFirstOption = false;
-      //     }
-  
-      
       areasStr += `<option value="${area.id}">${area.title}</option>`;
     });
     return areasStr;
