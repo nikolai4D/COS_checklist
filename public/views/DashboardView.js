@@ -19,11 +19,25 @@ export default class DashboardView {
         checklist.area = {"title" : "-"}
       }
 
+      let storedDate = checklist.createdDate.split(" ");
+      let formattedDate = storedDate; 
+
+      let year = storedDate[3];
+      let month = storedDate[1];
+      let day = storedDate[2];
+
+      let psdate = [''].join(' ') + '' + year + ' / ' + month + ' / ' + [day, ...[].concat()].join(' ').concat('');
+
+
+      console.log('storedDate' , formattedDate)
+      console.log(psdate)
+
+    
       let number = index + 1
       return `  
         <tr data-id="${checklist.id}">
           <th scope="row">${number}</th>
-          <td>${checklist.createdDate}</td>
+          <td>${psdate}</td>
           <td>${checklist.area.title}</td>
           <td>${checklist.property.title}</td>
           <td>${checklist.status}</td>
