@@ -26,7 +26,7 @@ export default class DashboardView {
       let month = storedDate[1];
       let day = storedDate[2];
 
-      let psdate = [''].join(' ') + '' + year + ' / ' + month + ' / ' + [day, ...[].concat()].join(' ').concat('');
+      let psdate = [''].join(' ') + '' + year + '-' + month + '-' + [day, ...[].concat()].join(' ').concat('');
 
 
       console.log('storedDate' , formattedDate)
