@@ -1,4 +1,4 @@
-import { State } from '../../store/State.js';
+import { State } from '../store/State.js';
 
 export default function (areasStr, questionsDetailedStr, checklist) {
   let selectedAddressStr= "";
