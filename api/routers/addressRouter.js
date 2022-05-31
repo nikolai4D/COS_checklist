@@ -4,8 +4,7 @@ require("dotenv").config();
 const bodyParser = require("body-parser");
 const axios = require("axios");
 const { apiCallPost, apiCallGet, apiCallDelete } = require("./helpers");
-const { add } = require("lodash");
-const { address } = require("faker/locale/zh_TW");
+
 
 //Bodyparser
 router.use(bodyParser.json());
