@@ -16,16 +16,41 @@ export default class DashboardView {
         checklist.property = {"title" : "-"}
         checklist.area = {"title" : "-"}
       }
+      console.log(checklist.status);
+
+      let changebg = checklist.status;
+      let statushtml 
+
+      if (changebg === "Approved"){
+         statushtml = `<div id ="aPbg" class="alert alert-success" role="alert">
+         ${changebg}
+       </div>`
+      }
+    
+      else if (changebg === "Not approved"){
+        statushtml = `<div id ="notAbg" class="alert alert-danger" role="alert">
+        ${changebg}
+      </div>`
+     }
+
+     else if (changebg === "In progress"){
+      statushtml = `<div id ="inPbg" class="alert alert-warning" role="alert">
+      ${changebg}
+    </div>`
+   }
 
       let number = index + 1
+
       return `  
         <tr data-id="${checklist.id}">
           <th scope="row">${number}</th>
           <td>${checklist.createdDate}</td>
           <td>${checklist.area.title}</td>
           <td>${checklist.property.title}</td>
-          <td>${checklist.status}</td>
-  
+          <td>${statushtml}
+
+          </td>
+
           <td><button type="button" class="btn btn-success" data-view="/viewChecklist" >➚</button></td>
           <td><button type="button" class="btn btn-danger" data-function="deleteChecklist" >×</button></td>
         </tr>`})
