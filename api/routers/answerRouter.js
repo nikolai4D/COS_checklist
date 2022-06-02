@@ -5,7 +5,7 @@ const router = express.Router();
 require("dotenv").config();
 const bodyParser = require("body-parser");
 const axios = require("axios");
-const { apiCallPost, apiCallPut, apiCallGet, apiCallDelete } = require("./helpers");
+const { apiCallPost, apiCallGet, apiCallDelete } = require("./helpers");
 
 //Bodyparser
 router.use(bodyParser.json());

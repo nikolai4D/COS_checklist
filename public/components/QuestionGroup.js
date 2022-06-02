@@ -6,24 +6,24 @@ export default function (questionGroup, questions) {
     ${questionGroup.title}</button>
     </h2>
     <div id="collapse-${questionGroup.id}" class="accordion-collapse collapse" aria-labelledby="${questionGroup.id}" data-bs-parent="#checklistItems">
-<div class="accordion-body">
-<div class="checklistTable" style="margin-top: 4em;">
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Kontrollpunkter</th>
-        <th scope="col">Önskat resultat</th>
-        <th scope="col">Ja/Nej</th>
-        <th scope="col">Notering</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody id="${questionGroup.id}">
-    ${questions}
-    </tbody>
-  </table>
-</div>
-</div>
+    <div class="accordion-body">
+    <div class="checklistTable" style="margin-top: 4em;">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Kontrollpunkter</th>
+            <th scope="col">Önskat resultat</th>
+            <th scope="col">Ja/Nej</th>
+            <th scope="col">Notering</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody id="${questionGroup.id}">
+        ${questions}
+        </tbody>
+      </table>
+    </div>
+    </div>
     </div>
   </div>
 `;
