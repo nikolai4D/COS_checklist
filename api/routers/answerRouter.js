@@ -13,10 +13,10 @@ router.use(bodyParser.json());
 //APIs
 router.put("/", async (req, res) => {
 
-    const {questionsWithAnwers, questions, answers, id} = req.body.activeChecklist;
+    const {questionsWithAnwers, questions, id} = req.body.activeChecklist;
 
     // if (questionsWithAnwers.length > 0){
-        // check if the answers that exists are the ones that are being updated
+        // check if the answers are the same as the previous attached to checklist and question
         // meaning
         // match questions[#].answer[#].questions[#].selectedSelectedAnswer where questions[#].answer[#].questions[#].id === questionsWithAnwers[#].question.parentId, 
         // if selectedAnswer is not questionsWithAnwers[#].answer.parentId, 
@@ -30,10 +30,7 @@ router.put("/", async (req, res) => {
                 let matchingObject = questionsWithAnwers.find(obj => obj.question.parentId === question.id)
                 if (matchingObject){
                     if (matchingObject.answer.parentId === question.selectedAnswer) continue;
-
-                    // if (matchingObject.answer.parentId !== question.selectedAnswer){
-
-                        // delete answer nstance if selected answer is not the same as connected answer
+                        // delete answer instance if selected answer is not the same as connected answer
                         let responseDeleteAnswer = await apiCallDelete(`/instance/${matchingObject.answer.id}`);
                         if ((await responseDeleteAnswer.status) !== 200) return res.status(responseDeleteAnswer.status).json(responseDeleteAnswer.data);
 
@@ -48,7 +45,6 @@ router.put("/", async (req, res) => {
                     }
                     const answerObj = (await apiCallGet(`/type?id=${question.selectedAnswer}`)).data;
                     const checklistObj =(await apiCallGet(`/instance?id=${id}`)).data;
-
                     const questionObj = (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
                     const answerToChecklistRel = (await apiCallPost({sourceId: question.selectedAnswer, targetId: checklistObj.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
                     const answerToQuestionRel = (await apiCallPost({sourceId: question.selectedAnswer, targetId: question.id}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
@@ -84,15 +80,14 @@ router.post("/", async (req, res) => {
 
     const {questions, id} = req.body.activeChecklist;
 
-
     for (const answer of questions){
         for (const question of answer.questions){
             if (question.selectedAnswer){
                 // create instance of answer
                 const answerObj = (await apiCallGet(`/type?id=${question.selectedAnswer}`)).data;
                 const checklistObj =(await apiCallGet(`/instance?id=${id}`)).data;
-
                 const questionObj = (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
+
                 const answerToChecklistRel = (await apiCallPost({sourceId: question.selectedAnswer, targetId: checklistObj.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
                 const answerToQuestionRel = (await apiCallPost({sourceId: question.selectedAnswer, targetId: question.id}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
                 const questionToChecklistRel = (await apiCallPost({sourceId: question.id, targetId: checklistObj.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
@@ -123,8 +118,7 @@ router.post("/", async (req, res) => {
             }
         }
     }
-return res.json(200);
-
+    return res.json(200);
 });
 
 
