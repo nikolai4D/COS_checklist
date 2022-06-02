@@ -2,7 +2,6 @@ import {State} from "../../store/State.js";
 import Merchant from "../../store/Merchant.js";
 import { Librarian } from "../../store/Librarian.js";
 import navigateTo from "../navigateTo.js";
-import saveAnswers from "./helpers.js";
 
 
 export default async function (e) {
@@ -37,7 +36,6 @@ for (const answer of activeChecklist.questions){
 alert(`Checklist validated to: ${isApproved? "approved" : "not approved"}`)
 
 await Merchant.updateData({type: Librarian.checklist.type, activeChecklist, isApproved})
-await saveAnswers(activeChecklist);
 navigateTo('/')
 
 }
