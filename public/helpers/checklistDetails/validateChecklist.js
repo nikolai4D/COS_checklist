@@ -35,7 +35,12 @@ for (const answer of activeChecklist.questions){
 }
 alert(`Checklist validated to: ${isApproved? "approved" : "not approved"}`)
 
+
+let existingChecklist = State.allChecklistsWithDetails.content.allChecklistsFormatted.find(checklist => checklist.id === activeChecklist.id);
+if (!existingChecklist) await Merchant.createData({type:Librarian.answer.type, activeChecklist});
+else await Merchant.updateData({type:Librarian.answer.type, activeChecklist});
 await Merchant.updateData({type: Librarian.checklist.type, activeChecklist, isApproved})
+
 navigateTo('/')
 
 }

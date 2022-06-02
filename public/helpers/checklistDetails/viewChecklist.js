@@ -18,7 +18,6 @@ if (id){
 
     for (const group of checklist.questions){
         for (const question of group.questions) {
-            // if (!question.selectedAnswer) {navigateTo("/detailView") ;return};
 
             let matchingQuestion = existingChecklist.questionsWithAnwers.find(obj =>  obj.question.parentId === question.id)
             if (matchingQuestion){
