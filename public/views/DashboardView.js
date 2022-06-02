@@ -19,11 +19,12 @@ export default class DashboardView {
         checklist.area = {"title" : "-"}
       }
 
+
       let number = index + 1
       return `  
         <tr data-id="${checklist.id}">
           <th scope="row">${number}</th>
-          <td>${new Date(checklist.created).toLocaleString()}</td>
+          <td>${new Date(checklist.created).toLocaleDateString('se-SE', {hour12: false}).split(" ")}</td>
           <td>${checklist.area.title}</td>
           <td>${checklist.property.title}</td>
           <td>${checklist.status}</td>
