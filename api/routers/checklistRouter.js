@@ -63,11 +63,9 @@ router.get("/getAllDetailedData", async (req, res) => {
   
     let sourcesToTarget = (await apiCallPost({"targetId": checklist.id}, `/instance/sourcesToTarget`)).data;
     for (const relation of sourcesToTarget.links){
-      // console.log(relation.linkParentId, "linkParentId")
       if (relation.linkParentId === process.env.YES_TO_CHECKLIST_REL_PARENT_ID ||
       relation.linkParentId === process.env.NO_TO_CHECKLIST_REL_PARENT_ID ||
       relation.linkParentId === process.env.NA_TO_CHECKLIST_REL_PARENT_ID){
-        console.log(JSON.stringify(relation, null, 2), "relation")
 
       if (relation.sources.length > 0) checklist.answers.push(...relation.sources)}
     }
