@@ -62,7 +62,7 @@ export default class DashboardView {
   async getTemplate() {
     return `
         <div class="container">
-        <button type="button" class="btn btn-outline-info" data-function="viewChecklist" style="margin-top: 2em;">+ Rondering</button>
+        <button type="button" class="btn btn-outline-info" data-function="viewChecklist" style="margin-top: 2em;">⨁ Rondering</button>
 
             <div class="checklistTable" style="margin-top: 4em;">
             <table id="table" class="table table-striped">
