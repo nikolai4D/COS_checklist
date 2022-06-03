@@ -23,14 +23,15 @@ router.put("/", async (req, res) => {
             if (question.selectedAnswer){
                 let matchingObject = questionsWithAnwers.find(obj => obj.question.parentId === question.id)
                 if (matchingObject){
+                    // if answer instance attached to checklist is same as selected answer then continue to next loop, else delete answer instance
                     if (matchingObject.answer.parentId === question.selectedAnswer) continue;
-                        // delete answer instance if selected answer is not the same as connected answer
-                        let responseDeleteAnswer = await apiCallDelete(`/instance/${matchingObject.answer.id}`);
-                        if ((await responseDeleteAnswer.status) !== 200) return res.status(responseDeleteAnswer.status).json(responseDeleteAnswer.data);
 
-                        // get relation between checklist and question to delete it later
-                        await apiCallPost({sourceId: matchingObject.question.id, targetId: id}, `/instanceInternalRel/readRelBySourceAndTarget`)
-                        await apiCallDelete(`/instanceInternalRel/${responseQuestionToChecklistRel.data[0].id}`);
+                    let responseDeleteAnswer = await apiCallDelete(`/instance/${matchingObject.answer.id}`);
+                    if ((await responseDeleteAnswer.status) !== 200) return res.status(responseDeleteAnswer.status).json(responseDeleteAnswer.data);
+
+                    // get relation between checklist and question to delete it later
+                    await apiCallPost({sourceId: matchingObject.question.id, targetId: id}, `/instanceInternalRel/readRelBySourceAndTarget`)
+                    await apiCallDelete(`/instanceInternalRel/${responseQuestionToChecklistRel.data[0].id}`);
 
                     }
                     const answerObj = (await apiCallGet(`/type?id=${question.selectedAnswer}`)).data;
