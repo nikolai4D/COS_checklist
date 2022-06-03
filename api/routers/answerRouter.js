@@ -30,7 +30,7 @@ router.put("/", async (req, res) => {
                     if ((await responseDeleteAnswer.status) !== 200) return res.status(responseDeleteAnswer.status).json(responseDeleteAnswer.data);
 
                     // get relation between checklist and question to delete it later
-                    await apiCallPost({sourceId: matchingObject.question.id, targetId: id}, `/instanceInternalRel/readRelBySourceAndTarget`)
+                    let responseQuestionToChecklistRel = await apiCallPost({sourceId: matchingObject.question.id, targetId: id}, `/instanceInternalRel/readRelBySourceAndTarget`)
                     await apiCallDelete(`/instanceInternalRel/${responseQuestionToChecklistRel.data[0].id}`);
 
                     }
