@@ -53,6 +53,16 @@ body,
 .gotohome {
   cursor:pointer;
 }
+
+.alertw {
+  position: relative;
+  padding: .4rem ;
+  margin-bottom: 0rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+}
+
+
 .btn-notering {
   display: inline-block;
   font-weight: 400;
