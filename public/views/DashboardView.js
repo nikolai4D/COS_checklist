@@ -18,17 +18,16 @@ export default class DashboardView {
         checklist.property = {"title" : "-"}
         checklist.area = {"title" : "-"}
       }
-      console.log(checklist.status);
 
       let changebg = checklist.status;
-      let statushtml 
+      let statushtml;
 
       if (changebg === "Approved"){
          statushtml = `<div id ="aPbg" class="alertw alert-success" role="alert">
          ${changebg}
        </div>`
       }
-    
+
       else if (changebg === "Not approved"){
         statushtml = `<div id ="notAbg" class="alertw alert-danger" role="alert">
         ${changebg}
@@ -78,7 +77,7 @@ export default class DashboardView {
             <tbody>
             ${await this.checklistsToHTML()}
             </tbody>
-          </table>
+            </table>
             </div >
         </div>
         <br/>
