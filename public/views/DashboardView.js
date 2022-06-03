@@ -7,8 +7,10 @@ export default class DashboardView {
 
   async checklistsToHTML() {
 
-    let checklists = (await State.allChecklistsWithDetails.get()).allChecklistsFormatted
-    await State.allQuestionsWithDetails.get()
+    delete State.activeChecklist.content;
+
+    let checklists = (await State.allChecklistsWithDetails.set()).allChecklistsFormatted
+    await State.allQuestionsWithDetails.set();
 
     let formattedChecklists = checklists.map((checklist, index) => {
       if(!checklist.address){
@@ -39,19 +41,18 @@ export default class DashboardView {
     </div>`
    }
 
+
       let number = index + 1
 
       return `  
         <tr data-id="${checklist.id}">
           <th scope="row">${number}</th>
-          <td>${checklist.createdDate}</td>
+          <td>${new Date(checklist.created).toLocaleDateString('se-SE', {hour12: false}).split(" ")}</td>
           <td>${checklist.area.title}</td>
           <td>${checklist.property.title}</td>
-          <td>${statushtml}
-
-          </td>
-
-          <td><button type="button" class="btn btn-success" data-view="/viewChecklist" >➚</button></td>
+          <td>${statushtml} </td>
+  
+          <td><button data-id="${checklist.id}" type="button" class="btn btn-success" data-function="viewChecklist" >➚</button></td>
           <td><button type="button" class="btn btn-danger" data-function="deleteChecklist" >×</button></td>
         </tr>`})
 
@@ -61,7 +62,7 @@ export default class DashboardView {
   async getTemplate() {
     return `
         <div class="container">
-        <button type="button" class="btn btn-info" data-view="/detailView" style="margin-top: 2em;">+ Rondering</button>
+        <button type="button" class="btn btn-info" data-function="viewChecklist" style="margin-top: 2em;">+ Rondering</button>
 
             <div class="checklistTable" style="margin-top: 4em;">
             <table class="table">

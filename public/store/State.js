@@ -16,6 +16,12 @@ class Resource {
         }
         return this.content
     }
+
+    set = async () => {
+        this.content = await this.fetchFunction(this.fetchParams)
+        this.wasFetched = true
+        return this.content
+    }
 }
 
 export const State = {

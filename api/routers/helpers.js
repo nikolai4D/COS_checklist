@@ -22,6 +22,29 @@ async function apiCallPost(reqBody, url) {
   return response;
 }
 
+
+async function apiCallPut(reqBody, url) {
+  console.log('Hello from api > helpers ')
+  let response;
+
+  try {
+      response = await axios.put(process.env.API_BASE_URL + url, reqBody, {
+          withCredentials: true,
+          headers: {
+              apikey: process.env.API_KEY,
+          },
+      });
+
+      console.log("try apiCallPut", reqBody);
+  } catch (err) {
+      // Handle Error Here
+      response = err.response;
+      console.log("catch apiCallPut", reqBody);
+  }
+  return response;
+}
+
+
 async function apiCallGet(url) {
   let response;
 
@@ -64,4 +87,4 @@ async function apiCallDelete(url) {
   return response;
 }
 
-module.exports = { apiCallPost, apiCallGet, apiCallDelete };
+module.exports = { apiCallPost, apiCallGet, apiCallDelete, apiCallPut };

@@ -120,5 +120,25 @@ export default  {
 
     async updateData(params){
 
+        let response;
+
+        try {
+            response = await fetch(`/api/${params.type}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(params)
+            });
+            console.log("try");
+        } catch (err) {
+            console.log(err);
+            response = err.response;
+            console.log("catch");
+        }
+
+        return await response.json();
+
     }
 }

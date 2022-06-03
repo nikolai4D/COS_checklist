@@ -1,13 +1,37 @@
 export default  function (question, number) {
-  const possibleAnswers = question.answers.possibleAnswers
+  const possibleAnswers = question.answers.possibleAnswers;
   const preferredAnswer = question.answers.preferredAnswer;
-  const listOfPossibleAnswers = possibleAnswers.map(answer => `<option value="${answer.id}" id="$${question.id}" class="dropdown-item">${answer.title}</option>`)
-  let options = ['<option selected>Välj svar</option>', ...listOfPossibleAnswers].join("");
-    return ` <tr>
+
+  let selectedAnswer = question.selectedAnswer ?? null;
+  let backgroundColor= null;
+  let selectedAnswerObj = {title: ""};
+  let showFirstOption = true;
+
+
+  const listOfPossibleAnswers = possibleAnswers.map(answer => {
+    let isChosenValue = false;
+
+    if (answer.id === selectedAnswer) {
+        selectedAnswerObj = answer;
+        isChosenValue = true;
+        showFirstOption = false;
+        }
+
+    return `<option data-function="chooseAnswer" value="${answer.id}" ${isChosenValue? "selected" : ""} class="dropdown-item">${answer.title}</option>`;
+    })
+
+    
+    if (selectedAnswerObj.title === "N/A" || selectedAnswerObj.title === "") backgroundColor = "";
+    else backgroundColor = question.status ? "table-success" : "table-danger"
+    selectedAnswerObj = {title: "N/A"};
+
+    let options = [`<option ${showFirstOption? "selected" : ""} disabled>Välj svar</option>`, ...listOfPossibleAnswers].join("");
+
+    return ` <tr class="${backgroundColor}" data-id="${question.id}">
     <td>${question.title}</td>
     <td>${preferredAnswer.title}</td>
     <td>
-        <select class="form-select" aria-label="dropdownMenuButton1">
+        <select id="${question.id}" class="form-select" aria-label="dropdownMenuButton1">
             ${options}
         </select>
     </td>
