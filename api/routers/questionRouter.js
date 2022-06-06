@@ -49,13 +49,13 @@ router.get("/getAllDetailedData", async (req, res) => {
           answer.answerDetails = [];
 
 
-          const answerDetailToAnswer = answerDetailToAnswerRel.filter(relation => relation.target === el.id);
-          if(answerDetailToAnswer.length === 0) continue
+          // const answerDetailToAnswer = answerDetailToAnswerRel.filter(relation => relation.target === el.id);
+          // if(answerDetailToAnswer.length === 0) continue
 
-          answerDetailToAnswer.forEach(relation => {
-            let validAnswerDetails = answerDetails.filter(answerDetail => relation.source === answerDetail.id)
-            answer.answerDetails.push(...validAnswerDetails)
-          })
+          // answerDetailToAnswer.forEach(relation => {
+          //   let validAnswerDetails = answerDetails.filter(answerDetail => relation.source === answerDetail.id)
+          //   answer.answerDetails.push(...validAnswerDetails)
+          // })
         }
 
         // add answers to questions

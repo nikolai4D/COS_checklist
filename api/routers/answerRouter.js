@@ -26,8 +26,15 @@ router.put("/", async (req, res) => {
                     // if answer instance attached to checklist is same as selected answer then continue to next loop, else delete answer instance
                     if (matchingObject.answer.parentId === question.selectedAnswer) continue;
 
-                    let responseDeleteAnswer = await apiCallDelete(`/instance/${matchingObject.answer.id}`);
-                    if ((await responseDeleteAnswer.status) !== 200) return res.status(responseDeleteAnswer.status).json(responseDeleteAnswer.data);
+                    const sourcesToAnswer = (await apiCallPost({targetId: matchingObject.answer.id}, `/instance/sourcesToTarget`)).data;
+                    if (sourcesToAnswer.links.length > 0){
+                        for (const link of sourcesToAnswer.links){
+                            let response = await apiCallDelete(`/instance/${link.source}`);
+                            if ((await response.status) !== 200) return res.status(response.status).json(response.data);
+                        }
+                    }
+
+                     await apiCallDelete(`/instance/${matchingObject.answer.id}`)
 
                     // get relation between checklist and question to delete it later
                     let responseQuestionToChecklistRel = await apiCallPost({sourceId: matchingObject.question.id, targetId: id}, `/instanceInternalRel/readRelBySourceAndTarget`)
@@ -69,14 +76,15 @@ router.post("/", async (req, res) => {
 
 
     const {questions, id} = req.body.activeChecklist;
+    const checklistObj =(await apiCallGet(`/instance?id=${id}`)).data;
 
     for (const questionGroup of questions){
         for (const question of questionGroup.questions){
+
             if (question.selectedAnswer){
                 // create instance of answer
-                const answerObj = (await apiCallGet(`/type?id=${question.selectedAnswer}`)).data;
-                const checklistObj =(await apiCallGet(`/instance?id=${id}`)).data;
                 const questionObj = (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
+                const answerObj = (await apiCallGet(`/type?id=${question.selectedAnswer}`)).data;
 
                 const answerToChecklistRel = (await apiCallPost({sourceId: question.selectedAnswer, targetId: checklistObj.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
                 const answerToQuestionRel = (await apiCallPost({sourceId: question.selectedAnswer, targetId: question.id}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
@@ -99,16 +107,24 @@ router.post("/", async (req, res) => {
                 let reqBodyQuestionChecklistRel = {title: questionToChecklistRel.title, source: questionObj.id, target: id, parentId: questionToChecklistRel.id, props: []};
                 await apiCallPost(reqBodyQuestionChecklistRel, `/instanceInternalRel/create`)
 
+            }
+            if (question.note){
+                questionObj ?? (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
 
-                if (question.note){
-                    let reqBodyCreateComment = {title:question.note, parentId: process.env.COMMENT_PARENT_ID, props: []};
-                    const commentInstance = await apiCallPost(reqBodyCreateComment, `/instance/create`)
+                const commentToChecklistRel = (await apiCallPost({sourceId: process.env.COMMENT_PARENT_ID, targetId: checklistObj.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
 
-                    const questionToChecklistRel = (await apiCallPost({sourceId: commentInstance.data.parentId, targetId: answerInstance.data.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
+                const commentToQuestionRel = (await apiCallPost({sourceId: process.env.COMMENT_PARENT_ID, targetId: question.id}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
 
-                    let reqBodyCommentAnswerRel = {title: questionToChecklistRel.title, source: commentInstance.data.id, target: answerInstance.data.id, parentId: questionToChecklistRel.id, props: []};
-                    await apiCallPost(reqBodyCommentAnswerRel, `/instanceInternalRel/create`)
-                }
+                questionToChecklistRel ?? (await apiCallPost({sourceId: question.id, targetId: checklistObj.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
+
+                let reqBodyCreateComment = {title:question.note, parentId: process.env.COMMENT_PARENT_ID, props: []};
+                const commentInstance = await apiCallPost(reqBodyCreateComment, `/instance/create`)
+
+                const questionToChecklistRel = (await apiCallPost({sourceId: commentInstance.data.parentId, targetId: answerInstance.data.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
+
+
+                let reqBodyCommentAnswerRel = {title: questionToChecklistRel.title, source: commentInstance.data.id, target: answerInstance.data.id, parentId: questionToChecklistRel.id, props: []};
+                await apiCallPost(reqBodyCommentAnswerRel, `/instanceInternalRel/create`)
             }
         }
     }
