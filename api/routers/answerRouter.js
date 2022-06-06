@@ -99,6 +99,16 @@ router.post("/", async (req, res) => {
                 let reqBodyQuestionChecklistRel = {title: questionToChecklistRel.title, source: questionObj.id, target: id, parentId: questionToChecklistRel.id, props: []};
                 await apiCallPost(reqBodyQuestionChecklistRel, `/instanceInternalRel/create`)
 
+
+                if (question.note){
+                    let reqBodyCreateComment = {title:question.note, parentId: process.env.COMMENT_PARENT_ID, props: []};
+                    const commentInstance = await apiCallPost(reqBodyCreateComment, `/instance/create`)
+
+                    const questionToChecklistRel = (await apiCallPost({sourceId: commentInstance.data.parentId, targetId: answerInstance.data.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
+
+                    let reqBodyCommentAnswerRel = {title: questionToChecklistRel.title, source: commentInstance.data.id, target: answerInstance.data.id, parentId: questionToChecklistRel.id, props: []};
+                    await apiCallPost(reqBodyCommentAnswerRel, `/instanceInternalRel/create`)
+                }
             }
         }
     }
