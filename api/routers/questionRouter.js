@@ -67,8 +67,9 @@ router.get("/getAllDetailedData", async (req, res) => {
           allQuestionsFormatted.push(question);
           question.id = el.id;
           question.title = el.title;
+          question.parentId = el.parentId;
           question.created = el.created;
-          question.created = el.updated;
+          question.updated = el.updated;
           question.answers = {possibleAnswers: [], preferredAnswer: null};
 
 
@@ -99,6 +100,7 @@ router.get("/getAllDetailedData", async (req, res) => {
           allQuestionGroupsFormatted.push(questionGroup)
           questionGroup.id = el.id
           questionGroup.title = el.title;
+          
           questionGroup.created = el.created
           questionGroup.updated = el.updated
           questionGroup.questions = []
