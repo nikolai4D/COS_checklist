@@ -4,13 +4,13 @@ import { State } from "../store/State.js";
 
 export default function (question){
 
-    let note = State.activeChecklist.content.note === undefined ? "" : `<span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+    let commentAlert = !question.comment ? "" : `<span id="notealert_${question.id}" class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
     <span class="visually-hidden">Notering finns</span>
     </span>`;
-
+    let commentInput = question.comment ?? "" ;
     return `
     <button type="button" id="notebutton_${question.id}" class="btn btn-outline-secondary position-relative" data-bs-toggle="modal" data-bs-target="#modal_${question.id}">🖊
-        ${note}
+        ${commentAlert}
     </button>
     <div class="modal fade" id="modal_${question.id}" tabindex="-1" aria-labelledby="modal_${question.id}" aria-hidden="true">
         <div class="modal-dialog">
@@ -23,7 +23,7 @@ export default function (question){
                 <form>
                 <div class="mb-3">
                     <label for="notemessage_${question.id}" class="col-form-label">Notering:</label>
-                    <textarea class="form-control" id="notemessage_${question.id}"></textarea>
+                    <textarea class="form-control" id="notemessage_${question.id}">${commentInput}</textarea>
                 </div>
                 </form>
             </div>
