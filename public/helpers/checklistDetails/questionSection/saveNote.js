@@ -10,15 +10,16 @@ let questionGroup = activeChecklist.questions.find(questionGroup => questionGrou
 let question = questionGroup.questions.find(question => question.id === selectedQuestionId)
 
 // remove alert if there is no message
-let note = document.getElementById(`notemessage_${selectedQuestionId}`).value;
-let noteAlertDOM = document.getElementById(`notealert_${selectedQuestionId}`)
-if (note === "") {
-    if (question.note) {delete question.note;} noteAlertDOM.remove(); return;
+let comment = document.getElementById(`commentmessage_${selectedQuestionId}`).value;
+console.log(comment);
+let commentAlertDOM = document.getElementById(`commentalert_${selectedQuestionId}`)
+if (comment === "") {
+    if (question.comment) {delete question.comment;} commentAlertDOM.remove(); return;
 };
 
-question.note = note;
-if (noteAlertDOM !== null) return;
-let noteButton = document.getElementById(`notebutton_${selectedQuestionId}`)
-noteButton.innerHTML += `<span id="notealert_${selectedQuestionId}" class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle"><span class="visually-hidden">Notering finns</span></span>`;
+question.comment = comment;
+if (commentAlertDOM !== null) return;
+let commentButton = document.getElementById(`commentbutton_${selectedQuestionId}`)
+commentButton.innerHTML += `<span id="commentalert_${selectedQuestionId}" class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle"><span class="visually-hidden">Notering finns</span></span>`;
 
 }
