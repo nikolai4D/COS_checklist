@@ -238,7 +238,7 @@ router.delete("/", async (req, res) => {
   let answers = sourcesToChecklist.links.filter(el =>
       el.linkParentId === process.env.YES_TO_CHECKLIST_REL_PARENT_ID ||
       el.linkParentId === process.env.NO_TO_CHECKLIST_REL_PARENT_ID ||
-      el.linkParentId === process.env.NA_TO_CHECKLIST_REL_PARENT_ID)
+      el.linkParentId === process.env.NA_TO_CHECKLIST_REL_PARENT_ID || el.sources[0].parentId === process.env.COMMENT_PARENT_ID || el.sources[0].parentId === process.env.PICTURE_PARENT_ID)
 
   let answersId = []
 
