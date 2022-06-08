@@ -24,19 +24,19 @@ export default class DashboardView {
       let statushtml 
 
       if (changebg === "Approved"){
-         statushtml = `<div id ="aPbg" class="alertw btn-outline-success" role="alert">
+         statushtml = `<div id ="aPbg" class="alertw alert-success" role="alert">
          ${changebg}
        </div>`
       }
     
       else if (changebg === "Not approved"){
-        statushtml = `<div id ="notAbg" class="alertw btn-outline-danger" role="alert">
+        statushtml = `<div id ="notAbg" class="alertw alert-danger" role="alert">
         ${changebg}
       </div>`
      }
 
      else if (changebg === "In progress"){
-      statushtml = `<div id ="inPbg" class="alertw btn-outline-warning" role="alert">
+      statushtml = `<div id ="inPbg" class="alertw alert-warning" role="alert">
       ${changebg}
     </div>`
    }
