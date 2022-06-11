@@ -75,6 +75,8 @@ router.put("/", async (req, res) => {
             }
 
             if (question.selectedAnswer){
+                questionObj = (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
+
                 let matchingObject = questionsWithAnwers.find(obj => obj.question.parentId === question.id)
                 if (matchingObject){
                     // if answer instance attached to checklist is same as selected answer then continue to next loop, else delete answer instance
