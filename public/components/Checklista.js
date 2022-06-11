@@ -17,8 +17,8 @@ export default function (areasStr, questionsDetailedStr, checklist) {
      selectedPropertyStr =  `<option disabled selected value="${property.id}">${property.title}</option>`
   }
     return `<div class="container">
-    <button type="button" class="btn btn-success" data-function="validateChecklist" style="margin-top: 2em; margin-bottom: 2em;">Skicka in</button>
-    <button type="button" class="btn btn-danger" data-function="saveAnswers" style="margin-top: 2em; margin-bottom: 2em;">Tillbaka</button>
+    <button type="button" class="btn btn-outline-success" data-function="validateChecklist" style="margin-top: 2em; margin-bottom: 2em;">Skicka in</button>
+    <button type="button" class="btn btn-outline-danger" data-function="saveAnswers" style="margin-top: 2em; margin-bottom: 2em;">Tillbaka</button>
     <h3>Ny checklista: ${checklist.id}</h3>
     <div id="newChecklist" style="margin-top: 2em; margin-bottom: 3em;">
   

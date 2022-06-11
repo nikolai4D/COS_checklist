@@ -52,8 +52,8 @@ export default class DashboardView {
           <td>${checklist.property.title}</td>
           <td>${statushtml} </td>
   
-          <td><button data-id="${checklist.id}" type="button" class="btn btn-success" data-function="viewChecklist" >➚</button></td>
-          <td><button type="button" class="btn btn-danger" data-function="deleteChecklist" >×</button></td>
+          <td><button data-id="${checklist.id}" type="button" class="btn btn-outline-success" data-function="viewChecklist" >➚</button></td>
+          <td><button type="button" class="btn btn-outline-danger" data-function="deleteChecklist" >×</button></td>
         </tr>`})
 
     return formattedChecklists.join("")
@@ -62,10 +62,10 @@ export default class DashboardView {
   async getTemplate() {
     return `
         <div class="container">
-        <button type="button" class="btn btn-info" data-function="viewChecklist" style="margin-top: 2em;">+ Rondering</button>
+        <button type="button" class="btn btn-outline-info" data-function="viewChecklist" style="margin-top: 2em;">⨁ Rondering</button>
 
             <div class="checklistTable" style="margin-top: 4em;">
-            <table class="table">
+            <table id="table" class="table table-striped">
             <thead>
               <tr>
                 <th scope="col">#</th>
