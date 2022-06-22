@@ -36,6 +36,10 @@ export default  function (question, number) {
         </select>
     </td>
     <td>...</td>
+    <td>
+        <input type="file" name="answer_picture" accept="image/*">
+        <button type="submit" data-function="submitButton" class="btn">Send image</button>
+    </td>
     <td> <label data-function="upload-images" id="labelForInputImage_$${question.id}" for="inputImage_$${question.id}" class="btn btn-outline-secondary"><i class="bi bi-upload"></i></label><input class="form-control" data-function="upload-images" type="file" id="inputImage_$${question.id}" style="display:none;"  accept="image/*" >
     </td>
     </tr>`;

@@ -140,5 +140,29 @@ export default  {
 
         return await response.json();
 
+    },
+
+    async CREATE_PICTURE(params) {
+        let response;
+        const {formData} = params
+
+        try {
+            response = await fetch(`/api/picture/`, {
+                method: "POST",
+                headers: {
+
+                },
+                credentials: "include",
+                body: formData
+            });
+            console.log("try");
+        } catch (err) {
+            console.log(err);
+            response = err.response;
+            console.log("catch");
+        }
+        return await response.json()
+
     }
+
 }
