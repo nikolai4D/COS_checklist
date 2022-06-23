@@ -17,8 +17,13 @@ router.post("/",  upload.single ('answer_picture'),async (req, res) => {
     const form = new FormData();
     const file = req.file;
     form.append('answer_picture', file.buffer, file.originalname);
+    form.append('parentId',process.env.PICTURE_PARENT_ID)
+    form.append('props', JSON.stringify([]))
 
-    console.log("form: " + JSON.stringify(form))
+
+    console.log(form, "form")
+    
+
     const response = await axios.post(process.env.API_BASE_URL + "/assets" , form, {
         withCredentials: true,
         headers: {
@@ -26,7 +31,7 @@ router.post("/",  upload.single ('answer_picture'),async (req, res) => {
             apikey: process.env.API_KEY}
     });
 
-    res.json({msg: "we are cool now"})
+    // res.json({msg: "we are cool now"})
 })
 
 module.exports = router;
