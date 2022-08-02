@@ -47,12 +47,16 @@ router.put("/", async (req, res) => {
                     // questionToChecklistRel ?? (await apiCallPost({sourceId: question.id, targetId: checklistObj.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
     
                     let reqBodyCreateComment = {title:question.comment, parentId: process.env.COMMENT_PARENT_ID, props: []};
-                    const commentInstance = await apiCallPost(reqBodyCreateComment, `/instance/create`)
+                    const commentInstance = (await apiCallPost(reqBodyCreateComment, `/instance/create`))
+                    console.log(commentInstance, reqBodyCreateComment, "hello!!!!s")
     
     
                     // create rel between checklist and comment
                     let reqBodyCommentChecklistRel = {title: commentToChecklistRel.data[0].title, source: commentInstance.data.id, target: id, parentId: commentToChecklistRel.data[0].id, props: []};
+
                     let response = await apiCallPost(reqBodyCommentChecklistRel, `/instanceInternalRel/create`)
+                    console.log(response.data, response, "bye!!!!!!!")
+
                     if ((await response.status) !== 200) return res.status(response.status).json(response.data);
                     // create rel between comment and question
 
@@ -62,8 +66,6 @@ router.put("/", async (req, res) => {
                     let reqBodyCommentQuestionRel = {title: commentToQuestionRel.data[0].title, source: commentInstance.data.id, target: questionObj.id, parentId: commentToQuestionRel.data[0].id, props: []};
                     let response1= await apiCallPost(reqBodyCommentQuestionRel, `/instanceInternalRel/create`)
                     if ((await response1.status) !== 200) return res.status(response1.status).json(response1.data);
-
-                    
 
                 }
                 }
@@ -106,15 +108,15 @@ router.put("/", async (req, res) => {
                     const answerInstance = await apiCallPost(reqBodyCreateAnswer, `/instance/create`)
 
                     // create rel between checklist and answer
-                    let reqBodyAnswerChecklistRel = {title: answerToChecklistRel.title, source: answerInstance.data.id, target: id, parentId: answerToChecklistRel.id, props: []};
+                    let reqBodyAnswerChecklistRel = {title: answerToChecklistRel.title, sourceId: answerInstance.data.id, targetId: id, parentId: answerToChecklistRel.id, props: []};
                     await apiCallPost(reqBodyAnswerChecklistRel, `/instanceInternalRel/create`)
 
                     // create rel between answer and question
-                    let reqBodyAnswerQuestionRel = {title: answerToQuestionRel.title, source: answerInstance.data.id, target: questionObj.id, parentId: answerToChecklistRel.id, props: []};
+                    let reqBodyAnswerQuestionRel = {title: answerToQuestionRel.title, sourceId: answerInstance.data.id, targetId: questionObj.id, parentId: answerToChecklistRel.id, props: []};
                     await apiCallPost(reqBodyAnswerQuestionRel, `/instanceInternalRel/create`)
 
                     // create rel between checklist and question
-                    let reqBodyQuestionChecklistRel = {title: questionToChecklistRel.title, source: questionObj.id, target: id, parentId: questionToChecklistRel.id, props: []};
+                    let reqBodyQuestionChecklistRel = {title: questionToChecklistRel.title, sourceId: questionObj.id, targetId: id, parentId: questionToChecklistRel.id, props: []};
                     await apiCallPost(reqBodyQuestionChecklistRel, `/instanceInternalRel/create`)
                     }
 
@@ -153,8 +155,8 @@ router.post("/", async (req, res) => {
                 questionObj = (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
                 const answerObj = (await apiCallGet(`/type?id=${question.selectedAnswer}`)).data;
 
-                const answerToChecklistRel = (await apiCallPost({sourceId: question.selectedAnswer, targetId: checklistObj.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
-                const answerToQuestionRel = (await apiCallPost({sourceId: question.selectedAnswer, targetId: question.id}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
+                const answerToChecklistRel = (await apiCallPost({source: question.selectedAnswer, target: checklistObj.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
+                const answerToQuestionRel = (await apiCallPost({source: question.selectedAnswer, target: question.id}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
 
                 let reqBodyCreateAnswer = {title:answerObj.title, parentId: question.selectedAnswer, props: []};
                 const answerInstance = await apiCallPost(reqBodyCreateAnswer, `/instance/create`)
@@ -171,11 +173,12 @@ router.post("/", async (req, res) => {
                 createQuestionChecklistRel = true;
                 // // create rel between checklist and question
 
-                // let reqBodyQuestionChecklistRel = {title: questionToChecklistRel.title, source: questionObj.id, target: id, parentId: questionToChecklistRel.id, props: []};
+                // let reqBodyQuestionChecklistRel = {title: questionToChecklistRel.title, sourceId: questionObj.id, targetId: id, parentId: questionToChecklistRel.id, props: []};
                 // await apiCallPost(reqBodyQuestionChecklistRel, `/instanceInternalRel/create`)
 
             }
             if (question.comment){
+                console.log("A COMMENT")
                 questionObj = questionObj ?? (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
 
                 const commentToChecklistRel = (await apiCallPost({sourceId: process.env.COMMENT_PARENT_ID, targetId: checklistObj.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
@@ -187,7 +190,7 @@ router.post("/", async (req, res) => {
                 let reqBodyCreateComment = {title:question.comment, parentId: process.env.COMMENT_PARENT_ID, props: []};
                 const commentInstance = await apiCallPost(reqBodyCreateComment, `/instance/create`)
 
-
+                console.log(commentInstance.data, "HEHEEEE")
                 // create rel between checklist and comment
                 let reqBodyCommentChecklistRel = {title: commentToChecklistRel.title, source: commentInstance.data.id, target: id, parentId: commentToChecklistRel.id, props: []};
                 await apiCallPost(reqBodyCommentChecklistRel, `/instanceInternalRel/create`)
