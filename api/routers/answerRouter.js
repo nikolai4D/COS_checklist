@@ -47,14 +47,12 @@ router.put("/", async (req, res) => {
     
                     let reqBodyCreateComment = {title:question.comment, parentId: process.env.COMMENT_PARENT_ID, props: []};
                     const commentInstance = (await apiCallPost(reqBodyCreateComment, `/instance/create`))
-                    console.log(commentInstance, reqBodyCreateComment, "hello!!!!s")
     
     
                     // create rel between checklist and comment
                     let reqBodyCommentChecklistRel = {title: commentToChecklistRel.data[0].title, source: commentInstance.data.id, target: id, parentId: commentToChecklistRel.data[0].id, props: []};
 
                     let response = await apiCallPost(reqBodyCommentChecklistRel, `/instanceInternalRel/create`)
-                    console.log(response.data, response, "bye!!!!!!!")
 
                     if ((await response.status) !== 200) return res.status(response.status).json(response.data);
                     // create rel between comment and question
@@ -168,7 +166,6 @@ router.post("/", async (req, res) => {
                 let reqBodyCreateComment = {title:question.comment, parentId: process.env.COMMENT_PARENT_ID, props: []};
                 const commentInstance = await apiCallPost(reqBodyCreateComment, `/instance/create`)
 
-                console.log(commentInstance.data, "HEHEEEE")
                 // create rel between checklist and comment
                 let reqBodyCommentChecklistRel = {title: commentToChecklistRel.title, source: commentInstance.data.id, target: id, parentId: commentToChecklistRel.id, props: []};
                 await apiCallPost(reqBodyCommentChecklistRel, `/instanceInternalRel/create`)
