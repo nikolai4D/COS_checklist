@@ -120,16 +120,6 @@ router.put("/", async (req, res) => {
                     await apiCallPost(reqBodyQuestionChecklistRel, `/instanceInternalRel/create`)
                     }
 
-            // else if (!hasComment  &&  !question.selectedAnswer  || !question.comment && !question.selectedAnswer ) {
-            //     questionObj = questionObj ?? (await apiCallGet(`/instance?parentId=${question.id}`))
-            //     if (questionObj.data.length > 0){
-
-            //     let responseQuestionToChecklistRel = await apiCallPost({sourceId: questionObj.data[0].id, targetId: id}, `/instanceInternalRel/readRelBySourceAndTarget`)
-            //     console.log(responseQuestionToChecklistRel.data, "QUESTION@@@@")
-
-            //     await apiCallDelete(`/instanceInternalRel/${responseQuestionToChecklistRel.data[0].id}`);
-            //     }
-            // }
             }
         }
     return res.json(200);
@@ -178,14 +168,11 @@ router.post("/", async (req, res) => {
 
             }
             if (question.comment){
-                console.log("A COMMENT")
                 questionObj = questionObj ?? (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
 
                 const commentToChecklistRel = (await apiCallPost({sourceId: process.env.COMMENT_PARENT_ID, targetId: checklistObj.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
 
                 const commentToQuestionRel = (await apiCallPost({sourceId: process.env.COMMENT_PARENT_ID, targetId: question.id}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
-
-                // questionToChecklistRel ?? (await apiCallPost({sourceId: question.id, targetId: checklistObj.parentId}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
 
                 let reqBodyCreateComment = {title:question.comment, parentId: process.env.COMMENT_PARENT_ID, props: []};
                 const commentInstance = await apiCallPost(reqBodyCreateComment, `/instance/create`)
