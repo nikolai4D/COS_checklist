@@ -31,9 +31,10 @@ router.put("/", async (req, res) => {
                     if (matchingObjectQuestionComment.comment.title !== question.comment){
                         matchingObjectQuestionComment.comment.title = question.comment;
 
-                        let response = await apiCallPut({...matchingObjectQuestionComment.comment}, `/instanceData/update`);
+                        let response = await updateCommentInstance(matchingObjectQuestionComment);
                         if ((await response.status) !== 200) return res.status(response.status).json(response.data);
-                    }}
+                    }
+                }
                 else {
 
                     const commentToChecklistRel = (await apiCallPost({sourceId: process.env.COMMENT_PARENT_ID, targetId: process.env.CHECKLIST_PARENT_ID}, `/typeInternalRel/readRelBySourceAndTarget`));
@@ -91,31 +92,31 @@ router.put("/", async (req, res) => {
                     await apiCallDelete(`/instance/${matchingObject.answer.id}`)
 
                     }
-                    const answerObj = (await apiCallGet(`/type?id=${question.selectedAnswer}`)).data;
-                    const answerToChecklistRel = (await apiCallPost({sourceId: question.selectedAnswer, targetId: process.env.CHECKLIST_PARENT_ID}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
-                    const answerToQuestionRel = (await apiCallPost({sourceId: question.selectedAnswer, targetId: question.id}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
-                    const questionToChecklistRel = (await apiCallPost({sourceId: question.id, targetId: process.env.CHECKLIST_PARENT_ID}, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
+                    const answerObj = await getType(question);
+                    const answerToChecklistRel = await getRelAnswerToChecklist(question);
+                    const answerToQuestionRel = await getRelAnswerToQuestion(question);
+                    const questionToChecklistRel = await getRelQuestionToChecklist(question);
 
-                    let reqBodyCreateAnswer = {title:answerObj.title, parentId: question.selectedAnswer, props: []};
-                    const answerInstance = await apiCallPost(reqBodyCreateAnswer, `/instance/create`)
+                    const answerInstance = await createAnswerInstance(answerObj, question);
 
                     // create rel between checklist and answer
-                    let reqBodyAnswerChecklistRel = {title: answerToChecklistRel.title, source: answerInstance.data.id, target: id, parentId: answerToChecklistRel.id, props: []};
-                    await apiCallPost(reqBodyAnswerChecklistRel, `/instanceInternalRel/create`)
+                    await createRelAnswerChecklist(answerToChecklistRel, answerInstance, id);
 
                     // create rel between answer and question
-                    let reqBodyAnswerQuestionRel = {title: answerToQuestionRel.title, source: answerInstance.data.id, target: questionObj.id, parentId: answerToChecklistRel.id, props: []};
-                    await apiCallPost(reqBodyAnswerQuestionRel, `/instanceInternalRel/create`)
+                    await createRelAnswerQuestion(answerToQuestionRel, answerInstance, questionObj, answerToChecklistRel);
 
                     // create rel between checklist and question
-                    let reqBodyQuestionChecklistRel = {title: questionToChecklistRel.title, source: questionObj.id, target: id, parentId: questionToChecklistRel.id, props: []};
-                    await apiCallPost(reqBodyQuestionChecklistRel, `/instanceInternalRel/create`)
+                    await createRelQuestionChecklist(questionToChecklistRel, questionObj, id);
                     }
 
             }
         }
     return res.json(200);
 
+
+    async function updateCommentInstance(matchingObjectQuestionComment) {
+        return await apiCallPut({ ...matchingObjectQuestionComment.comment }, `/instanceData/update`);
+    }
 });
 
 router.post("/", async (req, res) => {
@@ -300,3 +301,40 @@ router.post("/", async (req, res) => {
 
 
 module.exports = router;
+async function createRelQuestionChecklist(questionToChecklistRel, questionObj, id) {
+    let reqBodyQuestionChecklistRel = { title: questionToChecklistRel.title, source: questionObj.id, target: id, parentId: questionToChecklistRel.id, props: [] };
+    await apiCallPost(reqBodyQuestionChecklistRel, `/instanceInternalRel/create`);
+}
+
+async function createRelAnswerQuestion(answerToQuestionRel, answerInstance, questionObj, answerToChecklistRel) {
+    let reqBodyAnswerQuestionRel = { title: answerToQuestionRel.title, source: answerInstance.data.id, target: questionObj.id, parentId: answerToChecklistRel.id, props: [] };
+    await apiCallPost(reqBodyAnswerQuestionRel, `/instanceInternalRel/create`);
+}
+
+async function createRelAnswerChecklist(answerToChecklistRel, answerInstance, id) {
+    let reqBodyAnswerChecklistRel = { title: answerToChecklistRel.title, source: answerInstance.data.id, target: id, parentId: answerToChecklistRel.id, props: [] };
+    await apiCallPost(reqBodyAnswerChecklistRel, `/instanceInternalRel/create`);
+}
+
+async function createAnswerInstance(answerObj, question) {
+    let reqBodyCreateAnswer = { title: answerObj.title, parentId: question.selectedAnswer, props: [] };
+    const answerInstance = await apiCallPost(reqBodyCreateAnswer, `/instance/create`);
+    return answerInstance;
+}
+
+async function getRelQuestionToChecklist(question) {
+    return (await apiCallPost({ sourceId: question.id, targetId: process.env.CHECKLIST_PARENT_ID }, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
+}
+
+async function getRelAnswerToQuestion(question) {
+    return (await apiCallPost({ sourceId: question.selectedAnswer, targetId: question.id }, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
+}
+
+async function getRelAnswerToChecklist(question) {
+    return (await apiCallPost({ sourceId: question.selectedAnswer, targetId: process.env.CHECKLIST_PARENT_ID }, `/typeInternalRel/readRelBySourceAndTarget`)).data[0];
+}
+
+async function getType(question) {
+    return (await apiCallGet(`/type?id=${question.selectedAnswer}`)).data;
+}
+
