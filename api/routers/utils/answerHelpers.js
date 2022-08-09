@@ -131,4 +131,31 @@ async function getRelAnswerToChecklist(question) {
 }
 
 
-module.exports = { createRelCommentQuestion, createRelCommentChecklist, createCommentInstance, createAnswerInstance, createInstance, createRelInstance, getRelCommentToQuestion, getRelCommentToChecklist, getRelCommentToChecklist, createRelQuestionChecklist, createRelAnswerQuestion, createRelAnswerChecklist, getRelQuestionToChecklist, getRelAnswerToQuestion, getRelAnswerToChecklist, readType }
+async function createQuestionRel(question, questionObj, id) {
+    questionObj = questionObj ?? (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
+
+    const questionToChecklistRel = await getRelQuestionToChecklist(question);
+    await createRelQuestionChecklist(questionToChecklistRel, questionObj, id);
+}
+
+async function createComment(question) {
+    questionObj = questionObj ?? (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
+
+    const commentToChecklistRel = await getRelCommentToChecklist();
+    const commentToQuestionRel = await getRelCommentToQuestion(question);
+    const commentInstance = await createCommentInstance(question.comment);
+    return { commentToChecklistRel, commentInstance, commentToQuestionRel, questionObj };
+}
+
+async function createAnswerRels(answerToChecklistRel, answerInstance, id, answerToQuestionRel, questionObj) {
+    await createRelAnswerChecklist(answerToChecklistRel, answerInstance, id);
+    await createRelAnswerQuestion(answerToQuestionRel, answerInstance, questionObj, answerToChecklistRel);
+}
+
+
+
+
+
+
+
+module.exports = { createRelCommentQuestion, createRelCommentChecklist, createCommentInstance, createAnswerInstance, createInstance, createRelInstance, getRelCommentToQuestion, getRelCommentToChecklist, getRelCommentToChecklist, createRelQuestionChecklist, createRelAnswerQuestion, createRelAnswerChecklist, getRelQuestionToChecklist, getRelAnswerToQuestion, getRelAnswerToChecklist, readType, createQuestionRel, createComment, createAnswerRels }
