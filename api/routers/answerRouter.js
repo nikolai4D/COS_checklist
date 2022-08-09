@@ -20,15 +20,16 @@ router.put("/", async (req, res) => {
 
     for (const questionsGroup of questions){
         for (const question of questionsGroup.questions){
+            let questionObj;
 
-            await updateDbWithComments(questionsWithComments, question, id);
+            await updateDbWithComments(questionObj, questionsWithComments, question, id);
 
             if (question.selectedAnswer){
                 let existingAnswer = findExistingAnswer(questionsWithAnwers, question)
                 if (existingAnswer && existingAnswer.answer.parentId === question.selectedAnswer) continue;
-                await deleteExistingAnswers(existingAnswer);
-                await createAnswer(question, id);
-                await helper.createQuestionRel(question, id);
+                if (existingAnswer) await deleteExistingAnswers(existingAnswer);
+                await createAnswer(questionObj, question, id);
+                await helper.createQuestionRel(question,questionObj, id);
                 }
             }
         }
@@ -45,21 +46,21 @@ router.post("/", async (req, res) => {
 
     for (const questionGroup of questions){
         for (const question of questionGroup.questions){
+            let questionObj;
             shouldCreateRelInstanceQuestionChecklist = false; 
 
             if (question.selectedAnswer){
-                await createAnswer(question, id);
+                await createAnswer(questionObj, question, id);
                 shouldCreateRelInstanceQuestionChecklist = true;
             }
 
             if (question.comment){
-                await createNewComment(question, id);
+                await createNewComment(questionObj, question, id);
                 shouldCreateRelInstanceQuestionChecklist = true;
-
             }
 
             if (shouldCreateRelInstanceQuestionChecklist){
-                await helper.createQuestionRel(question, id);
+                await helper.createQuestionRel(question, questionObj, id);
             }
         }
     }
@@ -69,18 +70,17 @@ router.post("/", async (req, res) => {
 
 module.exports = router;
 
-async function updateDbWithComments(questionsWithComments, question, id) {
+async function updateDbWithComments(questionObj, questionsWithComments, question, id) {
     let existingComment = findExistingComment(questionsWithComments, question);
     if (question.comment && existingComment)
         await updateComment(existingComment, question);
     else if (question.comment && !existingComment)
-        await createNewComment(question, id);
+        await createNewComment(questionObj, question, id);
     else if (!question.comment && existingComment)
         await deleteComment(existingComment);
 }
 
-async function createAnswer(question, id) {
-
+async function createAnswer(questionObj, question, id) {
     questionObj = questionObj ?? (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
 
     const answerObj = await helper.readType(question.selectedAnswer);
@@ -122,9 +122,11 @@ async function updateComment(matchingObjectQuestionComment, question) {
     }
 }
 
-async function createNewComment(question, id) {
+async function createNewComment(questionObj, question, id) {
+    questionObj = questionObj ?? (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
+
     let commentToChecklistRel, commentInstance, commentToQuestionRel;
-    ({ commentToChecklistRel, commentInstance, commentToQuestionRel } = await helper.createComment(question));
+    ({ commentToChecklistRel, commentInstance, commentToQuestionRel } = await helper.createComment(questionObj, question));
 
     // create rel between checklist and comment
     await helper.createRelCommentChecklist(commentToChecklistRel, commentInstance, id);

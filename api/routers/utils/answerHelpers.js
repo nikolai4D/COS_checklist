@@ -57,6 +57,8 @@ async function createRelCommentChecklist(commentToChecklistRel, commentInstance,
 }
 
 async function createRelQuestionChecklist(questionToChecklistRel, questionObj, id) {
+    console.log(questionObj, 'question')
+
     let reqBody = {
             title: questionToChecklistRel.title,
             source: questionObj.id,
@@ -68,6 +70,7 @@ async function createRelQuestionChecklist(questionToChecklistRel, questionObj, i
 }
 
 async function createRelAnswerQuestion(answerToQuestionRel, answerInstance, questionObj, answerToChecklistRel) {
+
     let reqBody = {
             title: answerToQuestionRel.title,
             source: answerInstance.data.id,
@@ -138,8 +141,7 @@ async function createQuestionRel(question, questionObj, id) {
     await createRelQuestionChecklist(questionToChecklistRel, questionObj, id);
 }
 
-async function createComment(question) {
-    questionObj = questionObj ?? (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
+async function createComment(questionObj, question) {
 
     const commentToChecklistRel = await getRelCommentToChecklist();
     const commentToQuestionRel = await getRelCommentToQuestion(question);
