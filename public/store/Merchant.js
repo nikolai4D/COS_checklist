@@ -77,6 +77,8 @@ export default  {
     async createData(params){
         let response;
 
+        console.log(params, 'params!!')
+
         try {
             response = await fetch(`/api/${params.type}`, {
                 method: "POST",
@@ -98,6 +100,7 @@ export default  {
     async deleteData(params){
 
         let response;
+        console.log
 
         try {
             response = await fetch(`/api/${params.type}`, {
