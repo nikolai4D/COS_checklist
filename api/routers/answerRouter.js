@@ -10,30 +10,6 @@ const helper  = require("./utils/answer/helpers.js");
 router.use(bodyParser.json());
 
 //APIs
-router.put("/", async (req, res) => {
-    /* 
-    This route updates the answers and answer details attached to checklist and questions in checklist instances.
-    */
-
-    const {questionsWithAnswers, questionsWithComments, questions, id} = req.body.activeChecklist;
-
-    for (const questionsGroup of questions){
-        for (const question of questionsGroup.questions){
-            let questionObj;
-
-            await helper.updateDbWithComments(questionObj, questionsWithComments, question, id);
-
-            if (question.selectedAnswer){
-                let existingAnswer = helper.findExistingAnswer(questionsWithAnswers, question)
-                if (existingAnswer && existingAnswer.answer.parentId === question.selectedAnswer) continue;
-                if (existingAnswer) await helper.deleteExistingAnswers(existingAnswer);
-                await helper.createNewAnswer(questionObj, question, id);
-                await helper.createQuestionRel(question,questionObj, id);
-                }
-            }
-        }
-    return res.json(200);
-});
 
 router.post("/", async (req, res) => {
     /* 
@@ -45,7 +21,7 @@ router.post("/", async (req, res) => {
     for (const questionGroup of questions){
         for (const question of questionGroup.questions){
             let questionObj;
-            shouldCreateRelInstanceQuestionChecklist = false; 
+            let shouldCreateRelInstanceQuestionChecklist = false;
 
             if (question.selectedAnswer){
                 await helper.createNewAnswer(questionObj, question, id);
@@ -66,5 +42,38 @@ router.post("/", async (req, res) => {
 });
 
 
+
+router.put("/", async (req, res) => {
+    /* 
+    This route updates the answers and answer details attached to checklist and questions in checklist instances.
+    */
+
+    const {questionsWithAnswers, questionsWithComments, questions, id} = req.body.activeChecklist;
+
+    for (const questionsGroup of questions){
+        for (const question of questionsGroup.questions){
+            let questionObj;
+
+            let existingComment = helper.findExistingComment(questionsWithComments, question);
+            if (question.comment && existingComment)
+                await helper.updateComment(existingComment, question);
+            else if (question.comment && !existingComment)
+                await helper.createNewComment(questionObj, question, id);
+            else if (!question.comment && existingComment)
+                await helper.deleteComment(existingComment);
+
+            if (question.selectedAnswer){
+                let existingAnswer = helper.findExistingAnswer(questionsWithAnswers, question)
+                if (existingAnswer && helper.isExistingAnswerSameAsNewAnswer(existingAnswer, question)) continue;
+                if (existingAnswer) await helper.deleteExistingAnswers(existingAnswer);
+                await helper.createNewAnswer(questionObj, question, id);
+                await helper.createQuestionRel(question,questionObj, id);
+                }
+            }
+        }
+    return res.json(200);
+});
+
 module.exports = router;
+
 

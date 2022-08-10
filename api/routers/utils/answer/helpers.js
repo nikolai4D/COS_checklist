@@ -36,16 +36,6 @@ async function createAnswerRels(answerToChecklistRel, answerInstance, id, answer
     await api.createRelAnswerQuestion(answerToQuestionRel, answerInstance, questionObj, answerToChecklistRel);
 }
 
-async function updateDbWithComments(questionObj, questionsWithComments, question, id) {
-    let existingComment = findExistingComment(questionsWithComments, question);
-    if (question.comment && existingComment)
-        await updateComment(existingComment, question);
-    else if (question.comment && !existingComment)
-        await createNewComment(questionObj, question, id);
-    else if (!question.comment && existingComment)
-        await deleteComment(existingComment);
-}
-
 async function updateComment(matchingObjectQuestionComment, question) {
     if (matchingObjectQuestionComment.comment.title !== question.comment) {
         matchingObjectQuestionComment.comment.title = question.comment;
@@ -76,6 +66,10 @@ function findExistingComment(questionsWithComments, question) {
     return questionsWithComments.find(obj => obj.question.parentId === question.id);
 }
 
+function isExistingAnswerSameAsNewAnswer(existingAnswer, question) {
+    return existingAnswer.answer.parentId === question.selectedAnswer;
+}
+
 
 module.exports = {
     createQuestionRel,
@@ -87,5 +81,5 @@ module.exports = {
     deleteComment,
     findExistingAnswer,
     createNewAnswer,
-    updateDbWithComments
+    isExistingAnswerSameAsNewAnswer
 }
