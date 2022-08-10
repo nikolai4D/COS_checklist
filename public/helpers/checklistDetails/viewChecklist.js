@@ -19,7 +19,7 @@ if (id){
     for (const group of checklist.questions){
         for (const question of group.questions) {
 
-            let matchingQuestionToAnswer = existingChecklist.questionsWithAnwers.find(obj =>  obj.question.parentId === question.id)
+            let matchingQuestionToAnswer = existingChecklist.questionsWithAnswers.find(obj =>  obj.question.parentId === question.id)
             if (matchingQuestionToAnswer){
                 question.selectedAnswer = matchingQuestionToAnswer.answer.parentId;
                 question.status = matchingQuestionToAnswer.answer.title === "N/A" ? null : matchingQuestionToAnswer.answer.title === question.answers.preferredAnswer.title;

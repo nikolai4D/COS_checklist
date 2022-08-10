@@ -62,7 +62,7 @@ router.get("/getAllDetailedData", async (req, res) => {
     checklist.comments = []
     checklist.pictures = []
 
-    checklist.questionsWithAnwers = []	
+    checklist.questionsWithAnswers = []	
     checklist.questionsWithComments = []	
     checklist.questionsWithPictures = []	
 
@@ -152,7 +152,7 @@ router.get("/getAllDetailedData", async (req, res) => {
 
         for (const questionAnswer of question.answer){
           let matchedAnswer = checklist.answers.find(ans => questionAnswer.id === ans.id)
-          if (matchedAnswer) checklist.questionsWithAnwers.push({question: question, answer: matchedAnswer})
+          if (matchedAnswer) checklist.questionsWithAnswers.push({question: question, answer: matchedAnswer})
         }
 
         for (const questionComment of question.comment){
