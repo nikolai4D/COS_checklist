@@ -1,4 +1,4 @@
-const { apiCallPost, apiCallPut } = require("../../helpers.js");
+const { apiCallPut } = require("../../helpers.js");
 const api = require("./apiCalls.js")
 
 async function createNewAnswer(questionObj, question, id) {
@@ -54,7 +54,7 @@ async function updateComment(matchingObjectQuestionComment, question) {
 }
 
 async function deleteExistingAnswers(matchingObject) {
-    const sourcesToAnswer = (await apiCallPost({ targetId: matchingObject.answer.id }, `/instance/sourcesToTarget`)).data;
+    const sourcesToAnswer = await api.getSourcesToTarget(matchingObject.answer.id);
     if (sourcesToAnswer.links.length > 0) {
         for (const link of sourcesToAnswer.links) {
             await api.deleteInstance(link.source);

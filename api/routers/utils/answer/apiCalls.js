@@ -15,6 +15,10 @@ async function getInstance(id) {
     return (await apiCallGet(`/instance?parentId=${id}`)).data[0];
     }
 
+async function getSourcesToTarget(targetId) {
+    return (await apiCallPost({ targetId }, `/instance/sourcesToTarget`)).data;
+    }
+    
 async function getRelType(reqBody) {
     return await apiCallPost(reqBody, `/typeInternalRel/readRelBySourceAndTarget`)
 }
@@ -158,6 +162,7 @@ module.exports = {
     getRelAnswerToChecklist,
     getType,
     getInstance,
+    getSourcesToTarget,
     deleteInstance
 }
 
