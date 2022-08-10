@@ -1,4 +1,4 @@
-const { apiCallPost, apiCallGet, apiCallDelete, apiCallPut } = require("../helpers.js");
+const { apiCallPost, apiCallGet, apiCallDelete, apiCallPut } = require("../../helpers.js");
 
 async function createInstance(reqBody) {
     return await apiCallPost(reqBody, `/instance/create`)
@@ -15,6 +15,11 @@ async function readType(id) {
 async function readRelType(reqBody) {
     return await apiCallPost(reqBody, `/typeInternalRel/readRelBySourceAndTarget`)
 }
+
+async function deleteInstance(id) {
+    await apiCallDelete(`/instance/${id}`);
+}
+
 
 async function createCommentInstance(title) {
     let reqBody = {
@@ -57,8 +62,6 @@ async function createRelCommentChecklist(commentToChecklistRel, commentInstance,
 }
 
 async function createRelQuestionChecklist(questionToChecklistRel, questionObj, id) {
-    console.log(questionObj, 'question')
-
     let reqBody = {
             title: questionToChecklistRel.title,
             source: questionObj.id,
@@ -70,7 +73,6 @@ async function createRelQuestionChecklist(questionToChecklistRel, questionObj, i
 }
 
 async function createRelAnswerQuestion(answerToQuestionRel, answerInstance, questionObj, answerToChecklistRel) {
-
     let reqBody = {
             title: answerToQuestionRel.title,
             source: answerInstance.data.id,
@@ -134,89 +136,6 @@ async function getRelAnswerToChecklist(question) {
 }
 
 
-async function createQuestionRel(question, questionObj, id) {
-    questionObj = questionObj ?? (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
-
-    const questionToChecklistRel = await getRelQuestionToChecklist(question);
-    await createRelQuestionChecklist(questionToChecklistRel, questionObj, id);
-}
-
-async function createComment(questionObj, question) {
-
-    const commentToChecklistRel = await getRelCommentToChecklist();
-    const commentToQuestionRel = await getRelCommentToQuestion(question);
-    const commentInstance = await createCommentInstance(question.comment);
-    return { commentToChecklistRel, commentInstance, commentToQuestionRel, questionObj };
-}
-
-async function createAnswerRels(answerToChecklistRel, answerInstance, id, answerToQuestionRel, questionObj) {
-    await createRelAnswerChecklist(answerToChecklistRel, answerInstance, id);
-    await createRelAnswerQuestion(answerToQuestionRel, answerInstance, questionObj, answerToChecklistRel);
-}
-
-async function updateDbWithComments(questionObj, questionsWithComments, question, id) {
-    let existingComment = findExistingComment(questionsWithComments, question);
-    if (question.comment && existingComment)
-        await updateComment(existingComment, question);
-    else if (question.comment && !existingComment)
-        await createNewComment(questionObj, question, id);
-    else if (!question.comment && existingComment)
-        await deleteComment(existingComment);
-}
-
-async function createNewAnswer(questionObj, question, id) {
-    questionObj = questionObj ?? (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
-
-    const answerObj = await readType(question.selectedAnswer);
-    const answerToChecklistRel = await getRelAnswerToChecklist(question);
-    const answerToQuestionRel = await getRelAnswerToQuestion(question);
-    const answerInstance = await createAnswerInstance(answerObj, question);
-
-    // create rel between checklist and answer
-    await createAnswerRels(answerToChecklistRel, answerInstance, id, answerToQuestionRel, questionObj);
-}
-
-function findExistingAnswer(questionsWithAnswers, question) {
-    return questionsWithAnswers.find(obj => obj.question.parentId === question.id);
-}
-
-async function deleteComment(existingComment) {
-    if (existingComment.comment)
-        await apiCallDelete(`/instance/${existingComment.comment.id}`);
-}
-
-function findExistingComment(questionsWithComments, question) {
-    return questionsWithComments.find(obj => obj.question.parentId === question.id);
-}
-
-async function deleteExistingAnswers(matchingObject) {
-    const sourcesToAnswer = (await apiCallPost({ targetId: matchingObject.answer.id }, `/instance/sourcesToTarget`)).data;
-    if (sourcesToAnswer.links.length > 0) {
-        for (const link of sourcesToAnswer.links) {
-            await apiCallDelete(`/instance/${link.source}`);
-        }
-    }
-    await apiCallDelete(`/instance/${matchingObject.answer.id}`);
-}
-
-async function updateComment(matchingObjectQuestionComment, question) {
-    if (matchingObjectQuestionComment.comment.title !== question.comment) {
-        matchingObjectQuestionComment.comment.title = question.comment;
-        await apiCallPut({ ...matchingObjectQuestionComment.comment }, `/instanceData/update`);
-    }
-}
-
-async function createNewComment(questionObj, question, id) {
-    questionObj = questionObj ?? (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
-
-    let commentToChecklistRel, commentInstance, commentToQuestionRel;
-    ({ commentToChecklistRel, commentInstance, commentToQuestionRel } = await createComment(questionObj, question));
-
-    // create rel between checklist and comment
-    await createRelCommentChecklist(commentToChecklistRel, commentInstance, id);
-    await createRelCommentQuestion(commentToQuestionRel, commentInstance, questionObj);
-}
-
 
 module.exports = {
     createRelCommentQuestion,
@@ -227,7 +146,6 @@ module.exports = {
     createRelInstance,
     getRelCommentToQuestion,
     getRelCommentToChecklist,
-    getRelCommentToChecklist,
     createRelQuestionChecklist,
     createRelAnswerQuestion,
     createRelAnswerChecklist,
@@ -235,15 +153,6 @@ module.exports = {
     getRelAnswerToQuestion,
     getRelAnswerToChecklist,
     readType,
-    createQuestionRel,
-    createComment,
-    createAnswerRels,
-    createNewComment,
-    updateComment,
-    deleteExistingAnswers,
-    findExistingComment,
-    deleteComment,
-    findExistingAnswer,
-    createNewAnswer,
-    updateDbWithComments
+    deleteInstance
 }
+

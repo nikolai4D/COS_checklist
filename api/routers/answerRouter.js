@@ -4,8 +4,7 @@ const express = require("express");
 const router = express.Router();
 require("dotenv").config();
 const bodyParser = require("body-parser");
-const { apiCallPost, apiCallGet, apiCallDelete, apiCallPut } = require("./helpers");
-const helper  = require("./utils/answerHelpers.js");
+const helper  = require("./utils/answer/helpers.js");
 
 //Bodyparser
 router.use(bodyParser.json());
@@ -13,7 +12,7 @@ router.use(bodyParser.json());
 //APIs
 router.put("/", async (req, res) => {
     /* 
-    This route updates the answers attached to checklist instances.
+    This route updates the answers and answer details attached to checklist and questions in checklist instances.
     */
 
     const {questionsWithAnswers, questionsWithComments, questions, id} = req.body.activeChecklist;
