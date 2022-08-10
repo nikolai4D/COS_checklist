@@ -19,11 +19,18 @@ if (id){
     for (const group of checklist.questions){
         for (const question of group.questions) {
 
-            let matchingQuestion = existingChecklist.questionsWithAnwers.find(obj =>  obj.question.parentId === question.id)
-            if (matchingQuestion){
-                question.selectedAnswer = matchingQuestion.answer.parentId;
-                question.status = matchingQuestion.answer.title === "N/A" ? null : matchingQuestion.answer.title === question.answers.preferredAnswer.title;
+            let matchingQuestionToAnswer = existingChecklist.questionsWithAnswers.find(obj =>  obj.question.parentId === question.id)
+            if (matchingQuestionToAnswer){
+                question.selectedAnswer = matchingQuestionToAnswer.answer.parentId;
+                question.status = matchingQuestionToAnswer.answer.title === "N/A" ? null : matchingQuestionToAnswer.answer.title === question.answers.preferredAnswer.title;
                 }
+
+            let matchingQuestionToComment = existingChecklist.questionsWithComments.find(obj =>  obj.question.parentId === question.id)
+            if (matchingQuestionToComment) question.comment = matchingQuestionToComment.comment.title;
+
+            // let matchingQuestionToPicture = existingChecklist.questionsWithComments.find(obj =>  obj.question.parentId === question.id)
+            // if (matchingQuestionToPicture) question.comment = matchingQuestionToPicture.comment.title;
+
             }
         }
         }

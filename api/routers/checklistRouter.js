@@ -59,15 +59,22 @@ router.get("/getAllDetailedData", async (req, res) => {
     checklist.created = el.created
     checklist.updated = el.updated
     checklist.answers = []
-    checklist.questionsWithAnwers = []	
+    checklist.comments = []
+    checklist.pictures = []
+
+    checklist.questionsWithAnswers = []	
+    checklist.questionsWithComments = []	
+    checklist.questionsWithPictures = []	
+
   
     let sourcesToTarget = (await apiCallPost({"targetId": checklist.id}, `/instance/sourcesToTarget`)).data;
     for (const relation of sourcesToTarget.links){
       if (relation.linkParentId === process.env.YES_TO_CHECKLIST_REL_PARENT_ID ||
       relation.linkParentId === process.env.NO_TO_CHECKLIST_REL_PARENT_ID ||
-      relation.linkParentId === process.env.NA_TO_CHECKLIST_REL_PARENT_ID){
+      relation.linkParentId === process.env.NA_TO_CHECKLIST_REL_PARENT_ID) checklist.answers.push(...relation.sources)
+      if (relation.sources[0].parentId === process.env.COMMENT_PARENT_ID)  checklist.comments.push(...relation.sources)
+      if (relation.sources[0].parentId === process.env.PICTURE_PARENT_ID)  checklist.pictures.push(...relation.sources)
 
-      if (relation.sources.length > 0) checklist.answers.push(...relation.sources)}
     }
 
     switch(el.props[0][process.env.ASSESSMENT_STATUS]){
@@ -119,24 +126,44 @@ router.get("/getAllDetailedData", async (req, res) => {
     // for every question, get all answers via sources to target
     for (let instance of question.instances){
       instance.answer = []
+      instance.comment = []
+      instance.picture = []
       let sourcesToTarget = (await apiCallPost({"targetId": instance.id}, `/instance/sourcesToTarget`)).data;
       // for each link, get the sources
       for (const relation of sourcesToTarget.links){
+        if (relation.sources[0].parentId === process.env.COMMENT_PARENT_ID){
+          instance.comment.push(...relation.sources);
+        }
+        else if (relation.sources[0].parentId === process.env.PICTURE_PARENT_ID){
+          instance.picture.push(...relation.sources);
+        }
+        else {
         instance.answer.push(...relation.sources)
+        }
       }
     }
   }
 
   for (const checklist of allChecklistsFormatted){
 
-    if (checklist.answers.length === 0) continue
+    if (checklist.answers.length === 0 && checklist.comments.length === 0 && checklist.pictures.length === 0 ) continue
     for (const group of questionsDetailed){
         for (const question of group.instances) {
+
         for (const questionAnswer of question.answer){
-          let inst = checklist.answers.find(ans => questionAnswer.id === ans.id)
-          if (inst) checklist.questionsWithAnwers.push({question: question, answer: inst})
+          let matchedAnswer = checklist.answers.find(ans => questionAnswer.id === ans.id)
+          if (matchedAnswer) checklist.questionsWithAnswers.push({question: question, answer: matchedAnswer})
         }
 
+        for (const questionComment of question.comment){
+          let matchedComment = checklist.comments.find(ans => questionComment.id === ans.id)
+          if (matchedComment) checklist.questionsWithComments.push({question: question, comment: matchedComment})
+        }
+
+        for (const questionPicture of question.picture){
+          let matchedPicture = checklist.pictures.find(ans => questionPicture.id === ans.id)
+          if (matchedPicture) checklist.questionsWithPictures.push({question: question, picture: matchedPicture})
+        }
       }
     }}
   // }
@@ -211,7 +238,7 @@ router.delete("/", async (req, res) => {
   let answers = sourcesToChecklist.links.filter(el =>
       el.linkParentId === process.env.YES_TO_CHECKLIST_REL_PARENT_ID ||
       el.linkParentId === process.env.NO_TO_CHECKLIST_REL_PARENT_ID ||
-      el.linkParentId === process.env.NA_TO_CHECKLIST_REL_PARENT_ID)
+      el.linkParentId === process.env.NA_TO_CHECKLIST_REL_PARENT_ID || el.sources[0].parentId === process.env.COMMENT_PARENT_ID || el.sources[0].parentId === process.env.PICTURE_PARENT_ID)
 
   let answersId = []
 
