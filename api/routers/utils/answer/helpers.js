@@ -1,10 +1,10 @@
-const { apiCallPost, apiCallGet, apiCallDelete, apiCallPut } = require("../../helpers.js");
+const { apiCallPost, apiCallPut } = require("../../helpers.js");
 const api = require("./apiCalls.js")
 
 async function createNewAnswer(questionObj, question, id) {
-    questionObj = questionObj ?? (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
+    questionObj = questionObj ?? await api.getInstance(question.id);
 
-    const answerObj = await api.readType(question.selectedAnswer);
+    const answerObj = await api.getType(question.selectedAnswer);
     const answerToChecklistRel = await api.getRelAnswerToChecklist(question);
     const answerToQuestionRel = await api.getRelAnswerToQuestion(question);
     const answerInstance = await api.createAnswerInstance(answerObj, question);
@@ -14,7 +14,7 @@ async function createNewAnswer(questionObj, question, id) {
 }
 
 async function createNewComment(questionObj, question, id) {
-    questionObj = questionObj ?? (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
+    questionObj = questionObj ?? await api.getInstance(question.id);
     const commentToChecklistRel = await api.getRelCommentToChecklist();
     const commentToQuestionRel = await api.getRelCommentToQuestion(question);
     const commentInstance = await api.createCommentInstance(question.comment);
@@ -25,7 +25,7 @@ async function createNewComment(questionObj, question, id) {
 }
 
 async function createQuestionRel(question, questionObj, id) {
-    questionObj = questionObj ?? (await apiCallGet(`/instance?parentId=${question.id}`)).data[0];
+    questionObj = questionObj ?? await api.getInstance(question.id);
 
     const questionToChecklistRel = await api.getRelQuestionToChecklist(question);
     await api.createRelQuestionChecklist(questionToChecklistRel, questionObj, id);

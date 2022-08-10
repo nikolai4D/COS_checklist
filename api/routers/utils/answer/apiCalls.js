@@ -8,11 +8,14 @@ async function createRelInstance(reqBody) {
     return await apiCallPost(reqBody, `/instanceInternalRel/create`)
 }
 
-async function readType(id) {
+async function getType(id) {
     return (await apiCallGet(`/type?id=${id}`)).data;
 }
+async function getInstance(id) {
+    return (await apiCallGet(`/instance?parentId=${id}`)).data[0];
+    }
 
-async function readRelType(reqBody) {
+async function getRelType(reqBody) {
     return await apiCallPost(reqBody, `/typeInternalRel/readRelBySourceAndTarget`)
 }
 
@@ -94,12 +97,13 @@ async function createRelAnswerChecklist(answerToChecklistRel, answerInstance, id
     return await createRelInstance(reqBody);
 }
 
+
 async function getRelCommentToQuestion(question) {
     let reqBody = {
             sourceId: process.env.COMMENT_PARENT_ID,
             targetId: question.id
         };
-    return await readRelType(reqBody);
+    return await getRelType(reqBody);
     }
 
 async function getRelCommentToChecklist() {
@@ -107,7 +111,7 @@ async function getRelCommentToChecklist() {
             sourceId: process.env.COMMENT_PARENT_ID,
             targetId: process.env.CHECKLIST_PARENT_ID
         };
-    return await readRelType(reqBody);
+    return await getRelType(reqBody);
 }
 
 async function getRelQuestionToChecklist(question) {
@@ -115,7 +119,7 @@ async function getRelQuestionToChecklist(question) {
             sourceId: question.id,
             targetId: process.env.CHECKLIST_PARENT_ID
         };
-    return (await readRelType(reqBody)).data[0];
+    return (await getRelType(reqBody)).data[0];
 }
 
 async function getRelAnswerToQuestion(question) {
@@ -123,7 +127,7 @@ async function getRelAnswerToQuestion(question) {
             sourceId: question.selectedAnswer,
             targetId: question.id
         };
-    return (await readRelType(reqBody)).data[0];
+    return (await getRelType(reqBody)).data[0];
 }
 
 async function getRelAnswerToChecklist(question) {
@@ -132,7 +136,7 @@ async function getRelAnswerToChecklist(question) {
             targetId: process.env.CHECKLIST_PARENT_ID
         };
 
-    return (await readRelType(reqBody)).data[0];
+    return (await getRelType(reqBody)).data[0];
 }
 
 
@@ -152,7 +156,8 @@ module.exports = {
     getRelQuestionToChecklist,
     getRelAnswerToQuestion,
     getRelAnswerToChecklist,
-    readType,
+    getType,
+    getInstance,
     deleteInstance
 }
 
