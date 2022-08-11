@@ -1,24 +1,25 @@
-import {State} from "../../../store/State.js";
+import { State } from "../../../store/State.js";
 
 export default function (e) {
-console.log("IMAGE")
+    console.log("IMAGE")
     let { selectedQuestionId, question } = getSelectedQuestion(e);
 
-let inputImage = document.getElementById(`inputImage_$${selectedQuestionId}`)
+    let inputImage = document.getElementById(`inputImage_$${selectedQuestionId}`)
 
-if (inputImage.files[0] === undefined) {
-    if (question.image) {delete question.image;} return;
-};
+    if (inputImage.files[0] === undefined) {
+        if (question.image) { delete question.image; } return;
+    };
 
-question.image = inputImage;
+    question.image = inputImage;
 
-// // remove alert if there is no message
-// let comment = document.getElementById(`commentmessage_${selectedQuestionId}`).value;
 
-// let commentAlertDOM = document.getElementById(`commentalert_${selectedQuestionId}`)
-// if (comment === "") {
-//     if (question.comment) {delete question.comment;} commentAlertDOM.remove(); return;
-// };
+    // // remove alert if there is no message
+    // let comment = document.getElementById(`commentmessage_${selectedQuestionId}`).value;
+
+    // let commentAlertDOM = document.getElementById(`commentalert_${selectedQuestionId}`)
+    // if (comment === "") {
+    //     if (question.comment) {delete question.comment;} commentAlertDOM.remove(); return;
+    // };
 }
 
 function getSelectedQuestion(e) {

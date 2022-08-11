@@ -1,8 +1,8 @@
 import mutate from "./Mutations.js";
 
-export default  {
+export default {
 
-    async getAllDataOfType(type){
+    async getAllDataOfType(type) {
         let response
 
         try {
@@ -23,7 +23,7 @@ export default  {
         return await response.json();
     },
 
-    async getAllDetailedDataOfType(type){
+    async getAllDetailedDataOfType(type) {
 
         let response
 
@@ -44,16 +44,16 @@ export default  {
 
         return await response.json();
 
-       // mutate.SET_ALL_CHECKLISTS_WITH_DETAILS(responseObject.allChecklistsFormatted);
-       // mutate.SET_ALL_AREA(responseObject.areas);
-       // mutate.SET_ALL_PROPERTY(responseObject.properties);
-       // mutate.SET_ALL_ADDRESS(responseObject.addresses);
-       // mutate.SET_ALL_CHECKLIST_ADDRESS_REL(responseObject.checklistAddressRel);
-       // mutate.SET_ALL_ADDRESS_PROPERTY_REL(responseObject.addressPropertyRel);
-       // mutate.SET_ALL_PROPERTY_AREA_REL(responseObject.propertyAreaRel);
+        // mutate.SET_ALL_CHECKLISTS_WITH_DETAILS(responseObject.allChecklistsFormatted);
+        // mutate.SET_ALL_AREA(responseObject.areas);
+        // mutate.SET_ALL_PROPERTY(responseObject.properties);
+        // mutate.SET_ALL_ADDRESS(responseObject.addresses);
+        // mutate.SET_ALL_CHECKLIST_ADDRESS_REL(responseObject.checklistAddressRel);
+        // mutate.SET_ALL_ADDRESS_PROPERTY_REL(responseObject.addressPropertyRel);
+        // mutate.SET_ALL_PROPERTY_AREA_REL(responseObject.propertyAreaRel);
     },
 
-    async getDataById(params){
+    async getDataById(params) {
         let response
 
         try {
@@ -74,7 +74,7 @@ export default  {
     },
 
 
-    async createData(params){
+    async createData(params) {
         let response;
 
         console.log(params, 'params!!')
@@ -97,7 +97,7 @@ export default  {
         return await response.json()
     },
 
-    async deleteData(params){
+    async deleteData(params) {
 
         let response;
         console.log
@@ -121,18 +121,53 @@ export default  {
         return await response.json();
     },
 
-    async updateData(params){
+    async updateData(params) {
+
+
+
 
         let response;
 
+        let image;
+
+        for (const questionsGroup of params.activeChecklist.questions) {
+            for (const question of questionsGroup.questions) {
+
+                if (question.image) {
+                    console.log(question.image.get("asset"), "image")
+                    image = question.image;
+                    const { formData } = image
+
+                    try {
+                        response = await fetch(`/api/${params.type}`, {
+                            method: "PUT",
+
+                            credentials: "include",
+                            body: formData
+                        });
+                        console.log("try");
+                    } catch (err) {
+                        console.log(err);
+                        response = err.response;
+                        console.log("catch");
+                    }
+
+                    return await response.json();
+
+
+                }
+            }
+        }
+
+        // const formData = new FormData();
+
+        // formData.append(`params`, image);
         try {
             response = await fetch(`/api/${params.type}`, {
                 method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+
                 credentials: "include",
-                body: JSON.stringify(params)
+                body: { params }
             });
             console.log("try");
         } catch (err) {
