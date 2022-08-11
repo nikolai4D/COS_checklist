@@ -49,13 +49,13 @@ router.get("/getAllDetailedData", async (req, res) => {
           answer.answerDetails = [];
 
 
-          const answerDetailToAnswer = answerDetailToAnswerRel.filter(relation => relation.target === el.id);
-          if(answerDetailToAnswer.length === 0) continue
+          // const answerDetailToAnswer = answerDetailToAnswerRel.filter(relation => relation.target === el.id);
+          // if(answerDetailToAnswer.length === 0) continue
 
-          answerDetailToAnswer.forEach(relation => {
-            let validAnswerDetails = answerDetails.filter(answerDetail => relation.source === answerDetail.id)
-            answer.answerDetails.push(...validAnswerDetails)
-          })
+          // answerDetailToAnswer.forEach(relation => {
+          //   let validAnswerDetails = answerDetails.filter(answerDetail => relation.source === answerDetail.id)
+          //   answer.answerDetails.push(...validAnswerDetails)
+          // })
         }
 
         // add answers to questions
@@ -67,8 +67,9 @@ router.get("/getAllDetailedData", async (req, res) => {
           allQuestionsFormatted.push(question);
           question.id = el.id;
           question.title = el.title;
+          question.parentId = el.parentId;
           question.created = el.created;
-          question.created = el.updated;
+          question.updated = el.updated;
           question.answers = {possibleAnswers: [], preferredAnswer: null};
 
 
@@ -99,6 +100,7 @@ router.get("/getAllDetailedData", async (req, res) => {
           allQuestionGroupsFormatted.push(questionGroup)
           questionGroup.id = el.id
           questionGroup.title = el.title;
+          
           questionGroup.created = el.created
           questionGroup.updated = el.updated
           questionGroup.questions = []

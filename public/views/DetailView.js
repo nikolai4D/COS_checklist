@@ -11,7 +11,7 @@ export default class DetailView {
   async getTemplate() {
 
     let checklist = State.activeChecklist.content;
-
+    console.log(checklist);
 
     let areasStr = await this.getAreasStr();
     let questionsDetailedStr = await this.getQuestionsDetailedStr()

@@ -7,11 +7,13 @@ import deleteImage from "./checklistDetails/questionSection/deleteImage.js";
 import getProperty from "./checklistDetails/getProperty.js";
 import getAddress from "./checklistDetails/getAddress.js";
 import saveAddress from "./checklistDetails/saveAddress.js";
+import saveAnswers from "./checklistDetails/saveAnswers.js";
 import chooseAnswer from "./checklistDetails/questionSection/chooseAnswer.js";
 import validateChecklist from "./checklistDetails/validateChecklist.js";
 import viewChecklist from "./checklistDetails/viewChecklist.js";
-import saveAnswers from "./checklistDetails/saveAnswers.js";
 import submitButton from "./checklistDetails/questionSection/submitButton.js";
+
+import saveNote from "./checklistDetails/questionSection/saveNote.js";
 
 export default async function (demandedRoute, event) {
   const routes = [
@@ -29,6 +31,7 @@ export default async function (demandedRoute, event) {
     { path: "deleteChecklist", request: deleteChecklist },
     { path: "viewChecklist", request: viewChecklist },
     { path: "submitButton", request: submitButton },
+    { path: "saveNote", request: saveNote }
 
     // { path: "/register" },
     // { path: "/saveChecklist" },

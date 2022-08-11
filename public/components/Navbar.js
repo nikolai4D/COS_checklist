@@ -8,7 +8,7 @@ export default class Navbar {
             <nav class="navbar navbar-expand navbar-light bg-light">
              <div class="container-fluid">
              <div class="gotohome"  data-view='/dashboard' >
-                    <i class="bi bi-card-checklist" style="margin-right:7px;"></i>Rondering Trygga hus </a>
+                    <i class="bi bi-card-checklist" style="margin-right:7px;"></i>Checklist app</a>
                 </div>
                 
                 <div class="collapse navbar-collapse" id="navbarScroll">
