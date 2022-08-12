@@ -25,7 +25,6 @@ router.post("/", upload.single('asset'), async (req, res) => {
     This route creates the answers and answer details attached to checklist and questions in checklist instances.
     */
 
-    console.log(req.file, "REQ")
 
     const { questions, id } = req.body.activeChecklist;
 
@@ -35,14 +34,7 @@ router.post("/", upload.single('asset'), async (req, res) => {
             let shouldCreateRelInstanceQuestionChecklist = false;
 
             if (question.image) {
-                // const file = question.image.file;
-                // form.append('asset', file.buffer, file.originalname);
-                // form.append('parentId', process.env.PICTURE_PARENT_ID)
-                // form.append('props', JSON.stringify([]))
-
-
-                // console.log(form, "form")
-
+                console.log(question.image, "IMAGE")
             }
 
             if (question.selectedAnswer) {
@@ -67,18 +59,9 @@ router.post("/", upload.single('asset'), async (req, res) => {
 
 router.put("/", upload.single('asset'), async (req, res) => {
 
-    console.log(req.file, "file")
     /* 
     This route updates the answers and answer details attached to checklist and questions in checklist instances.
     */
-    const form = new FormData();
-    const file = req.file;
-    form.append('answer_picture', file.buffer, file.originalname);
-    form.append('parentId', process.env.PICTURE_PARENT_ID)
-    form.append('props', JSON.stringify([]))
-
-
-    console.log(form, "form")
 
     const { questionsWithAnswers, questionsWithComments, questions, id } = req.body.activeChecklist;
 
@@ -86,7 +69,7 @@ router.put("/", upload.single('asset'), async (req, res) => {
         for (const question of questionsGroup.questions) {
 
             if (question.image) {
-                console.log(question.image.get("asset"), "image")
+                console.log(question.image, "IMAGE")
                 //     const form = new FormData();
                 //     const file = question.image.file;
                 //     form.append('asset', file.buffer, file.originalname);

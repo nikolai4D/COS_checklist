@@ -47,7 +47,6 @@ export default function (question, number) {
      <i  class="bi bi-upload"></i>
      </label>
      <input  data-function="upload-images"  type="file" name="asset" accept="image/*" class="form-control"  id="inputImage_$${question.id}" style="display:none;"  >
-    <button type="submit" data-function="submitButton" class="btn">Send image</button>
 
 
     </td>
