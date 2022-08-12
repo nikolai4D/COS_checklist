@@ -211,6 +211,28 @@ export default {
         }
         return await response.json()
 
+    },
+
+    async GET_PICTURE_BY_NAME(id) {
+        let response;
+
+        try {
+            response = await fetch(`/api/picture/getByName`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify({ id })
+            });
+            console.log("try");
+        } catch (err) {
+            console.log(err);
+            response = err.response;
+            console.log("catch");
+        }
+        return await response.json()
+
     }
 
 }

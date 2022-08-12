@@ -71,8 +71,8 @@ function generateDeleteButton(question) {
     //     document.getElementById(`deleteImage_$${question.id}`).remove();
     // }
     let buttonForImage = `
-    <button id="buttonForImage_$${question.id}" data-function="show-image" class="btn btn-outline-secondary" style="margin-left: 1em;">
-    <i class="bi bi-image" data-function="show-image" id="iconImage_$${question.id}"></i></button>`;
+    <button id="labelForInputImage_$as_${question.image.id}" data-function="show-image" class="btn btn-outline-secondary" style="margin-left: 1em;">
+    <i class="bi bi-image" data-function="show-image" id="iconImage_$as_${question.image.id}"></i></button>`;
 
     let closeButton = `
     <i style="cursor: pointer;" id="deleteImage_$${question.id}" data-function='delete-image' class="bi bi-x"></i>`;
