@@ -46,8 +46,9 @@ export default function (question, number) {
      <label id="labelForInputImage_$${question.id}" data-function="upload-images" for="inputImage_$${question.id}" class="btn btn-outline-secondary">
      <i  class="bi bi-upload"></i>
      </label>
-     <input  data-function="upload-images"  type="file" name="asset" accept="image/*" class="form-control"  id="inputImage_$${question.id}" style="display:none;"  >
+    ${generateDeleteButton(question)}
 
+     <input  data-function="upload-images"  type="file" name="asset" accept="image/*" class="form-control"  id="inputImage_$${question.id}" style="display:none;"  >
 
     </td>
     </td>
@@ -59,3 +60,23 @@ export default function (question, number) {
 
 {/* <input type="file" name="asset" accept="image/*">
     */}
+
+function generateDeleteButton(question) {
+    console.log(question, "QUESTION");
+    if (!question.image) return ""
+
+    // let buttonForImageDOM = document.getElementById(`buttonForImage_$${question.id}`);
+    // if (buttonForImageDOM !== null) {
+    //     buttonForImageDOM.remove();
+    //     document.getElementById(`deleteImage_$${question.id}`).remove();
+    // }
+    let buttonForImage = `
+    <button id="buttonForImage_$${question.id}" data-function="show-image" class="btn btn-outline-secondary" style="margin-left: 1em;">
+    <i class="bi bi-image" data-function="show-image" id="iconImage_$${question.id}"></i></button>`;
+
+    let closeButton = `
+    <i style="cursor: pointer;" id="deleteImage_$${question.id}" data-function='delete-image' class="bi bi-x"></i>`;
+
+
+    return `${buttonForImage}${closeButton}`
+}

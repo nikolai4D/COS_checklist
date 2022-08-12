@@ -22,7 +22,7 @@ router.post("/", upload.single('asset'), async (req, res) => {
     form.append('asset', file.buffer, file.originalname);
     form.append('name', `as_${pictureInstance.id}`)
     createPictureAsset(form)
-    // res.json({msg: "we are cool now"})
+    res.json(pictureInstance)
 })
 
 module.exports = router;

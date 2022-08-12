@@ -8,22 +8,21 @@ export default async function (e) {
     once: true,
   })
 
-  const outputImageIcon = () => {
+  const outputImageIcon = async () => {
 
     const pictureInput = e.target;
 
     let fragaId = inputImage.id.split("$")[1];
-    console.log(State.activeChecklist.content.id)
     const formData = new FormData();
     formData.append("asset", pictureInput.files[0], pictureInput.files[0].name);
     formData.append("questionId", fragaId);
     formData.append("checklistId", State.activeChecklist.content.id)
 
 
-    Merchant.CREATE_PICTURE({ formData })
+    let pictureInstance = await Merchant.CREATE_PICTURE({ formData })
 
     let { question } = getSelectedQuestion(e, fragaId);
-    question.image = formData;
+    question.image = pictureInstance;
     // // console.log(inputImage.files[0], "FILE")
     generateDeleteButton(fragaId);
 
@@ -61,4 +60,5 @@ function getSelectedQuestion(e, fragaId) {
   let question = questionGroup.questions.find(question => question.id === fragaId);
   return { question };
 }
+
 
