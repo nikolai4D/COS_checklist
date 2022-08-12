@@ -11,6 +11,8 @@ import saveAnswers from "./checklistDetails/saveAnswers.js";
 import chooseAnswer from "./checklistDetails/questionSection/chooseAnswer.js";
 import validateChecklist from "./checklistDetails/validateChecklist.js";
 import viewChecklist from "./checklistDetails/viewChecklist.js";
+import submitButton from "./checklistDetails/questionSection/submitButton.js";
+
 import saveNote from "./checklistDetails/questionSection/saveNote.js";
 import saveImage from "./checklistDetails/questionSection/saveImage.js";
 
@@ -30,8 +32,9 @@ export default async function (demandedRoute, event) {
     { path: "saveAnswers", request: saveAnswers },
     { path: "deleteChecklist", request: deleteChecklist },
     { path: "viewChecklist", request: viewChecklist },
-    { path: "saveNote", request: saveNote },
 
+    { path: "submitButton", request: submitButton },
+    { path: "saveNote", request: saveNote }
 
     // { path: "/register" },
     // { path: "/saveChecklist" },
