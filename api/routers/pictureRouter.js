@@ -14,18 +14,14 @@ const upload = multer({ storage: multer.memoryStorage() })
 router.post("/", upload.single('asset'), async (req, res) => {
     console.log("picture route used");
 
-    const form = new FormData();
     const file = req.file;
     const { checklistId, questionId } = req.body
+    const form = new FormData();
 
-    console.log(checklistId, questionId, "REQ BODY")
-
+    let pictureInstance = await createNewPicture(questionId, checklistId, form)
     form.append('asset', file.buffer, file.originalname);
-    form.append('name', "FILENAME")
-
-    let pictureInstance = await createNewPicture(questionId, checklistId)
-
-
+    form.append('name', `as_${pictureInstance.id}`)
+    createPictureAsset(form)
     // res.json({msg: "we are cool now"})
 })
 
@@ -34,18 +30,14 @@ module.exports = router;
 
 async function createNewPicture(questionId, checklistId, form) {
     let questionObj = await api.getInstance(questionId);
-    console.log(questionObj, "questionId")
     const pictureToChecklistRel = await getRelPictureToChecklist()
-    console.log(pictureToChecklistRel.data, "pictureToChecklistRel")
-
     const pictureToQuestionRel = await getRelPictureToQuestion(questionId);
-    console.log(pictureToQuestionRel.data, "pictureToQuestionRel")
-
     const pictureInstance = await createPictureInstance(form);
 
     // create rel between checklist and picture
     await createRelPictureChecklist(pictureToChecklistRel, pictureInstance, checklistId);
     await createRelPictureQuestion(pictureToQuestionRel, pictureInstance, questionObj);
+    return pictureInstance.data;
 }
 
 async function getRelPictureToChecklist() {
