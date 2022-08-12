@@ -43,7 +43,7 @@ export default function (question, number) {
             </td>
 
     <td>
-     <label  data-function="upload-images" for="inputImage_$${question.id}" class="btn btn-outline-secondary">
+     <label id="labelForInputImage_$${question.id}" data-function="upload-images" for="inputImage_$${question.id}" class="btn btn-outline-secondary">
      <i  class="bi bi-upload"></i>
      </label>
      <input  data-function="upload-images"  type="file" name="asset" accept="image/*" class="form-control"  id="inputImage_$${question.id}" style="display:none;"  >
