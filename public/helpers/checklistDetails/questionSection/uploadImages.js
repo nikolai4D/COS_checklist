@@ -24,7 +24,7 @@ export default async function (e) {
     let { question } = getSelectedQuestion(e, fragaId);
     question.image = pictureInstance;
     // // console.log(inputImage.files[0], "FILE")
-    generateDeleteButton(fragaId);
+    generateDeleteButton(pictureInstance.id, fragaId);
 
 
   };
@@ -33,31 +33,31 @@ export default async function (e) {
 }
 
 
-function generateDeleteButton(fragaId) {
-  let buttonForImageDOM = document.getElementById(`buttonForImage_$${fragaId}`);
+function generateDeleteButton(imageId, fragaId) {
+  let buttonForImageDOM = document.getElementById(`buttonForImage_$${imageId}`);
   if (buttonForImageDOM !== null) {
     buttonForImageDOM.remove();
-    document.getElementById(`deleteImage_$${fragaId}`).remove();
+    document.getElementById(`deleteImage_$${imageId}`).remove();
   }
   let buttonForImage = `
-    <button id="buttonForImage_$${fragaId}" data-function="show-image" class="btn btn-outline-secondary" style="margin-left: 1em;">
-    <i class="bi bi-image" data-function="show-image" id="iconImage_$${fragaId}"></i></button>`;
+    <button id="buttonForImage_$${imageId}" data-function="show-image" class="btn btn-outline-secondary" style="margin-left: 1em;">
+    <i class="bi bi-image" data-function="show-image" id="iconImage_$${imageId}"></i></button>`;
 
   let closeButton = `
-    <i style="cursor: pointer;" id="deleteImage_$${fragaId}" data-function='delete-image' class="bi bi-x"></i>`;
+    <i style="cursor: pointer;" id="deleteImage_$${imageId}" data-function='delete-image' class="bi bi-x"></i>`;
 
   document
     .getElementById(`labelForInputImage_$${fragaId}`)
     .insertAdjacentHTML("afterend", `${buttonForImage}${closeButton}`);
 }
 
-function getSelectedQuestion(e, fragaId) {
+function getSelectedQuestion(e, questionId) {
   let selectedQuestionGroup = e.target.parentNode.parentNode.parentNode;
 
   let selectedQuestionGroupId = selectedQuestionGroup.id;
   let activeChecklist = State.activeChecklist.content;
   let questionGroup = activeChecklist.questions.find(questionGroup => questionGroup.id === selectedQuestionGroupId);
-  let question = questionGroup.questions.find(question => question.id === fragaId);
+  let question = questionGroup.questions.find(question => question.id === questionId);
   return { question };
 }
 

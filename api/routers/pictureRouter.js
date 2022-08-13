@@ -17,42 +17,15 @@ router.post("/getByName", async (req, res) => {
         name: req.body.id
     };
     let response = await apiCallPost(reqBody, `/assets/getByName`)
-    // console.log(response.status)
 
     const b64 = Buffer.from(response.data).toString('base64');
-    // CHANGE THIS IF THE IMAGE YOU ARE WORKING WITH IS .jpg OR WHATEVER
+
     const mimeType = 'image/png'; // e.g., image/png
 
     res.status(200).json({ "image": `<img src="data:${mimeType};base64,${b64}" />` })
 
 
-    // let name = req.body.id;
-
-    // let response = await axios.post(process.env.API_BASE_URL + "/assets/getByName", {
-    //     withCredentials: true,
-    //     headers: {
-    //         apikey: process.env.API_KEY
-    //     },
-    //     body: name
-    // });
-
-    // console.log(response.data, "rESPONSE!!!!!")
-
-
-    // req.
-    //     console.log("picture route used");
-
-    // const file = req.file;
-    // const { checklistId, questionId } = req.body
-    // const form = new FormData();
-
-    // let pictureInstance = await createNewPicture(questionId, checklistId, form)
-    // form.append('asset', file.buffer, file.originalname);
-    // form.append('name', `as_${pictureInstance.id}`)
-    // createPictureAsset(form)
-    // res.json(pictureInstance)
 })
-
 
 
 router.post("/", upload.single('asset'), async (req, res) => {
@@ -68,6 +41,23 @@ router.post("/", upload.single('asset'), async (req, res) => {
     createPictureAsset(form)
     res.json(pictureInstance)
 })
+
+
+router.delete("/", async (req, res) => {
+
+
+    let id = req.body.id;
+
+    await apiCallDelete(`/instanceData/${id}`);
+
+    let assetId = `as_${id}`
+
+    await apiCallDelete(`/assets/${assetId}`);
+
+    res.status(200);
+
+});
+
 
 module.exports = router;
 

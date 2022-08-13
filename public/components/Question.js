@@ -62,7 +62,6 @@ export default function (question, number) {
     */}
 
 function generateDeleteButton(question) {
-    console.log(question, "QUESTION");
     if (!question.image) return ""
 
     // let buttonForImageDOM = document.getElementById(`buttonForImage_$${question.id}`);
@@ -71,11 +70,11 @@ function generateDeleteButton(question) {
     //     document.getElementById(`deleteImage_$${question.id}`).remove();
     // }
     let buttonForImage = `
-    <button id="labelForInputImage_$as_${question.image.id}" data-function="show-image" class="btn btn-outline-secondary" style="margin-left: 1em;">
+    <button id="buttonForImage_$${question.image.id}" data-function="show-image" class="btn btn-outline-secondary" style="margin-left: 1em;">
     <i class="bi bi-image" data-function="show-image" id="iconImage_$as_${question.image.id}"></i></button>`;
 
     let closeButton = `
-    <i style="cursor: pointer;" id="deleteImage_$${question.id}" data-function='delete-image' class="bi bi-x"></i>`;
+    <i style="cursor: pointer;" id="deleteImage_$${question.image.id}" data-function='delete-image' class="bi bi-x"></i>`;
 
 
     return `${buttonForImage}${closeButton}`
