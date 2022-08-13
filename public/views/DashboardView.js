@@ -13,32 +13,32 @@ export default class DashboardView {
     await State.allQuestionsWithDetails.set();
 
     let formattedChecklists = checklists.map((checklist, index) => {
-      if(!checklist.address){
-        checklist.address = {"title" : "-"}
-        checklist.property = {"title" : "-"}
-        checklist.area = {"title" : "-"}
+      if (!checklist.address) {
+        checklist.address = { "title": "-" }
+        checklist.property = { "title": "-" }
+        checklist.area = { "title": "-" }
       }
 
       let changebg = checklist.status;
       let statushtml;
 
-      if (changebg === "Approved"){
-         statushtml = `<div id ="aPbg" class="alertw alert-success" role="alert">
+      if (changebg === "Approved") {
+        statushtml = `<div id ="aPbg" class="alertw alert-success" role="alert">
          ${changebg}
        </div>`
       }
 
-      else if (changebg === "Not approved"){
+      else if (changebg === "Not approved") {
         statushtml = `<div id ="notAbg" class="alertw alert-danger" role="alert">
         ${changebg}
       </div>`
-     }
+      }
 
-     else if (changebg === "In progress"){
-      statushtml = `<div id ="inPbg" class="alertw alert-warning" role="alert">
+      else if (changebg === "In progress") {
+        statushtml = `<div id ="inPbg" class="alertw alert-warning" role="alert">
       ${changebg}
     </div>`
-   }
+      }
 
 
       let number = index + 1
@@ -46,9 +46,11 @@ export default class DashboardView {
       return `  
         <tr data-id="${checklist.id}">
           <th scope="row">${number}</th>
-          <td>${new Date(checklist.created).toLocaleDateString('se-SE', {hour12: false}).split(" ")}</td>
+          <td>${new Date(checklist.created).toLocaleDateString('se-SE', { hour12: false }).split(" ")}</td>
           <td>${checklist.area.title}</td>
           <td>${checklist.property.title}</td>
+          <td>${checklist.address.title}</td>
+
           <td>${statushtml} </td>
   
           <td><button data-id="${checklist.id}" type="button" class="btn btn-outline-success" data-function="viewChecklist" >➚</button></td>
@@ -71,6 +73,8 @@ export default class DashboardView {
                 <th scope="col">Datum</th>
                 <th scope="col">Område</th>
                 <th scope="col">Fastighet</th>
+                <th scope="col">Adress</th>
+
                 <th scope="col">Bedömning</th>
               </tr>
             </thead>
