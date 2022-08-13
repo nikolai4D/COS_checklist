@@ -1,4 +1,7 @@
 import Modal from './Modal.js';
+import Merchant from "../../../store/Merchant.js";
+import getImageButton from '../helpers/checklistDetails/questionSection/helpers/imageModal.js';
+
 
 export default function (question, number) {
     const possibleAnswers = question.answers.possibleAnswers;
@@ -62,19 +65,22 @@ export default function (question, number) {
     */}
 
 function generateDeleteButton(question) {
+
+    // let imageElement = e.target;
+    // let newDiv = document.createElement('div');
+
+
+
+
+
     if (!question.image) return ""
+    // let imageId = `as_${question.image.id}`
 
-    // let buttonForImageDOM = document.getElementById(`buttonForImage_$${question.id}`);
-    // if (buttonForImageDOM !== null) {
-    //     buttonForImageDOM.remove();
-    //     document.getElementById(`deleteImage_$${question.id}`).remove();
-    // }
-    let buttonForImage = `
-    <button id="buttonForImage_$${question.image.id}" data-function="show-image" class="btn btn-outline-secondary" style="margin-left: 1em;">
-    <i class="bi bi-image" data-function="show-image" id="iconImage_$as_${question.image.id}"></i></button>`;
+    // let imageInstance = Merchant.GET_PICTURE_BY_NAME(imageId)
 
-    let closeButton = `
-    <i style="cursor: pointer;" id="deleteImage_$${question.image.id}" data-function='delete-image' class="bi bi-x"></i>`;
+    let { buttonForImage, closeButton } = getImageButton(question.image.id);
+
+
 
 
     return `${buttonForImage}${closeButton}`

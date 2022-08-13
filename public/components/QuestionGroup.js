@@ -1,6 +1,6 @@
 export default function (questionGroup, questions) {
 
-    return `<div class="accordion-item">
+  return `<div class="accordion-item">
     <h2 class="accordion-header">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${questionGroup.id}" aria-expanded="false" aria-controls="collapse-${questionGroup.id}">
     ${questionGroup.title}</button>

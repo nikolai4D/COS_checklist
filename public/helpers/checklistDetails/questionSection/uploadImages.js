@@ -1,5 +1,6 @@
 import { State } from "../../../store/State.js";
 import Merchant from "../../../store/Merchant.js";
+import getImageButton from "./helpers/imageModal.js"
 
 export default async function (e) {
   let inputImage = e.target;
@@ -11,8 +12,11 @@ export default async function (e) {
   const outputImageIcon = async () => {
 
     const pictureInput = e.target;
+    console.log(pictureInput, "PICTURE")
 
     let fragaId = inputImage.id.split("$")[1];
+    console.log(pictureInput, "PICTURE")
+
     const formData = new FormData();
     formData.append("asset", pictureInput.files[0], pictureInput.files[0].name);
     formData.append("questionId", fragaId);
@@ -39,16 +43,15 @@ function generateDeleteButton(imageId, fragaId) {
     buttonForImageDOM.remove();
     document.getElementById(`deleteImage_$${imageId}`).remove();
   }
-  let buttonForImage = `
-    <button id="buttonForImage_$${imageId}" data-function="show-image" class="btn btn-outline-secondary" style="margin-left: 1em;">
-    <i class="bi bi-image" data-function="show-image" id="iconImage_$${imageId}"></i></button>`;
 
-  let closeButton = `
-    <i style="cursor: pointer;" id="deleteImage_$${imageId}" data-function='delete-image' class="bi bi-x"></i>`;
+  let { buttonForImage, closeButton } = getImageButton(imageId);
+
+
 
   document
     .getElementById(`labelForInputImage_$${fragaId}`)
     .insertAdjacentHTML("afterend", `${buttonForImage}${closeButton}`);
+
 }
 
 function getSelectedQuestion(e, questionId) {
