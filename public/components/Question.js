@@ -6,6 +6,7 @@ import getImageButton from '../helpers/checklistDetails/questionSection/helpers/
 export default function (question, number) {
     const possibleAnswers = question.answers.possibleAnswers;
     const preferredAnswer = question.answers.preferredAnswer;
+    possibleAnswers.sort((a, b) => a.title.localeCompare(b.title));
 
     let selectedAnswer = question.selectedAnswer ?? null;
     let backgroundColor = null;
@@ -26,9 +27,9 @@ export default function (question, number) {
     })
 
 
-    if (selectedAnswerObj.title === "N/A" || selectedAnswerObj.title === "") backgroundColor = "";
+    if (selectedAnswerObj.title === "Ej tillämpbar" || selectedAnswerObj.title === "") backgroundColor = "";
     else backgroundColor = question.status ? "table-success" : "table-danger"
-    selectedAnswerObj = { title: "N/A" };
+    selectedAnswerObj = { title: "Ej tillämpbar" };
 
     let options = [`<option ${showFirstOption ? "selected" : ""} disabled>Välj svar</option>`, ...listOfPossibleAnswers].join("");
 

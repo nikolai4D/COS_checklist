@@ -1,5 +1,6 @@
 import { State } from "../store/State.js";
 import { Librarian } from "../store/Librarian.js";
+import { getSpinner, getPointer } from "../../../components/Spinner.js";
 
 export default class DashboardView {
   constructor() {
@@ -43,7 +44,6 @@ export default class DashboardView {
 
 
       let number = index + 1
-
       return `  
         <tr data-id="${checklist.id}">
           <th scope="row"><div class="tc">${number}</div></th>
