@@ -37,12 +37,14 @@ router.post("/", upload.single('asset'), async (req, res) => {
     let question = { id: questionId };
 
 
+    // const hasExistingRelQuestionChecklistInstance = await checkIfRelExist(questionId, checklistId);
 
-    const hasExistingRelQuestionChecklistInstance = await checkIfRelExist(questionId, checklistId);
 
-    if (!hasExistingRelQuestionChecklistInstance) {
-        await createRelInstanceQuestionChecklist(question, checklistId);
-    }
+
+
+    // if (!hasExistingRelQuestionChecklistInstance) {
+    //     await createRelInstanceQuestionChecklist(question, checklistId);
+    // }
 
 
     let pictureInstance = await createNewPicture(questionId, checklistId, form)
@@ -50,7 +52,6 @@ router.post("/", upload.single('asset'), async (req, res) => {
     form.append('name', `as_${pictureInstance.id}`)
     createPictureAsset(form)
 
-    console.log(pictureInstance, 'PICTURE INSTANCE')
     res.json(pictureInstance)
 })
 
@@ -67,6 +68,10 @@ router.delete("/", async (req, res) => {
     await apiCallDelete(`/assets/${assetId}`);
 
     res.status(200);
+
+    // check if
+
+    //      
 
 });
 

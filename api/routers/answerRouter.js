@@ -31,25 +31,24 @@ router.post("/", upload.single('asset'), async (req, res) => {
     for (const questionGroup of questions) {
         for (const question of questionGroup.questions) {
             let questionObj;
-            let shouldCreateRelInstanceQuestionChecklist = false;
-
-            if (question.image) {
-                console.log(question.image, "IMAGE")
-            }
+            // let shouldCreateRelInstanceQuestionChecklist = false;
+            // if (question.image) {
+            //     shouldCreateRelInstanceQuestionChecklist = true;
+            // }
 
             if (question.selectedAnswer) {
                 await helper.createNewAnswer(questionObj, question, id);
-                shouldCreateRelInstanceQuestionChecklist = true;
+                // shouldCreateRelInstanceQuestionChecklist = true;
             }
 
             if (question.comment) {
                 await helper.createNewComment(questionObj, question, id);
-                shouldCreateRelInstanceQuestionChecklist = true;
+                // shouldCreateRelInstanceQuestionChecklist = true;
             }
 
-            if (shouldCreateRelInstanceQuestionChecklist) {
-                await helper.createQuestionRel(question, questionObj, id);
-            }
+            // if (shouldCreateRelInstanceQuestionChecklist) {
+            await helper.createQuestionRel(question, questionObj, id);
+            // }
         }
     }
     return res.json(200);
@@ -68,32 +67,32 @@ router.put("/", upload.single('asset'), async (req, res) => {
     for (const questionsGroup of questions) {
         for (const question of questionsGroup.questions) {
 
-            if (question.image) {
-                console.log(question.image, "IMAGE")
-                //     const form = new FormData();
-                //     const file = question.image.file;
-                //     form.append('asset', file.buffer, file.originalname);
-                //     // form.append('parentId', process.env.PICTURE_PARENT_ID)
-                //     form.append('props', JSON.stringify([]))
+            // if (question.image) {
+            // console.log(question.image, "IMAGE")
+            //     const form = new FormData();
+            //     const file = question.image.file;
+            //     form.append('asset', file.buffer, file.originalname);
+            //     // form.append('parentId', process.env.PICTURE_PARENT_ID)
+            //     form.append('props', JSON.stringify([]))
 
-                // console.log(form, "form")
-
-
-                // const form = new FormData();
-
-                // const file = question.image;
-                // console.log(file, `file!! inputImage_$${question.id}`)
-                // form.append(`inputImage_$${question.id}`, file.buffer, file.originalname);
-                // form.append('parentId',process.env.PICTURE_PARENT_ID)
-                // form.append('props', JSON.stringify([]))
-
-                // console.log(question.image.get(`inputImage_$${question.id}`), "hello")
-
-                // console.log(question.image.get(`asset`), "form")
-                // console.log(question.image.file, "form")
+            // console.log(form, "form")
 
 
-            }
+            // const form = new FormData();
+
+            // const file = question.image;
+            // console.log(file, `file!! inputImage_$${question.id}`)
+            // form.append(`inputImage_$${question.id}`, file.buffer, file.originalname);
+            // form.append('parentId',process.env.PICTURE_PARENT_ID)
+            // form.append('props', JSON.stringify([]))
+
+            // console.log(question.image.get(`inputImage_$${question.id}`), "hello")
+
+            // console.log(question.image.get(`asset`), "form")
+            // console.log(question.image.file, "form")
+
+
+            // }
             let questionObj;
 
             let existingComment = helper.findExistingComment(questionsWithComments, question);
@@ -109,7 +108,7 @@ router.put("/", upload.single('asset'), async (req, res) => {
                 if (existingAnswer && helper.isExistingAnswerSameAsNewAnswer(existingAnswer, question)) continue;
                 if (existingAnswer) await helper.deleteExistingAnswers(existingAnswer);
                 await helper.createNewAnswer(questionObj, question, id);
-                await helper.createQuestionRel(question, questionObj, id);
+                // await helper.createQuestionRel(question, questionObj, id);
             }
         }
     }
