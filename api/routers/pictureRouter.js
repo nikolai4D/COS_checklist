@@ -34,11 +34,28 @@ router.post("/", upload.single('asset'), async (req, res) => {
     const file = req.file;
     const { checklistId, questionId } = req.body
     const form = new FormData();
+    let question = { id: questionId };
+    let questionObj;
+
+
+
+    const hasExistingRelQuestionChecklistInstance = await checkIfRelExist(questionId, checklistId);
+    questionObj = questionObj ?? await api.getInstance(question.id);
+
+    if (!hasExistingRelQuestionChecklistInstance) {
+        const questionToChecklistRel = await api.getRelQuestionToChecklist(question);
+        console.log(questionToChecklistRel, "GET REL")
+        let response = await api.createRelQuestionChecklist(questionToChecklistRel, questionObj, checklistId);
+        console.log("RESPONSE", response)
+    }
+
 
     let pictureInstance = await createNewPicture(questionId, checklistId, form)
     form.append('asset', file.buffer, file.originalname);
     form.append('name', `as_${pictureInstance.id}`)
     createPictureAsset(form)
+
+    console.log(pictureInstance, 'PICTURE INSTANCE')
     res.json(pictureInstance)
 })
 
@@ -61,10 +78,26 @@ router.delete("/", async (req, res) => {
 
 module.exports = router;
 
-async function createQuestionRel(question, questionObj, id) {
-    // let questionObj = await api.getInstance(questionId);
+async function checkIfRelExist(questionId, checklistId) {
+    let question = { id: questionId };
+    let questionObj = await api.getInstance(question.id);
 
-    // const questionToChecklistRel = await api.getRelQuestionToChecklist(question);
+
+    const questionToChecklistRel = await getRelQuestionToChecklistInstance(questionObj.id, checklistId);
+
+    if (questionToChecklistRel.length === 0) return false;
+    return true;
+}
+
+async function asdf(questionId, checklistId) {
+
+    // get instance of question
+    // check if rel question to checklist exist
+    // if no -> create checklist
+
+
+
+    // const questionToChecklistRel = await api.getRelQuestionToChecklistInstance(question);
 
     // await api.createRelQuestionChecklist(questionToChecklistRel, questionObj, id);
 
@@ -78,6 +111,21 @@ async function createQuestionRel(question, questionObj, id) {
     // when deleting picture, check afterwards if there is anything attached to it that is also attached to checklist. If no -> delete rel
 
 }
+
+
+async function getRelQuestionToChecklistInstance(questionId, checklistId) {
+    let reqBody = {
+        sourceId: questionId,
+        targetId: checklistId
+    };
+    return await getRelInstance(reqBody);
+}
+
+async function getRelInstance(reqBody) {
+    return (await apiCallPost(reqBody, `/instanceDataInternalRel/readRelBySourceAndTarget`)).data
+}
+
+
 
 async function createNewPicture(questionId, checklistId, form) {
     let questionObj = await api.getInstance(questionId);

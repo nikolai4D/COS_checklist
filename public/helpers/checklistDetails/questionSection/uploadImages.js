@@ -22,6 +22,7 @@ export default async function (e) {
 
 
     let pictureInstance = await Merchant.CREATE_PICTURE({ formData })
+    console.log(pictureInstance, "PICTURE INSTANCE")
 
     let { question } = getSelectedQuestion(e, fragaId);
     question.image = pictureInstance;
