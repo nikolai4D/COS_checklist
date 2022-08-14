@@ -33,7 +33,7 @@ export default async function (e) {
             if (!question.status) isApproved = false;
         }
     }
-    alert(`Checklist validated to: ${isApproved ? "approved" : "not approved"}`)
+    alert(`Checklistan är: ${isApproved ? "Godkänd" : "Ej godkänd"}`)
 
 
     let existingChecklist = State.allChecklistsWithDetails.content.allChecklistsFormatted.find(checklist => checklist.id === activeChecklist.id);

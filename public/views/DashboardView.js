@@ -1,4 +1,5 @@
 import { State } from "../store/State.js";
+import { Librarian } from "../store/Librarian.js";
 
 export default class DashboardView {
   constructor() {
@@ -19,24 +20,24 @@ export default class DashboardView {
         checklist.area = { "title": "-" }
       }
 
-      let changebg = checklist.status;
       let statushtml;
+      let status = Librarian.status.find(lang => lang.eng === checklist.status)
 
-      if (changebg === "Approved") {
-        statushtml = `<div id ="aPbg" class="tc alert-success" role="alert">
-         ${changebg}
+      if (checklist.status === "Approved") {
+        statushtml = `<div class="tc alert-success" role="alert">
+         ${status.sv}
        </div>`
       }
 
-      else if (changebg === "Not approved") {
-        statushtml = `<div id ="notAbg" class="tc alert-danger" role="alert">
-        ${changebg}
+      else if (checklist.status === "Not approved") {
+        statushtml = `<div class="tc alert-danger" role="alert">
+        ${status.sv}
       </div>`
       }
 
-      else if (changebg === "In progress") {
-        statushtml = `<div id ="inPbg" class="tc alert-warning" role="alert">
-      ${changebg}
+      else if (checklist.status === "In progress") {
+        statushtml = `<div class="tc alert-warning" role="alert">
+      ${status.sv}
     </div>`
       }
 
@@ -63,7 +64,7 @@ export default class DashboardView {
   async getTemplate() {
     return `
         <div class="container">
-        <button type="button" class="btn btn-outline-info" data-function="viewChecklist" style="margin-top: 2em;">⨁ Rondering</button>
+        <button type="button" class="btn btn-outline-info" data-function="viewChecklist" style="margin-top: 2em;">+ Rondering</button>
 
             <div class="checklistTable" style="margin-top: 4em;">
             <table id="table" class="table table-striped">
