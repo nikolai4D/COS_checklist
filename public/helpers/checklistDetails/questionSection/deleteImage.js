@@ -4,18 +4,21 @@ import { State } from "../../../store/State.js";
 
 export default async function (e) {
     const deleteButtonId = e.target.id;
-    const questionId = e.target.parentNode.parentNode.getAttribute("data-id")
+    const questionId = e.target.parentNode.parentNode.parentNode.parentNode.getAttribute("data-id")
     const imageId = deleteButtonId.split("$")[1]
 
     removeFromState(e, questionId);
-    removeFromClient(imageId, e, questionId);
+    removeFromDOM(imageId, e, questionId);
     await Merchant.DELETE_PICTURE(imageId)
-
 }
 
 
-function removeFromClient(imageId, e, questionId) {
-    document.getElementById(`buttonForImage_$${imageId}`).remove();
+function removeFromDOM(imageId, e, questionId) {
+    document.getElementById(`buttonForImage_$${imageId}`).parentNode.innerHTML = `     <label id="labelForInputImage_$${questionId}" data-function="upload-images" for="inputImage_$${questionId}" class="btn btn-outline-secondary">
+     <i  class="bi bi-upload"></i>
+     </label>
+     <input  data-function="upload-images"  type="file" name="asset" accept="image/*" class="form-control"  id="inputImage_$${questionId}" style="display:none;"  >
+`
     e.target.remove();
     document.getElementById(`inputImage_$${questionId}`).value = null;
 }
@@ -26,7 +29,8 @@ function removeFromState(e, questionId) {
 }
 
 function getSelectedQuestion(e, questionId) {
-    let selectedQuestionGroup = e.target.parentNode.parentNode.parentNode;
+    let selectedQuestionGroup = e.target.parentNode.parentNode.parentNode.parentNode.parentNode;
+    console.log(selectedQuestionGroup)
 
     let selectedQuestionGroupId = selectedQuestionGroup.id;
     let activeChecklist = State.activeChecklist.content;

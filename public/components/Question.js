@@ -46,13 +46,9 @@ export default function (question, number) {
             </td>
 
     <td>
-     <label id="labelForInputImage_$${question.id}" data-function="upload-images" for="inputImage_$${question.id}" class="btn btn-outline-secondary">
-     <i  class="bi bi-upload"></i>
-     </label>
+    <div class="btn-group" role="group" aria-label="First group">
     ${generateDeleteButton(question)}
-
-     <input  data-function="upload-images"  type="file" name="asset" accept="image/*" class="form-control"  id="inputImage_$${question.id}" style="display:none;"  >
-
+    </div>
     </td>
     </td>
 
@@ -73,15 +69,17 @@ function generateDeleteButton(question) {
 
 
 
-    if (!question.image) return ""
+    if (!question.image) return `
+  <label id="labelForInputImage_$${question.id}" data-function="upload-images" for="inputImage_$${question.id}" class="btn btn-outline-secondary">
+        <i class="bi bi-upload"></i>
+    </label>
+    <input data-function="upload-images" type="file" name="asset" accept="image/*" class="form-control" id="inputImage_$${question.id}" style="display:none;"  >
+    `
+
     // let imageId = `as_${question.image.id}`
 
     // let imageInstance = Merchant.GET_PICTURE_BY_NAME(imageId)
 
-    let { buttonForImage, closeButton } = getImageButton(question.image.id);
+    return getImageButton(question.image.id);
 
-
-
-
-    return `${buttonForImage}${closeButton}`
 }

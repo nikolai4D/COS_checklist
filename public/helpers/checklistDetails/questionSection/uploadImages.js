@@ -12,10 +12,8 @@ export default async function (e) {
   const outputImageIcon = async () => {
 
     const pictureInput = e.target;
-    console.log(pictureInput, "PICTURE")
 
     let fragaId = inputImage.id.split("$")[1];
-    console.log(pictureInput, "PICTURE")
 
     const formData = new FormData();
     formData.append("asset", pictureInput.files[0], pictureInput.files[0].name);
@@ -44,18 +42,16 @@ function generateDeleteButton(imageId, fragaId) {
     document.getElementById(`deleteImage_$${imageId}`).remove();
   }
 
-  let { buttonForImage, closeButton } = getImageButton(imageId);
 
 
 
   document
-    .getElementById(`labelForInputImage_$${fragaId}`)
-    .insertAdjacentHTML("afterend", `${buttonForImage}${closeButton}`);
+    .getElementById(`labelForInputImage_$${fragaId}`).parentNode.innerHTML = getImageButton(imageId)
 
 }
 
 function getSelectedQuestion(e, questionId) {
-  let selectedQuestionGroup = e.target.parentNode.parentNode.parentNode;
+  let selectedQuestionGroup = e.target.parentNode.parentNode.parentNode.parentNode;
 
   let selectedQuestionGroupId = selectedQuestionGroup.id;
   let activeChecklist = State.activeChecklist.content;

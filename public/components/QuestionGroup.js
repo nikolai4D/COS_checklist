@@ -15,7 +15,7 @@ export default function (questionGroup, questions) {
             <th scope="col">Önskat resultat</th>
             <th scope="col">Ja/Nej</th>
             <th scope="col">Notering</th>
-            <th scope="col"></th>
+            <th scope="col">Bild</th>
           </tr>
         </thead>
         <tbody id="${questionGroup.id}">

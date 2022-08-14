@@ -1,9 +1,9 @@
 
 export default function getImageButton(imageId) {
     let closeButton = `
-    <i style="cursor: pointer;" id="deleteImage_$${imageId}" data-function='delete-image' class="bi bi-x"></i>`;
+    <button type="button" id="deleteImage_$${imageId}" data-function='delete-image' class="btn d-flex btn-outline-danger">×</button>`;
 
-    let buttonForImage = `<button type="button" id="buttonForImage_$${imageId}" data-function="show-image" class="btn btn-outline-secondary" style="margin-left: 1em;" data-bs-toggle="modal" data-bs-target="#modal_${imageId}" >
+    let buttonForImage = `<button type="button" id="buttonForImage_$${imageId}" data-function="show-image" class="btn btn-outline-secondary d-flex"" data-bs-toggle="modal" data-bs-target="#modal_${imageId}" >
 
     <i class="bi bi-image" data-function="show-image" id="iconImage_$${imageId}"></i></button>
 
@@ -24,6 +24,7 @@ export default function getImageButton(imageId) {
                 </div>
             </div>
         </div>`;
-    return { buttonForImage, closeButton };
+
+    return `<div class="btn-group" role="group" aria-label="First group">${buttonForImage}${closeButton}</div>`
 }
 
