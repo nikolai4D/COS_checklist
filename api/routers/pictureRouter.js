@@ -56,7 +56,7 @@ router.delete("/", async (req, res) => {
 
     await apiCallDelete(`/assets/${assetId}`);
 
-    res.status(200);
+    return res.status(200).json({ message: "deleted asset" });
 
 
 });

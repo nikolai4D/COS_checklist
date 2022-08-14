@@ -1,6 +1,7 @@
 import { State } from "../../../store/State.js";
 import Merchant from "../../../store/Merchant.js";
 import getImageButton from "./helpers/imageModal.js"
+import { getSpinner, getPointer } from "../../../components/Spinner.js";
 
 export default async function (e) {
   let inputImage = e.target;
@@ -20,9 +21,9 @@ export default async function (e) {
     formData.append("questionId", fragaId);
     formData.append("checklistId", State.activeChecklist.content.id)
 
-
+    getSpinner()
     let pictureInstance = await Merchant.CREATE_PICTURE({ formData })
-    console.log(pictureInstance, "PICTURE INSTANCE")
+    getPointer()
 
     let { question } = getSelectedQuestion(e, fragaId);
     question.image = pictureInstance;

@@ -1,6 +1,8 @@
 import { State } from '../store/State.js';
+import { getSpinner, getPointer } from "../../../components/Spinner.js";
 
 export default function (areasStr, questionsDetailedStr, checklist) {
+  getSpinner()
   let selectedAddressStr = "";
   let selectedPropertyStr = "";
   let selectedAreaStr = "";
@@ -16,6 +18,8 @@ export default function (areasStr, questionsDetailedStr, checklist) {
     selectedAreaStr = `<option disabled selected value="${area.id}">${area.title}</option>`
     selectedPropertyStr = `<option disabled selected value="${property.id}">${property.title}</option>`
   }
+
+  getPointer()
   return `<div class="container">
     <button type="button" class="btn btn-outline-success" data-function="validateChecklist" style="margin-top: 2em; margin-bottom: 2em;">Skicka in</button>
     <button type="button" class="btn btn-outline-danger" data-function="saveAnswers" style="margin-top: 2em; margin-bottom: 2em;">Tillbaka</button>

@@ -1,10 +1,11 @@
 import Merchant from "../../store/Merchant.js";
 import { State } from "../../store/State.js";
 import navigateTo from "../navigateTo.js";
+import { getSpinner, getPointer } from "../../../components/Spinner.js";
 
 export default async function (e) {
     let id = e.target.getAttribute("data-id");
-
+    getSpinner()
     if (id) {
         await State.allChecklistsWithDetails.set();
 
@@ -44,6 +45,6 @@ export default async function (e) {
         checklist.property = { title: "-" }
         checklist.status = "In progress"
     }
-
+    getPointer()
     navigateTo("/detailView")
 }

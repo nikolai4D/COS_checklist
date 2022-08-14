@@ -5,6 +5,7 @@ import { getSpinner, getPointer } from "../../../components/Spinner.js";
 
 export default async function (e) {
     getSpinner()
+
     const deleteButtonId = e.target.id;
     const questionId = e.target.parentNode.parentNode.parentNode.parentNode.getAttribute("data-id")
     const imageId = deleteButtonId.split("$")[1]
@@ -40,6 +41,5 @@ function getSelectedQuestion(e, questionId) {
     let question = questionGroup.questions.find(question => question.id === questionId);
     return { question };
 }
-
 
 

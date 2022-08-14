@@ -2,6 +2,7 @@ import { State } from "../../store/State.js";
 import Merchant from "../../store/Merchant.js";
 import { Librarian } from "../../store/Librarian.js";
 import navigateTo from "../navigateTo.js";
+import { getSpinner, getPointer } from "../../../components/Spinner.js";
 
 
 export default async function (e) {
@@ -35,12 +36,12 @@ export default async function (e) {
     }
     alert(`Checklistan är: ${isApproved ? "Godkänd" : "Ej godkänd"}`)
 
-
+    getSpinner()
     let existingChecklist = State.allChecklistsWithDetails.content.allChecklistsFormatted.find(checklist => checklist.id === activeChecklist.id);
     if (!existingChecklist) await Merchant.createData({ type: Librarian.answer.type, activeChecklist });
     else await Merchant.updateData({ type: Librarian.answer.type, activeChecklist });
     await Merchant.updateData({ type: Librarian.checklist.type, activeChecklist, isApproved })
-
+    getPointer()
     navigateTo('/')
 
 }
