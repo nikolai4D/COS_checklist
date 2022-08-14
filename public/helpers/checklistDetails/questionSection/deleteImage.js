@@ -14,7 +14,7 @@ export default async function (e) {
 
 
 function removeFromDOM(imageId, e, questionId) {
-    document.getElementById(`buttonForImage_$${imageId}`).parentNode.innerHTML = `     <label id="labelForInputImage_$${questionId}" data-function="upload-images" for="inputImage_$${questionId}" class="btn btn-outline-secondary">
+    document.getElementById(`buttonForImage_$${imageId}`).parentNode.parentNode.innerHTML = `     <label id="labelForInputImage_$${questionId}" data-function="upload-images" for="inputImage_$${questionId}" class="btn btn-outline-secondary">
      <i  class="bi bi-upload"></i>
      </label>
      <input  data-function="upload-images"  type="file" name="asset" accept="image/*" class="form-control"  id="inputImage_$${questionId}" style="display:none;"  >
