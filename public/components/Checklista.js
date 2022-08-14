@@ -49,7 +49,7 @@ export default function (areasStr, questionsDetailedStr, checklist) {
   
     <div>
       <label for="address">Adress</label>
-      <select data-function="saveAddress" id="addChecklistAddress" id="address" class="form-select" multiple aria-label="Adresser">
+      <select data-function="saveAddress" id="addChecklistAddress" id="address" class="form-select" aria-label="Adresser">
       ${selectedAddressStr}
 
         <option ${showFirstOption ? "selected" : ""}></option>
