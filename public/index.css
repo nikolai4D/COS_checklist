@@ -13,7 +13,6 @@ body,
     0 0 2px white, 0 0 2px white, 0 0 2px white, 0 0 2px white;
 }
 
-
 /* The Close Button */
 .close {
   color: #aaa;
@@ -30,14 +29,13 @@ body,
 }
 
 .gotohome {
-  cursor:pointer;
+  cursor: pointer;
 }
 
-.alertw {
+.tc {
   position: relative;
-  padding: .4rem ;
+  padding: 0.4rem;
   margin-bottom: 0rem;
   border: 1px solid transparent;
   border-radius: 0.25rem;
 }
-

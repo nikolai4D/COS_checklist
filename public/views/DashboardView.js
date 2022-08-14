@@ -23,19 +23,19 @@ export default class DashboardView {
       let statushtml;
 
       if (changebg === "Approved") {
-        statushtml = `<div id ="aPbg" class="alertw alert-success" role="alert">
+        statushtml = `<div id ="aPbg" class="tc alert-success" role="alert">
          ${changebg}
        </div>`
       }
 
       else if (changebg === "Not approved") {
-        statushtml = `<div id ="notAbg" class="alertw alert-danger" role="alert">
+        statushtml = `<div id ="notAbg" class="tc alert-danger" role="alert">
         ${changebg}
       </div>`
       }
 
       else if (changebg === "In progress") {
-        statushtml = `<div id ="inPbg" class="alertw alert-warning" role="alert">
+        statushtml = `<div id ="inPbg" class="tc alert-warning" role="alert">
       ${changebg}
     </div>`
       }
@@ -45,11 +45,11 @@ export default class DashboardView {
 
       return `  
         <tr data-id="${checklist.id}">
-          <th scope="row">${number}</th>
-          <td>${new Date(checklist.created).toLocaleDateString('se-SE', { hour12: false }).split(" ")}</td>
-          <td>${checklist.area.title}</td>
-          <td>${checklist.property.title}</td>
-          <td>${checklist.address.title}</td>
+          <th scope="row"><div class="tc">${number}</div></th>
+          <td><div class="tc">${new Date(checklist.created).toLocaleDateString('se-SE', { hour12: false }).split(" ")}</div></td>
+          <td><div class="tc">${checklist.area.title}</div></td>
+          <td><div class="tc">${checklist.property.title}</div></td>
+          <td><div class="tc">${checklist.address.title}</div></td>
 
           <td>${statushtml} </td>
   
