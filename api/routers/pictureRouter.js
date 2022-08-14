@@ -35,18 +35,13 @@ router.post("/", upload.single('asset'), async (req, res) => {
     const { checklistId, questionId } = req.body
     const form = new FormData();
     let question = { id: questionId };
-    let questionObj;
 
 
 
     const hasExistingRelQuestionChecklistInstance = await checkIfRelExist(questionId, checklistId);
-    questionObj = questionObj ?? await api.getInstance(question.id);
 
     if (!hasExistingRelQuestionChecklistInstance) {
-        const questionToChecklistRel = await api.getRelQuestionToChecklist(question);
-        console.log(questionToChecklistRel, "GET REL")
-        let response = await api.createRelQuestionChecklist(questionToChecklistRel, questionObj, checklistId);
-        console.log("RESPONSE", response)
+        await createRelInstanceQuestionChecklist(question, checklistId);
     }
 
 
@@ -77,6 +72,13 @@ router.delete("/", async (req, res) => {
 
 
 module.exports = router;
+
+async function createRelInstanceQuestionChecklist(question, checklistId) {
+    let questionObj = await api.getInstance(question.id);
+
+    const questionToChecklistRel = await api.getRelQuestionToChecklist(question);
+    await api.createRelQuestionChecklist(questionToChecklistRel, questionObj, checklistId);
+}
 
 async function checkIfRelExist(questionId, checklistId) {
     let question = { id: questionId };
