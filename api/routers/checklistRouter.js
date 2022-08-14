@@ -4,6 +4,8 @@ require("dotenv").config();
 const bodyParser = require("body-parser");
 const axios = require("axios");
 const { apiCallPost, apiCallPut, apiCallGet, apiCallDelete } = require("./helpers");
+const helper = require("./utils/checklist/helpers.js");
+const api = require("./utils/answer/apiCalls.js");
 
 //Bodyparser
 router.use(bodyParser.json());
@@ -27,6 +29,7 @@ router.get("/getAllData", async (req, res) => {
 
 
 router.get("/getAllDetailedData", async (req, res) => {
+
   console.log("Get all checklists route used");
 
   // get all checklists
@@ -124,6 +127,19 @@ router.get("/getAllDetailedData", async (req, res) => {
 
     // get all questions on instance level
     question.instances = (await apiCallGet(`/instance?parentId=${type.id}`)).data;
+
+    if (question.instances.length === 0) {
+      let reqBody = {
+        title: type.title,
+        parentId: type.id,
+        props: []
+      };
+      let questionInstance = (await api.createInstance(reqBody)).data;
+      console.log(questionInstance, "QUESTION ISNTANCE")
+      question.instances = [questionInstance]
+    }
+
+
 
     // for every question, get all answers via sources to target
     for (let instance of question.instances) {
