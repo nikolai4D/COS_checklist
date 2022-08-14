@@ -4,7 +4,6 @@ require("dotenv").config();
 const bodyParser = require("body-parser");
 const axios = require("axios");
 const { apiCallPost, apiCallPut, apiCallGet, apiCallDelete } = require("./helpers");
-const helper = require("./utils/checklist/helpers.js");
 const api = require("./utils/answer/apiCalls.js");
 
 //Bodyparser
@@ -135,7 +134,6 @@ router.get("/getAllDetailedData", async (req, res) => {
         props: []
       };
       let questionInstance = (await api.createInstance(reqBody)).data;
-      console.log(questionInstance, "QUESTION ISNTANCE")
       question.instances = [questionInstance]
     }
 
