@@ -61,6 +61,23 @@ router.delete("/", async (req, res) => {
 
 module.exports = router;
 
+async function createQuestionRel(question, questionObj, id) {
+    // let questionObj = await api.getInstance(questionId);
+
+    // const questionToChecklistRel = await api.getRelQuestionToChecklist(question);
+
+    // await api.createRelQuestionChecklist(questionToChecklistRel, questionObj, id);
+
+    // get rel instance between qquestion and checklist
+    // if doesn't exist -> create new rel between them.
+
+
+    // tod o for other files>
+
+    // use this function before "should create rel when creating comment/answer"
+    // when deleting picture, check afterwards if there is anything attached to it that is also attached to checklist. If no -> delete rel
+
+}
 
 async function createNewPicture(questionId, checklistId, form) {
     let questionObj = await api.getInstance(questionId);
