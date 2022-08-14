@@ -1,8 +1,10 @@
 
 import Merchant from "../../../store/Merchant.js";
 import { State } from "../../../store/State.js";
+import { getSpinner, getPointer } from "../../../components/Spinner.js";
 
 export default async function (e) {
+    getSpinner()
     const deleteButtonId = e.target.id;
     const questionId = e.target.parentNode.parentNode.parentNode.parentNode.getAttribute("data-id")
     const imageId = deleteButtonId.split("$")[1]
@@ -10,6 +12,7 @@ export default async function (e) {
     removeFromState(e, questionId);
     removeFromDOM(imageId, e, questionId);
     await Merchant.DELETE_PICTURE(imageId)
+    getPointer()
 }
 
 
@@ -30,7 +33,6 @@ function removeFromState(e, questionId) {
 
 function getSelectedQuestion(e, questionId) {
     let selectedQuestionGroup = e.target.parentNode.parentNode.parentNode.parentNode.parentNode;
-    console.log(selectedQuestionGroup)
 
     let selectedQuestionGroupId = selectedQuestionGroup.id;
     let activeChecklist = State.activeChecklist.content;
