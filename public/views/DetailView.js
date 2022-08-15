@@ -36,11 +36,11 @@ export default class DetailView {
 
     questionsDetailed.sort((a, b) => a.title.localeCompare(b.title));
 
-    let allQuestionsDetailedArray = questionsDetailed.map( (questionGroup) => {
+    let allQuestionsDetailedArray = questionsDetailed.map((questionGroup) => {
 
       questionGroup.questions.sort((a, b) => a.title.localeCompare(b.title));
 
-      let allQuestionsArray = questionGroup.questions.map( (question, index) => {
+      let allQuestionsArray = questionGroup.questions.map((question, index) => {
         let number = index + 1
         return Question(question, number)
       })

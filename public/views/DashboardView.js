@@ -1,4 +1,6 @@
 import { State } from "../store/State.js";
+import { Librarian } from "../store/Librarian.js";
+import { getSpinner, getPointer } from "../../../components/Spinner.js";
 
 export default class DashboardView {
   constructor() {
@@ -6,49 +8,51 @@ export default class DashboardView {
   }
 
   async checklistsToHTML() {
-
+    getSpinner()
     delete State.activeChecklist.content;
 
-    let checklists = (await State.allChecklistsWithDetails.set()).allChecklistsFormatted
-    await State.allQuestionsWithDetails.set();
+    let checklists = (await State.allChecklistsWithDetails.get()).allChecklistsFormatted
+    await State.allQuestionsWithDetails.get();
+    getPointer()
 
     let formattedChecklists = checklists.map((checklist, index) => {
-      if(!checklist.address){
-        checklist.address = {"title" : "-"}
-        checklist.property = {"title" : "-"}
-        checklist.area = {"title" : "-"}
+      if (!checklist.address) {
+        checklist.address = { "title": "-" }
+        checklist.property = { "title": "-" }
+        checklist.area = { "title": "-" }
       }
 
-      let changebg = checklist.status;
       let statushtml;
+      let status = Librarian.status.find(lang => lang.eng === checklist.status)
 
-      if (changebg === "Approved"){
-         statushtml = `<div id ="aPbg" class="alertw alert-success" role="alert">
-         ${changebg}
+      if (checklist.status === "Approved") {
+        statushtml = `<div class="tc alert-success" role="alert">
+         ${status.sv}
        </div>`
       }
 
-      else if (changebg === "Not approved"){
-        statushtml = `<div id ="notAbg" class="alertw alert-danger" role="alert">
-        ${changebg}
+      else if (checklist.status === "Not approved") {
+        statushtml = `<div class="tc alert-danger" role="alert">
+        ${status.sv}
       </div>`
-     }
+      }
 
-     else if (changebg === "In progress"){
-      statushtml = `<div id ="inPbg" class="alertw alert-warning" role="alert">
-      ${changebg}
+      else if (checklist.status === "In progress") {
+        statushtml = `<div class="tc alert-warning" role="alert">
+      ${status.sv}
     </div>`
-   }
+      }
 
 
       let number = index + 1
-
       return `  
         <tr data-id="${checklist.id}">
-          <th scope="row">${number}</th>
-          <td>${new Date(checklist.created).toLocaleDateString('se-SE', {hour12: false}).split(" ")}</td>
-          <td>${checklist.area.title}</td>
-          <td>${checklist.property.title}</td>
+          <th scope="row"><div class="tc">${number}</div></th>
+          <td><div class="tc">${new Date(checklist.created).toLocaleDateString('se-SE', { hour12: false }).split(" ")}</div></td>
+          <td><div class="tc">${checklist.area.title}</div></td>
+          <td><div class="tc">${checklist.property.title}</div></td>
+          <td><div class="tc">${checklist.address.title}</div></td>
+
           <td>${statushtml} </td>
   
           <td><button data-id="${checklist.id}" type="button" class="btn btn-outline-success" data-function="viewChecklist" >➚</button></td>
@@ -61,7 +65,7 @@ export default class DashboardView {
   async getTemplate() {
     return `
         <div class="container">
-        <button type="button" class="btn btn-outline-info" data-function="viewChecklist" style="margin-top: 2em;">⨁ Rondering</button>
+        <button type="button" class="btn btn-outline-info" data-function="viewChecklist" style="margin-top: 2em;">+ Rondering</button>
 
             <div class="checklistTable" style="margin-top: 4em;">
             <table id="table" class="table table-striped">
@@ -71,6 +75,8 @@ export default class DashboardView {
                 <th scope="col">Datum</th>
                 <th scope="col">Område</th>
                 <th scope="col">Fastighet</th>
+                <th scope="col">Adress</th>
+
                 <th scope="col">Bedömning</th>
               </tr>
             </thead>

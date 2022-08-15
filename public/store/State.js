@@ -1,5 +1,5 @@
 import Merchant from "./Merchant.js";
-import {Librarian} from "./Librarian.js";
+import { Librarian } from "./Librarian.js";
 
 class Resource {
     constructor(fetchFunction, fetchParams) {

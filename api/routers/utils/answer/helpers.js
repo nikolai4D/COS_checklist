@@ -11,6 +11,8 @@ async function createNewAnswer(questionObj, question, id) {
 
     // create rel between checklist and answer
     await createAnswerRels(answerToChecklistRel, answerInstance, id, answerToQuestionRel, questionObj);
+    return answerInstance;
+
 }
 
 async function createNewComment(questionObj, question, id) {
@@ -22,6 +24,7 @@ async function createNewComment(questionObj, question, id) {
     // create rel between checklist and comment
     await api.createRelCommentChecklist(commentToChecklistRel, commentInstance, id);
     await api.createRelCommentQuestion(commentToQuestionRel, commentInstance, questionObj);
+    return commentInstance;
 }
 
 async function createQuestionRel(question, questionObj, id) {

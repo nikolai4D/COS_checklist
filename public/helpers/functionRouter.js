@@ -11,7 +11,9 @@ import saveAnswers from "./checklistDetails/saveAnswers.js";
 import chooseAnswer from "./checklistDetails/questionSection/chooseAnswer.js";
 import validateChecklist from "./checklistDetails/validateChecklist.js";
 import viewChecklist from "./checklistDetails/viewChecklist.js";
+
 import saveNote from "./checklistDetails/questionSection/saveNote.js";
+
 
 export default async function (demandedRoute, event) {
   const routes = [
@@ -28,6 +30,7 @@ export default async function (demandedRoute, event) {
     { path: "saveAnswers", request: saveAnswers },
     { path: "deleteChecklist", request: deleteChecklist },
     { path: "viewChecklist", request: viewChecklist },
+
     { path: "saveNote", request: saveNote }
 
     // { path: "/register" },

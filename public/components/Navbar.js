@@ -8,7 +8,7 @@ export default class Navbar {
             <nav class="navbar navbar-expand navbar-light bg-light">
              <div class="container-fluid">
              <div class="gotohome"  data-view='/dashboard' >
-                    <i class="bi bi-card-checklist" style="margin-right:7px;"></i>Checklist app</a>
+                    <i class="bi bi-card-checklist" style="margin-right:7px;"></i>Trygghetsrondering</a>
                 </div>
                 
                 <div class="collapse navbar-collapse" id="navbarScroll">
@@ -19,7 +19,7 @@ export default class Navbar {
                     </ul>
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">${userName}</a>
                     </li>
-                    <button class="btn btn-outline-secondary" type="button" data-function="/logout">Logout</button>
+                    <button class="btn btn-outline-secondary" type="button" data-function="/logout">Logga ut</button>
                   </form>
                 </div>
               </div>

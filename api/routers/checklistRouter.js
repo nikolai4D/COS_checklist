@@ -4,6 +4,7 @@ require("dotenv").config();
 const bodyParser = require("body-parser");
 const axios = require("axios");
 const { apiCallPost, apiCallPut, apiCallGet, apiCallDelete } = require("./helpers");
+const api = require("./utils/answer/apiCalls.js");
 
 //Bodyparser
 router.use(bodyParser.json());
@@ -27,6 +28,7 @@ router.get("/getAllData", async (req, res) => {
 
 
 router.get("/getAllDetailedData", async (req, res) => {
+
   console.log("Get all checklists route used");
 
   // get all checklists
@@ -42,12 +44,14 @@ router.get("/getAllDetailedData", async (req, res) => {
 
   const results = await Promise.all([responseAllChecklists, responseAllAddresses, responseAllAreas, responseAllProperties, responseChecklistAddressRel, responseAddressPropertyRel, responsePropertyAreaRel])
 
-  const [checklists, addresses, areas, properties, checklistAddressRel, addressPropertyRel, propertyAreaRel] = results.map(el =>{
+  const [checklists, addresses, areas, properties, checklistAddressRel, addressPropertyRel, propertyAreaRel] = results.map(el => {
     return el.data
   })
 
+
+
   const allChecklistsFormatted = []
-  for(const i in checklists) {
+  for (const i in checklists) {
 
     const el = checklists[i]
 
@@ -60,24 +64,24 @@ router.get("/getAllDetailedData", async (req, res) => {
     checklist.updated = el.updated
     checklist.answers = []
     checklist.comments = []
-    checklist.pictures = []
+    checklist.images = []
 
-    checklist.questionsWithAnswers = []	
-    checklist.questionsWithComments = []	
-    checklist.questionsWithPictures = []	
+    checklist.questionsWithAnswers = []
+    checklist.questionsWithComments = []
+    checklist.questionsWithImages = []
 
-  
-    let sourcesToTarget = (await apiCallPost({"targetId": checklist.id}, `/instance/sourcesToTarget`)).data;
-    for (const relation of sourcesToTarget.links){
+
+    let sourcesToTarget = (await apiCallPost({ "targetId": checklist.id }, `/instance/sourcesToTarget`)).data;
+    for (const relation of sourcesToTarget.links) {
       if (relation.linkParentId === process.env.YES_TO_CHECKLIST_REL_PARENT_ID ||
-      relation.linkParentId === process.env.NO_TO_CHECKLIST_REL_PARENT_ID ||
-      relation.linkParentId === process.env.NA_TO_CHECKLIST_REL_PARENT_ID) checklist.answers.push(...relation.sources)
-      if (relation.sources[0].parentId === process.env.COMMENT_PARENT_ID)  checklist.comments.push(...relation.sources)
-      if (relation.sources[0].parentId === process.env.PICTURE_PARENT_ID)  checklist.pictures.push(...relation.sources)
+        relation.linkParentId === process.env.NO_TO_CHECKLIST_REL_PARENT_ID ||
+        relation.linkParentId === process.env.NA_TO_CHECKLIST_REL_PARENT_ID) checklist.answers.push(...relation.sources)
+      if (relation.sources[0].parentId === process.env.COMMENT_PARENT_ID) checklist.comments.push(...relation.sources)
+      if (relation.sources[0].parentId === process.env.PICTURE_PARENT_ID) checklist.images.push(...relation.sources)
 
     }
 
-    switch(el.props[0][process.env.ASSESSMENT_STATUS]){
+    switch (el.props[0][process.env.ASSESSMENT_STATUS]) {
       case process.env.STATUS_IN_PROGRESS:
         checklist.status = "In progress"
         break
@@ -91,19 +95,19 @@ router.get("/getAllDetailedData", async (req, res) => {
 
 
     const checklistToAddress = checklistAddressRel.find(relation => relation.source === el.id)
-    if(checklistToAddress === undefined) continue
+    if (checklistToAddress === undefined) continue
     const address = addresses.find(address => address.id === checklistToAddress.target)
     checklist.address = address
 
 
     const addressToProperty = addressPropertyRel.find(relation => relation.source === address.id)
-    if(addressToProperty === undefined) continue
+    if (addressToProperty === undefined) continue
     const property = properties.find(property => property.id === addressToProperty.target)
     checklist.property = property
 
 
     const propertyToArea = propertyAreaRel.find(relation => relation.source === property.id)
-    if(propertyToArea === undefined) continue
+    if (propertyToArea === undefined) continue
     checklist.area = areas.find(area => area.id === propertyToArea.target)
 
   }
@@ -113,64 +117,77 @@ router.get("/getAllDetailedData", async (req, res) => {
   const responseQuestionsType = (await apiCallGet(`/type?parentId=${process.env.QUESTION_PARENT_ID}`)).data
 
   let questionsDetailed = []
-  for (const type of responseQuestionsType){
+  for (const type of responseQuestionsType) {
     // get all questions on type level
     const question = {}
     questionsDetailed.push(question)
 
     question.id = type.id;
-  
+
     // get all questions on instance level
     question.instances = (await apiCallGet(`/instance?parentId=${type.id}`)).data;
-    
+
+    if (question.instances.length === 0) {
+      let reqBody = {
+        title: type.title,
+        parentId: type.id,
+        props: []
+      };
+      let questionInstance = (await api.createInstance(reqBody)).data;
+      question.instances = [questionInstance]
+    }
+
+
+
     // for every question, get all answers via sources to target
-    for (let instance of question.instances){
+    for (let instance of question.instances) {
       instance.answer = []
       instance.comment = []
-      instance.picture = []
-      let sourcesToTarget = (await apiCallPost({"targetId": instance.id}, `/instance/sourcesToTarget`)).data;
+      instance.image = []
+      let sourcesToTarget = (await apiCallPost({ "targetId": instance.id }, `/instance/sourcesToTarget`)).data;
       // for each link, get the sources
-      for (const relation of sourcesToTarget.links){
-        if (relation.sources[0].parentId === process.env.COMMENT_PARENT_ID){
+      for (const relation of sourcesToTarget.links) {
+        if (relation.sources[0].parentId === process.env.COMMENT_PARENT_ID) {
           instance.comment.push(...relation.sources);
         }
-        else if (relation.sources[0].parentId === process.env.PICTURE_PARENT_ID){
-          instance.picture.push(...relation.sources);
+        else if (relation.sources[0].parentId === process.env.PICTURE_PARENT_ID) {
+          instance.image.push(...relation.sources);
         }
         else {
-        instance.answer.push(...relation.sources)
+          instance.answer.push(...relation.sources)
         }
       }
     }
   }
 
-  for (const checklist of allChecklistsFormatted){
+  for (const checklist of allChecklistsFormatted) {
 
-    if (checklist.answers.length === 0 && checklist.comments.length === 0 && checklist.pictures.length === 0 ) continue
-    for (const group of questionsDetailed){
-        for (const question of group.instances) {
+    if (checklist.answers.length === 0 && checklist.comments.length === 0 && checklist.images.length === 0) continue
+    for (const group of questionsDetailed) {
+      for (const question of group.instances) {
 
-        for (const questionAnswer of question.answer){
+        for (const questionAnswer of question.answer) {
           let matchedAnswer = checklist.answers.find(ans => questionAnswer.id === ans.id)
-          if (matchedAnswer) checklist.questionsWithAnswers.push({question: question, answer: matchedAnswer})
+          if (matchedAnswer) checklist.questionsWithAnswers.push({ question: question, answer: matchedAnswer })
         }
 
-        for (const questionComment of question.comment){
+        for (const questionComment of question.comment) {
           let matchedComment = checklist.comments.find(ans => questionComment.id === ans.id)
-          if (matchedComment) checklist.questionsWithComments.push({question: question, comment: matchedComment})
+          if (matchedComment) checklist.questionsWithComments.push({ question: question, comment: matchedComment })
         }
 
-        for (const questionPicture of question.picture){
-          let matchedPicture = checklist.pictures.find(ans => questionPicture.id === ans.id)
-          if (matchedPicture) checklist.questionsWithPictures.push({question: question, picture: matchedPicture})
+        for (const questionPicture of question.image) {
+          let matchedPicture = checklist.images.find(ans => questionPicture.id === ans.id)
+          if (matchedPicture) checklist.questionsWithImages.push({ question: question, image: matchedPicture })
         }
       }
-    }}
+    }
+  }
   // }
 
   // console.log(JSON.stringify(allChecklistsFormatted, null, 2), "checklist")
 
-  return res.json({allChecklistsFormatted, addresses, areas, properties, checklistAddressRel, addressPropertyRel, propertyAreaRel, questionsDetailed})
+  return res.json({ allChecklistsFormatted, addresses, areas, properties, checklistAddressRel, addressPropertyRel, propertyAreaRel, questionsDetailed })
 
   // if (( (await responseAllChecklists.status) !== 200) || ((await responseAllAddresses.status ) !== 200) || ((await responseAllAreas.status)  !== 200) ||(( await responseAllProperties.status) !== 200) || ((await responseChecklistAddressRel.status) !== 200) || ((await responseAddressPropertyRel.status) !== 200) || ((await responsePropertyAreaRel.status) !== 200)) {
   //   return res.status(404).json({"message": "Something went wrong"});
@@ -179,27 +196,44 @@ router.get("/getAllDetailedData", async (req, res) => {
   // }
 
 });
-
-router.post("/", async (req, res) => {
-  console.log("create checklist route used");
+router.post("/createQuestionRels", async (req, res) => {
 
   // Create checklist
+  let { checklistId, questions } = req.body;
+  questions = JSON.parse(JSON.stringify(questions));
 
-  const reqBody = {
-    title: "Safety Checklist Instance",
-    props: [{[process.env.ASSESSMENT_STATUS]: process.env.STATUS_IN_PROGRESS}],
-    parentId: process.env.CHECKLIST_PARENT_ID
-  };
-
-  let response = await apiCallPost(reqBody, "/instance/create");
-
-  if ((await response.status) !== 200) {
-    return res.status(response.status).json(response.data);
+  for (let question of questions) {
+    const questionToChecklistRel = await api.getRelQuestionToChecklist(question);
+    await api.createRelQuestionChecklist(questionToChecklistRel, question.instances[0], checklistId);
   }
-  else {
-        return res.json(response.data);
-  }
-});
+
+
+  return res.json({ message: "question rels created" });
+
+}),
+
+
+  router.post("/", async (req, res) => {
+    console.log("create checklist route used");
+
+    // Create checklist
+
+    const reqBody = {
+      title: "Safety Checklist Instance",
+      props: [{ [process.env.ASSESSMENT_STATUS]: process.env.STATUS_IN_PROGRESS }],
+      parentId: process.env.CHECKLIST_PARENT_ID
+    };
+
+    let checklistInstance = await apiCallPost(reqBody, "/instance/create");
+
+
+    if ((await checklistInstance.status) !== 200) {
+      return res.status(checklistInstance.status).json(checklistInstance.data);
+    }
+    else {
+      return res.json(checklistInstance.data);
+    }
+  });
 
 router.put("/", async (req, res) => {
   console.log("update checklist route used");
@@ -209,7 +243,7 @@ router.put("/", async (req, res) => {
 
   const reqBody = {
     title: "Safety Checklist Instance",
-    props: [{[process.env.ASSESSMENT_STATUS]: propVal }],
+    props: [{ [process.env.ASSESSMENT_STATUS]: propVal }],
     parentId: process.env.CHECKLIST_PARENT_ID,
     id: req.body.activeChecklist.id
   };
@@ -220,7 +254,7 @@ router.put("/", async (req, res) => {
     return res.status(response.status).json(response.data);
   }
   else {
-        return res.json(response.data);
+    return res.json(response.data);
   }
 });
 
@@ -231,18 +265,18 @@ router.delete("/", async (req, res) => {
   //console.log("id: " + id)
 
   //Get related questions and answers relationships
-  let sourcesToChecklist = (await apiCallPost({"targetId": id}, `/instance/sourcesToTarget`)).data;
+  let sourcesToChecklist = (await apiCallPost({ "targetId": id }, `/instance/sourcesToTarget`)).data;
 
   // delete related questions relationships
 
   let answers = sourcesToChecklist.links.filter(el =>
-      el.linkParentId === process.env.YES_TO_CHECKLIST_REL_PARENT_ID ||
-      el.linkParentId === process.env.NO_TO_CHECKLIST_REL_PARENT_ID ||
-      el.linkParentId === process.env.NA_TO_CHECKLIST_REL_PARENT_ID || el.sources[0].parentId === process.env.COMMENT_PARENT_ID || el.sources[0].parentId === process.env.PICTURE_PARENT_ID)
+    el.linkParentId === process.env.YES_TO_CHECKLIST_REL_PARENT_ID ||
+    el.linkParentId === process.env.NO_TO_CHECKLIST_REL_PARENT_ID ||
+    el.linkParentId === process.env.NA_TO_CHECKLIST_REL_PARENT_ID || el.sources[0].parentId === process.env.COMMENT_PARENT_ID || el.sources[0].parentId === process.env.PICTURE_PARENT_ID)
 
   let answersId = []
 
-  for(let i in answers){
+  for (let i in answers) {
 
     answers[i].sources.forEach(el => {
       answersId.push(el.id)
@@ -251,16 +285,16 @@ router.delete("/", async (req, res) => {
 
 
 
-  // Get all related pictures and delete them
+  // Get all related images and delete them
 
   //console.log("answers.id: " + answersId[0])
 
   for (let i = 0; i < answersId.length; i++) { //for(let of) was giving undefined results, don t know why
     const id = answersId[i]
-    const sourcesToAnswer = (await apiCallPost({"targetId": id}, `/instance/sourcesToTarget`)).data.links
+    const sourcesToAnswer = (await apiCallPost({ "targetId": id }, `/instance/sourcesToTarget`)).data.links
 
     const sourcesId = []
-    for(i of sourcesToAnswer) {
+    for (i of sourcesToAnswer) {
 
       i.sources.forEach(el => {
         sourcesId.push(el.id)
@@ -269,8 +303,8 @@ router.delete("/", async (req, res) => {
 
     //console.log("sourcesId: " + JSON.stringify(sourcesId, null, 2))
 
-    // Delete comments and picture related to this answer
-    for(i of sourcesId){ await apiCallDelete(`/instanceData/${i}`) }
+    // Delete comments and image related to this answer
+    for (i of sourcesId) { await apiCallDelete(`/instanceData/${i}`) }
 
     // Delete answer
     await apiCallDelete(`/instanceData/${id}`)
@@ -283,7 +317,7 @@ router.delete("/", async (req, res) => {
 
   const questionsToCheklistsRelId = []
 
-  for(let i in AllQuestionsToChecklistTypes){
+  for (let i in AllQuestionsToChecklistTypes) {
     const type = AllQuestionsToChecklistTypes[i]
 
     console.log("type: " + JSON.stringify(type, null, 2))
@@ -307,7 +341,7 @@ router.delete("/", async (req, res) => {
 
   const checklistAddressRels = (await apiCallGet(`/instanceDataExternalRel?parentId=${process.env.CHECKLIST_TO_ADDRESS_REL_PARENT_ID}`)).data
   const checklistAddressRel = checklistAddressRels?.find(rel => rel.source === id)
-  if(checklistAddressRel !== undefined) await apiCallDelete(`/instanceDataExternalRel/${checklistAddressRel.id}`)
+  if (checklistAddressRel !== undefined) await apiCallDelete(`/instanceDataExternalRel/${checklistAddressRel.id}`)
 
   //Delete checklist
   let response = await apiCallDelete(`/instanceData/${id}`);
