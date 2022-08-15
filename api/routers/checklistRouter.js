@@ -203,8 +203,6 @@ router.post("/createQuestionRels", async (req, res) => {
   questions = JSON.parse(JSON.stringify(questions));
 
   for (let question of questions) {
-    console.log(typeof questions, "HELLOO")
-    console.log(question, "HELL")
     const questionToChecklistRel = await api.getRelQuestionToChecklist(question);
     await api.createRelQuestionChecklist(questionToChecklistRel, question.instances[0], checklistId);
   }

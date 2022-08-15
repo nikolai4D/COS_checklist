@@ -1,6 +1,8 @@
 import { State } from "../../../store/State.js";
+import Merchant from "../../../store/Merchant.js";
+import { Librarian } from "../../../store/Librarian.js";
 
-export default function (e) {
+export default async function (e) {
     let selectedAnswer = e.target.value;
     let selectedQuestion = e.target.parentNode;
     let selectedQuestionGroup = e.target.parentNode.parentNode.parentNode.parentNode.id
@@ -11,7 +13,9 @@ export default function (e) {
     let questionGroup = getQuestionGroupTypeObject(activeChecklist, selectedQuestionGroup)
     let question = getQuestionTypeObject(questionGroup, selectedQuestion)
     question.selectedAnswer = selectedAnswer;
+    console.log(selectedQuestion, question, "HEH");
 
+    await updateDb({ questionId: selectedQuestion.id, checklistId: activeChecklist.id, answer: selectedAnswer, type: Librarian.answer.type }, activeChecklist);
 
     let status = question.status = question.answers.preferredAnswer.id === selectedAnswer;
     question.status = status;
@@ -21,6 +25,14 @@ export default function (e) {
     selectedQuestion.parentNode.parentNode.classList.add("table-danger")
 }
 
+async function updateDb(reqBody, activeChecklist) {
+    let existingChecklist = State.allChecklistsWithDetails.content.allChecklistsFormatted.find(checklist => checklist.id === activeChecklist.id);
+    if (!existingChecklist)
+        await Merchant.UPDATE_ANSWER(reqBody);
+    else
+        await Merchant.CREATE_ANSWER(reqBody);
+
+}
 
 function getQuestionTypeObject(questionGroup, selectedQuestion) {
     return questionGroup.questions.find(question => question.id === selectedQuestion.id);

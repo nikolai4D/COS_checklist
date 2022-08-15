@@ -12,7 +12,8 @@ export default async function (e) {
 
     let questionGroup = activeChecklist.questions.find(questionGroup => questionGroup.id === selectedQuestionGroupId)
     let question = questionGroup.questions.find(question => question.id === selectedQuestionId)
-    console.log(State.activeChecklist.content, "active checklist")
+
+
     // remove alert if there is no message
     let comment = document.getElementById(`commentmessage_${selectedQuestionId}`).value;
     let commentAlertDOM = document.getElementById(`commentalert_${selectedQuestionId}`)
@@ -35,7 +36,6 @@ export default async function (e) {
     }
 
     else if (question.comment) {
-        console.log(question)
         await Merchant.UPDATE_COMMENT(reqBody)
         let questionComment = findExistingComment(questionsWithComments, question)
         questionComment.comment = comment;
@@ -46,11 +46,8 @@ export default async function (e) {
         let commentInstance = await Merchant.CREATE_COMMENT(reqBody)
         questionsWithComments.push({ question, comment: commentInstance })
         question.comment = comment;
-        console.log(activeChecklist, "active ")
-
 
     }
-
 
 
     if (commentAlertDOM !== null) return;

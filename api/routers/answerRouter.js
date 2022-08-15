@@ -4,13 +4,14 @@ const express = require("express");
 const router = express.Router();
 require("dotenv").config();
 const bodyParser = require("body-parser");
-const helper = require("./utils/answer/helpers.js");
+const helper = require("./utils/answer/helpers.js")
 
 const multer = require("multer");
 const fs = require("fs");
 const FormData = require('form-data');
 const axios = require("axios");
 require("dotenv").config();
+const api = require("./utils/answer/apiCalls.js");
 
 const upload = multer({ storage: multer.memoryStorage() })
 
@@ -20,38 +21,24 @@ router.use(bodyParser.json());
 
 //APIs
 
-router.post("/", upload.single('asset'), async (req, res) => {
+router.post("/", async (req, res) => {
     /* 
     This route creates the answers and answer details attached to checklist and questions in checklist instances.
     */
 
+    // const {  checklistId, answer } = req.body;
 
-    const { questions, id } = req.body.activeChecklist;
+    // await helper.createNewAnswer(questionObj, question, id);
 
-    for (const questionGroup of questions) {
-        for (const question of questionGroup.questions) {
-            let questionObj;
-            // let shouldCreateRelInstanceQuestionChecklist = false;
-            // if (question.image) {
-            //     shouldCreateRelInstanceQuestionChecklist = true;
-            // }
+    // return res.json(200);
+    const { answer, questionId, checklistId } = req.body
+    let questionObj = await api.getInstance(questionId);
+    console.log(questionObj, "questiononbj")
 
-            if (question.selectedAnswer) {
-                await helper.createNewAnswer(questionObj, question, id);
-                // shouldCreateRelInstanceQuestionChecklist = true;
-            }
+    let question = { id: questionId, selectedAnswer: answer, checklistId };
+    let answerInstance = (await helper.createNewAnswer(questionObj, question, checklistId)).data;
+    return res.status(200).json(answerInstance)
 
-            if (question.comment) {
-                await helper.createNewComment(questionObj, question, id);
-                // shouldCreateRelInstanceQuestionChecklist = true;
-            }
-
-            // if (shouldCreateRelInstanceQuestionChecklist) {
-            await helper.createQuestionRel(question, questionObj, id);
-            // }
-        }
-    }
-    return res.json(200);
 });
 
 
