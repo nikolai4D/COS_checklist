@@ -12,13 +12,14 @@ async function generateDropdownOptions(addressDOM, propertyId) {
         let address = allAddresses.find(adress => adress.id === addressId)
         addressesBeforeSort.push(address);
     }
+    addressDOM.innerHTML = `<option disabled selected value=""></option>`;
+
     let addressesSorted = addressesBeforeSort.sort((a, b) => a.title.localeCompare(b.title));
     addressesSorted.forEach(address => addressDOM.innerHTML += `<option data-function="saveAddress" value="${address.id}">${address.title}</option>)`)
 
 }
 export default async function (e) {
     let addressDOM = document.getElementById('addChecklistAddress');
-    addressDOM.innerHTML = "";
 
     let propertyId = document.getElementById('addChecklistProperty').value;
     if (propertyId === "") return;
