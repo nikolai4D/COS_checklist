@@ -6,6 +6,8 @@ export const Librarian = {
             { sv: "Ej tillämpbar", eng: "N/A" }
         ]
     },
+    comment: { type: "comment" },
+    image: { type: "picture" },
     status: [
         { sv: "Godkänd", eng: "Approved" },
         { sv: "Ej godkänd", eng: "Not approved" },

@@ -4,7 +4,6 @@ async function generateDropdownOptions(addressDOM, propertyId) {
 
     let addressPropertyRel = (await State.allChecklistsWithDetails.get()).addressPropertyRel;
     let allAddresses = (await State.allChecklistsWithDetails.get()).addresses;
-    allAddresses.sort((a, b) => a.title.localeCompare(b.title));
 
     let addressesBeforeSort = [];
     for (const relation of addressPropertyRel) {
@@ -14,9 +13,7 @@ async function generateDropdownOptions(addressDOM, propertyId) {
         addressesBeforeSort.push(address);
     }
     let addressesSorted = addressesBeforeSort.sort((a, b) => a.title.localeCompare(b.title));
-
     addressesSorted.forEach(address => addressDOM.innerHTML += `<option data-function="saveAddress" value="${address.id}">${address.title}</option>)`)
-
 
 }
 export default async function (e) {

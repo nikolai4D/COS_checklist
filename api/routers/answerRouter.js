@@ -95,13 +95,7 @@ router.put("/", upload.single('asset'), async (req, res) => {
             // }
             let questionObj;
 
-            let existingComment = helper.findExistingComment(questionsWithComments, question);
-            if (question.comment && existingComment)
-                await helper.updateComment(existingComment, question);
-            else if (question.comment && !existingComment)
-                await helper.createNewComment(questionObj, question, id);
-            else if (!question.comment && existingComment)
-                await helper.deleteComment(existingComment);
+
 
             if (question.selectedAnswer) {
                 let existingAnswer = helper.findExistingAnswer(questionsWithAnswers, question)

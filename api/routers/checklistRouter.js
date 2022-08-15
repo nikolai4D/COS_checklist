@@ -196,27 +196,46 @@ router.get("/getAllDetailedData", async (req, res) => {
   // }
 
 });
-
-router.post("/", async (req, res) => {
-  console.log("create checklist route used");
+router.post("/createQuestionRels", async (req, res) => {
 
   // Create checklist
+  let { checklistId, questions } = req.body;
+  questions = JSON.parse(JSON.stringify(questions));
 
-  const reqBody = {
-    title: "Safety Checklist Instance",
-    props: [{ [process.env.ASSESSMENT_STATUS]: process.env.STATUS_IN_PROGRESS }],
-    parentId: process.env.CHECKLIST_PARENT_ID
-  };
-
-  let response = await apiCallPost(reqBody, "/instance/create");
-
-  if ((await response.status) !== 200) {
-    return res.status(response.status).json(response.data);
+  for (let question of questions) {
+    console.log(typeof questions, "HELLOO")
+    console.log(question, "HELL")
+    const questionToChecklistRel = await api.getRelQuestionToChecklist(question);
+    await api.createRelQuestionChecklist(questionToChecklistRel, question.instances[0], checklistId);
   }
-  else {
-    return res.json(response.data);
-  }
-});
+
+
+  return res.json({ message: "question rels created" });
+
+}),
+
+
+  router.post("/", async (req, res) => {
+    console.log("create checklist route used");
+
+    // Create checklist
+
+    const reqBody = {
+      title: "Safety Checklist Instance",
+      props: [{ [process.env.ASSESSMENT_STATUS]: process.env.STATUS_IN_PROGRESS }],
+      parentId: process.env.CHECKLIST_PARENT_ID
+    };
+
+    let checklistInstance = await apiCallPost(reqBody, "/instance/create");
+
+
+    if ((await checklistInstance.status) !== 200) {
+      return res.status(checklistInstance.status).json(checklistInstance.data);
+    }
+    else {
+      return res.json(checklistInstance.data);
+    }
+  });
 
 router.put("/", async (req, res) => {
   console.log("update checklist route used");

@@ -20,5 +20,6 @@ api.use("/question", require("./routers/questionRouter.js")); //questions
 api.use("/address", require("./routers/addressRouter.js")); //address
 api.use("/answer", require("./routers/answerRouter.js")); //answer
 api.use("/picture", require("./routers/pictureRouter.js")); //picture
+api.use("/comment", require("./routers/commentRouter.js")); //comment
 
 module.exports = api;

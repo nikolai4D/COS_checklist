@@ -1,7 +1,7 @@
-import Merchant from "../../store/Merchant.js";
 import { State } from "../../store/State.js";
 import navigateTo from "../navigateTo.js";
 import { getSpinner, getPointer } from "../../../components/Spinner.js";
+import Merchant from "../../store/Merchant.js";
 
 export default async function (e) {
     let id = e.target.getAttribute("data-id");
@@ -44,6 +44,9 @@ export default async function (e) {
         checklist.area = { title: "-" }
         checklist.property = { title: "-" }
         checklist.status = "In progress"
+        console.log(State.activeChecklist.content)
+        await Merchant.CREATE_QUESTIONS_TO_CHECKLIST_RELS({ checklistId: checklist.id, questions: await State.allChecklistsWithDetails.content.questionsDetailed });
+
     }
     getPointer()
     navigateTo("/detailView")

@@ -1,4 +1,3 @@
-import mutate from "./Mutations.js";
 
 export default {
 
@@ -189,6 +188,72 @@ export default {
 
     },
 
+    async CREATE_COMMENT(params) {
+        let response;
+
+        try {
+            response = await fetch(`/api/${params.type}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(params)
+            });
+            console.log("try");
+        } catch (err) {
+            console.log(err);
+            response = err.response;
+            console.log("catch");
+        }
+        return await response.json()
+    },
+
+    async UPDATE_COMMENT(params) {
+        let response;
+
+        try {
+            response = await fetch(`/api/${params.type}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(params)
+            });
+            console.log("try");
+        } catch (err) {
+            console.log(err);
+            response = err.response;
+            console.log("catch");
+        }
+        return await response.json()
+    },
+
+    async DELETE_COMMENT(params) {
+
+        let response;
+
+        try {
+            response = await fetch(`/api/${params.type}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(params)
+            });
+            console.log("try");
+        } catch (err) {
+            console.log(err);
+            response = err.response;
+            console.log("catch");
+        }
+
+        return await response.json();
+
+    },
+
 
     async CREATE_PICTURE(params) {
         let response;
@@ -247,6 +312,28 @@ export default {
                 },
                 credentials: "include",
                 body: JSON.stringify({ id })
+            });
+            console.log("try");
+        } catch (err) {
+            console.log(err);
+            response = err.response;
+            console.log("catch");
+        }
+        return await response.json()
+
+    },
+
+    async CREATE_QUESTIONS_TO_CHECKLIST_RELS(params) {
+        let response;
+
+        try {
+            response = await fetch(`/api/checklist/createQuestionRels`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(params)
             });
             console.log("try");
         } catch (err) {

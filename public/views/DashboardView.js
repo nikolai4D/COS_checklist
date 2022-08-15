@@ -8,11 +8,12 @@ export default class DashboardView {
   }
 
   async checklistsToHTML() {
-
+    getSpinner()
     delete State.activeChecklist.content;
 
     let checklists = (await State.allChecklistsWithDetails.set()).allChecklistsFormatted
     await State.allQuestionsWithDetails.set();
+    getPointer()
 
     let formattedChecklists = checklists.map((checklist, index) => {
       if (!checklist.address) {
