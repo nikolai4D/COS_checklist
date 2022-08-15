@@ -38,13 +38,13 @@ export default async function (e) {
     else {
 
         await State.activeChecklist.set();
+        State.allChecklistsWithDetails.content.allChecklistsFormatted.push(State.activeChecklist.content)
         let checklist = State.activeChecklist.content;
         checklist.questions = JSON.parse(JSON.stringify(await State.allQuestionsWithDetails.content.questionsDetailed))
         checklist.address = { title: "-" }
         checklist.area = { title: "-" }
         checklist.property = { title: "-" }
         checklist.status = "In progress"
-        console.log(State.activeChecklist.content)
         await Merchant.CREATE_QUESTIONS_TO_CHECKLIST_RELS({ checklistId: checklist.id, questions: await State.allChecklistsWithDetails.content.questionsDetailed });
 
     }

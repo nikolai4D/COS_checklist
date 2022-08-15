@@ -11,8 +11,8 @@ export default class DashboardView {
     getSpinner()
     delete State.activeChecklist.content;
 
-    let checklists = (await State.allChecklistsWithDetails.set()).allChecklistsFormatted
-    await State.allQuestionsWithDetails.set();
+    let checklists = (await State.allChecklistsWithDetails.get()).allChecklistsFormatted
+    await State.allQuestionsWithDetails.get();
     getPointer()
 
     let formattedChecklists = checklists.map((checklist, index) => {
