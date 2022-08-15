@@ -9,13 +9,12 @@ export default async function (e) {
     removeRowColor(selectedQuestion);
 
     let activeChecklist = State.activeChecklist.content;
-
+    let questionsWithAnswers = activeChecklist.questionsWithAnswers ?? []
     let questionGroup = getQuestionGroupTypeObject(activeChecklist, selectedQuestionGroup)
     let question = getQuestionTypeObject(questionGroup, selectedQuestion)
     question.selectedAnswer = selectedAnswer;
-    console.log(selectedQuestion, question, "HEH");
 
-    await updateDb({ questionId: selectedQuestion.id, checklistId: activeChecklist.id, answer: selectedAnswer, type: Librarian.answer.type }, activeChecklist);
+    await updateDb({ questionsWithAnswers, questionId: selectedQuestion.id, checklistId: activeChecklist.id, answer: selectedAnswer, type: Librarian.answer.type }, activeChecklist);
 
     let status = question.status = question.answers.preferredAnswer.id === selectedAnswer;
     question.status = status;
@@ -25,12 +24,14 @@ export default async function (e) {
     selectedQuestion.parentNode.parentNode.classList.add("table-danger")
 }
 
-async function updateDb(reqBody, activeChecklist) {
-    let existingChecklist = State.allChecklistsWithDetails.content.allChecklistsFormatted.find(checklist => checklist.id === activeChecklist.id);
-    if (!existingChecklist)
-        await Merchant.UPDATE_ANSWER(reqBody);
-    else
-        await Merchant.CREATE_ANSWER(reqBody);
+async function updateDb(reqBody) {
+
+    let existingChecklist = State.allChecklistsWithDetails.content.allChecklistsFormatted.find(checklist => checklist.id === State.activeChecklist.content.id);
+    if (!existingChecklist) {
+        State.allChecklistsWithDetails.content.allChecklistsFormatted.push(State.activeChecklist.content);
+    }
+
+    await Merchant.UPDATE_ANSWER(reqBody);
 
 }
 

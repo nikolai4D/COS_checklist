@@ -43,57 +43,22 @@ router.post("/", async (req, res) => {
 
 
 
-router.put("/", upload.single('asset'), async (req, res) => {
+router.put("/", async (req, res) => {
 
     /* 
     This route updates the answers and answer details attached to checklist and questions in checklist instances.
     */
 
-    const { questionsWithAnswers, questionsWithComments, questions, id } = req.body.activeChecklist;
+    const { questionsWithAnswers, questionId, answer, checklistId } = req.body;
+    let question = { id: questionId, selectedAnswer: answer }
+    let questionObj = await api.getInstance(questionId);
 
-    for (const questionsGroup of questions) {
-        for (const question of questionsGroup.questions) {
+    let existingAnswer = helper.findExistingAnswer(questionsWithAnswers, question)
+    if (existingAnswer && helper.isExistingAnswerSameAsNewAnswer(existingAnswer, question)) { console.log(helper.isExistingAnswerSameAsNewAnswer(existingAnswer, question), "HELLO"); return res.json(200); }
+    if (existingAnswer) await helper.deleteExistingAnswers(existingAnswer)
+    let answerInstance = (await helper.createNewAnswer(questionObj, question, checklistId)).data;
 
-            // if (question.image) {
-            // console.log(question.image, "IMAGE")
-            //     const form = new FormData();
-            //     const file = question.image.file;
-            //     form.append('asset', file.buffer, file.originalname);
-            //     // form.append('parentId', process.env.PICTURE_PARENT_ID)
-            //     form.append('props', JSON.stringify([]))
-
-            // console.log(form, "form")
-
-
-            // const form = new FormData();
-
-            // const file = question.image;
-            // console.log(file, `file!! inputImage_$${question.id}`)
-            // form.append(`inputImage_$${question.id}`, file.buffer, file.originalname);
-            // form.append('parentId',process.env.PICTURE_PARENT_ID)
-            // form.append('props', JSON.stringify([]))
-
-            // console.log(question.image.get(`inputImage_$${question.id}`), "hello")
-
-            // console.log(question.image.get(`asset`), "form")
-            // console.log(question.image.file, "form")
-
-
-            // }
-            let questionObj;
-
-
-
-            if (question.selectedAnswer) {
-                let existingAnswer = helper.findExistingAnswer(questionsWithAnswers, question)
-                if (existingAnswer && helper.isExistingAnswerSameAsNewAnswer(existingAnswer, question)) continue;
-                if (existingAnswer) await helper.deleteExistingAnswers(existingAnswer);
-                await helper.createNewAnswer(questionObj, question, id);
-                // await helper.createQuestionRel(question, questionObj, id);
-            }
-        }
-    }
-    return res.json(200);
+    return res.status(200).json(answerInstance)
 });
 
 module.exports = router;

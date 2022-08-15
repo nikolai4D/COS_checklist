@@ -8,7 +8,8 @@ export default async function (e) {
     let selectedQuestionId = selectedQuestion.getAttribute("data-id");
     let selectedQuestionGroupId = selectedQuestion.parentNode.id;
     let activeChecklist = State.activeChecklist.content;
-    let questionsWithComments = activeChecklist.questionsWithComments
+    let questionsWithComments = activeChecklist.questionsWithComments ?? []
+
 
     let questionGroup = activeChecklist.questions.find(questionGroup => questionGroup.id === selectedQuestionGroupId)
     let question = questionGroup.questions.find(question => question.id === selectedQuestionId)

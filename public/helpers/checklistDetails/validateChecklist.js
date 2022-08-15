@@ -37,9 +37,6 @@ export default async function (e) {
     alert(`Checklistan är: ${isApproved ? "Godkänd" : "Ej godkänd"}`)
 
     getSpinner()
-    let existingChecklist = State.allChecklistsWithDetails.content.allChecklistsFormatted.find(checklist => checklist.id === activeChecklist.id);
-    if (!existingChecklist) await Merchant.createData({ type: Librarian.answer.type, activeChecklist });
-    else await Merchant.updateData({ type: Librarian.answer.type, activeChecklist });
     await Merchant.updateData({ type: Librarian.checklist.type, activeChecklist, isApproved })
     getPointer()
     navigateTo('/')
