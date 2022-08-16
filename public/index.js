@@ -2,6 +2,7 @@ import viewRouter from "./helpers/viewRouter.js";
 import functionRouter from "./helpers/functionRouter.js";
 import navigateTo from "./helpers/navigateTo.js";
 
+
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("DOMContentLoaded");
 
@@ -16,19 +17,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log("View click event target");
       e.preventDefault();
       navigateTo(e.target.getAttribute("data-view"));
-      await viewRouter();
       console.log(`view: ${e.target.getAttribute("data-view")}`);
     }
   });
 
-  // document.body.addEventListener("onchange", async (e) => {
-  //   if (e.target.matches("[data-function]")) {
-  //     e.preventDefault();
-  //     console.log(`function: ${e.target.getAttribute("data-function")}`);
-  //   }
-  // });
+  document.body.addEventListener("change", async (e) => {
 
-
+        if (e.target.matches("[data-change]")) {
+      // e.preventDefault();
+      await functionRouter(e.target.getAttribute("data-change"), e);
+      console.log(`function: ${e.target.getAttribute("data-change")}`);
+    }
+  });
   window.addEventListener("load", async (e) => {
     console.log("Window load");
     e.preventDefault();
@@ -37,3 +37,4 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 window.addEventListener("popstate", viewRouter());
+

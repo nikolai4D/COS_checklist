@@ -4,12 +4,12 @@ import { State } from "../store/State.js";
 import Actions from "../store/Actions.js";
 
 //views
-import Dashboard from "../views/Dashboard.js";
+import DashboardView from "../views/DashboardView.js";
 import Login from "../views/Login.js";
 import Register from "../views/Register.js";
-import AddChecklist from "../views/AddChecklist.js";
-import ViewChecklist from "../views/ViewChecklist.js";
+import DetailView from "../views/DetailView.js";
 import Navbar from "../components/Navbar.js";
+
 
 const viewRouter = async () => {
   if (location.pathname !== "/login" && !(await Actions.VERIFY())) {
@@ -18,11 +18,10 @@ const viewRouter = async () => {
   }
 
   const routes = [
-    { path: "/", view: Dashboard },
+    { path: "/", view: DashboardView },
     { path: "/login", view: Login },
     { path: "/register", view: Register },
-    { path: "/addChecklist", view: AddChecklist },
-    { path: "/viewChecklist", view: ViewChecklist },
+    { path: "/detailView", view: DetailView },
   ];
 
   const potentialMatches = routes.map((route) => {

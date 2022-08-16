@@ -1,22 +1,43 @@
 import Actions from "../store/Actions.js";
+import deleteChecklist from "./checklistOverview/deleteChecklist.js";
+
+import uploadImages from "./checklistDetails/questionSection/uploadImages.js";
+import showImage from "./checklistDetails/questionSection/showImage.js";
+import deleteImage from "./checklistDetails/questionSection/deleteImage.js";
+import getProperty from "./checklistDetails/getProperty.js";
+import getAddress from "./checklistDetails/getAddress.js";
+import saveAddress from "./checklistDetails/saveAddress.js";
+import saveAnswers from "./checklistDetails/saveAnswers.js";
+import chooseAnswer from "./checklistDetails/questionSection/chooseAnswer.js";
+import validateChecklist from "./checklistDetails/validateChecklist.js";
+import viewChecklist from "./checklistDetails/viewChecklist.js";
+
+import saveNote from "./checklistDetails/questionSection/saveNote.js";
+
 
 export default async function (demandedRoute, event) {
   const routes = [
     { path: "/login" },
     { path: "/logout" },
-    { path: "upload-images" },
-    { path: "show-image" },
-    { path: "delete-image" },
-    { path: "addChecklist" },
+    { path: "upload-images", request: uploadImages },
+    { path: "show-image", request: showImage },
+    { path: "delete-image", request: deleteImage },
+    { path: "getProperty", request: getProperty },
+    { path: "getAddress", request: getAddress },
+    { path: "saveAddress", request: saveAddress },
+    { path: "chooseAnswer", request: chooseAnswer },
+    { path: "validateChecklist", request: validateChecklist },
+    { path: "saveAnswers", request: saveAnswers },
+    { path: "deleteChecklist", request: deleteChecklist },
+    { path: "viewChecklist", request: viewChecklist },
+
+    { path: "saveNote", request: saveNote }
+
     // { path: "/register" },
     // { path: "/saveChecklist" },
   ];
 
   const potentialMatches = routes.map((route) => {
-    if (demandedRoute === route.path) {
-      console.log(`matching function for ${route.path}`);
-    }
-
     return {
       route: route,
       isMatch: demandedRoute === route.path,
@@ -25,56 +46,17 @@ export default async function (demandedRoute, event) {
 
   let match = potentialMatches.find((potentialMatch) => potentialMatch.isMatch);
 
-  if (!match) {
-    return alert("Request unknown");
-  }
+  if (!match) return alert("Request unknown");
+
+
+  if (match.route.request !== undefined) await match.route.request(event);
+
 
   if (match.route.path === "/login") {
     await Actions.LOGIN();
   }
   if (match.route.path === "/logout") {
     await Actions.LOGOUT();
-  }
-
-  if (match.route.path === "upload-images") {
-    let inputImage = document.getElementById("inputFile");
-
-    const outputImageIcon = () => {
-      let buttonForImageDOM = document.getElementById("buttonForImage");
-      if (buttonForImageDOM !== null) {
-        buttonForImageDOM.remove();
-        document.getElementById("deleteImage").remove();
-      }
-      let buttonForImage = `<button id="buttonForImage" data-function="show-image" class="btn btn-outline-secondary" style="margin-left: 1em;"><i class="bi bi-image"  data-function="show-image" ></i></button>`;
-      let closeButton = `<i style="cursor: pointer;" id="deleteImage" data-function='delete-image' class="bi bi-x"></i>`;
-      document
-        .getElementById("labelForInputFile")
-        .insertAdjacentHTML("afterend", `${buttonForImage}${closeButton}`);
-    };
-    inputImage.addEventListener("change", () => outputImageIcon(), {
-      once: true,
-    });
-  }
-
-  if (match.route.path === "show-image") {
-    let inputImage = document.getElementById("inputFile");
-    if (inputImage.files[0] === undefined) {
-      document.getElementById("buttonForImage").remove();
-      document.getElementById("deleteImage").remove();
-      document.getElementById("inputFile").value = null;
-    } else {
-      image.src = URL.createObjectURL(image.files[0]);
-      window.open(image.src);
-    }
-  }
-  if (match.route.path === "delete-image") {
-    document.getElementById("buttonForImage").remove();
-    document.getElementById("deleteImage").remove();
-    document.getElementById("inputFile").value = null;
-  }
-
-  if (match.route.path === "addChecklist") {
-    await Actions.ADDCHECKLIST();
   }
 
   //   if (match.route.path === "/register") {
