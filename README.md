@@ -28,6 +28,6 @@
 <br/>c. Move the unzipped folder `db` and `.env` to `/Users/username/newfolder/` (where the folder `COS_checklist` exist)
 
 7. While being in folder `COS_checklist` (check where you are by typing `pwd`) 
- <br/>a. Run the database on your local computer by writing in the terminal/cmd: `npm run dev`
+ <br/>a. Run the app on your local computer by writing in the terminal/cmd: `npm run dev`
 
 8. Go to a browser and enter localhost:3000 and login with credentials user: `admin`, password: `admin`
